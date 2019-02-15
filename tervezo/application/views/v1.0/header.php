@@ -24,4 +24,39 @@
 </script>
 <? endif; ?>
 <header>
+  <div class="logo">
+    <div class="in">
+      <img src="<?=IMG?>moza_logo_hu.svg" alt="">
+    </div>
+  </div>
+  <div class="backurl">
+    <div class="in">
+      <a href="http://www.moza.hu"> <i class="fa fa-angle-left"></i> <?php echo __('vissza a moza cementlap manufaktúra weboldalára'); ?></a>
+    </div>
+  </div>
+  <div class="title">
+    <div class="in">
+      <?php echo __('Cementlap tervező program'); ?>
+    </div>
+  </div>
+  <div class="langs">
+    <div class="in">
+      langs
+    </div>
+  </div>
 </header>
+<div class="sidebar">
+  <div class="kat-title">
+    <?php echo __('Kategóriák'); ?>
+  </div>
+  <div class="cat-list">
+    <?php for ($i=0; $i < 50 ; $i++) {?>
+      <div class="">
+        Kategória #<?php echo $i; ?>
+      </div>
+    <? } ?>
+  </div>
+  <div class="copy">
+    <?php echo __('Minden jog fenntartva!'); ?>
+  </div>
+</div>

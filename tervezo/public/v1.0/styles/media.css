@@ -2,6 +2,367 @@
 /* VÁLTOZÓK */
 /* COLORS */
 /* FONTS */
+/* normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+/* line 1, sass/_base.scss */
+button, hr, input {
+  overflow: visible;
+}
+
+/* line 1, sass/_base.scss */
+progress, sub, sup {
+  vertical-align: baseline;
+}
+
+/* line 1, sass/_base.scss */
+[type=checkbox], [type=radio], legend {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+/* line 1, sass/_base.scss */
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* line 1, sass/_base.scss */
+body {
+  margin: 0;
+}
+
+/* line 1, sass/_base.scss */
+details, main {
+  display: block;
+}
+
+/* line 1, sass/_base.scss */
+h1 {
+  font-size: 2em;
+  margin: .67em 0;
+}
+
+/* line 1, sass/_base.scss */
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+
+/* line 1, sass/_base.scss */
+code, kbd, pre, samp {
+  font-family: monospace,monospace;
+  font-size: 1em;
+}
+
+/* line 1, sass/_base.scss */
+a {
+  background-color: transparent;
+}
+
+/* line 1, sass/_base.scss */
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  text-decoration: underline dotted;
+}
+
+/* line 1, sass/_base.scss */
+b, strong {
+  font-weight: bolder;
+}
+
+/* line 1, sass/_base.scss */
+small {
+  font-size: 80%;
+}
+
+/* line 1, sass/_base.scss */
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+}
+
+/* line 1, sass/_base.scss */
+sub {
+  bottom: -0.25em;
+}
+
+/* line 1, sass/_base.scss */
+sup {
+  top: -0.5em;
+}
+
+/* line 1, sass/_base.scss */
+img {
+  border-style: none;
+}
+
+/* line 1, sass/_base.scss */
+button, input, optgroup, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* line 1, sass/_base.scss */
+button, select {
+  text-transform: none;
+}
+
+/* line 1, sass/_base.scss */
+[type=button], [type=reset], [type=submit], button {
+  -webkit-appearance: button;
+}
+
+/* line 1, sass/_base.scss */
+[type=button]::-moz-focus-inner, [type=reset]::-moz-focus-inner, [type=submit]::-moz-focus-inner, button::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+/* line 1, sass/_base.scss */
+[type=button]:-moz-focusring, [type=reset]:-moz-focusring, [type=submit]:-moz-focusring, button:-moz-focusring {
+  outline: ButtonText dotted 1px;
+}
+
+/* line 1, sass/_base.scss */
+fieldset {
+  padding: .35em .75em .625em;
+}
+
+/* line 1, sass/_base.scss */
+legend {
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  white-space: normal;
+}
+
+/* line 1, sass/_base.scss */
+textarea {
+  overflow: auto;
+}
+
+/* line 1, sass/_base.scss */
+[type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/* line 1, sass/_base.scss */
+[type=search] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+/* line 1, sass/_base.scss */
+[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/* line 1, sass/_base.scss */
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+/* line 1, sass/_base.scss */
+summary {
+  display: list-item;
+}
+
+/* line 1, sass/_base.scss */
+[hidden], template {
+  display: none;
+}
+
+/* line 3, sass/_base.scss */
+body {
+  background-color: #edebeb;
+}
+
+/* line 7, sass/_base.scss */
+header {
+  background: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  box-shadow: 0 5px 10px 3px rgba(204, 204, 204, 0.51);
+}
+/* line 20, sass/_base.scss */
+header > div {
+  min-height: 70px;
+  height: 5vw;
+  position: relative;
+}
+/* line 25, sass/_base.scss */
+header > div .in {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+}
+/* line 35, sass/_base.scss */
+header > .logo {
+  flex-basis: 280px;
+}
+/* line 37, sass/_base.scss */
+header > .logo img {
+  max-width: 70%;
+  margin: 0 auto;
+}
+/* line 43, sass/_base.scss */
+header > .backurl, header > .title {
+  flex-basis: 33%;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  color: white;
+}
+/* line 48, sass/_base.scss */
+header > .backurl a, header > .title a {
+  color: white;
+  display: block;
+  text-decoration: none;
+}
+/* line 55, sass/_base.scss */
+header > .backurl {
+  background-color: #9e9e9e;
+  font-size: 0.85vw;
+}
+/* line 59, sass/_base.scss */
+header > .backurl i {
+  background: #4c4c4c;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  border-radius: 40px;
+}
+/* line 70, sass/_base.scss */
+header > .title {
+  background-color: #4c4c4c;
+  text-align: center;
+  font-size: 1.6vw;
+}
+/* line 75, sass/_base.scss */
+header > .langs {
+  flex: 1;
+}
+
+/* line 80, sass/_base.scss */
+.inside-content {
+  margin-left: 280px;
+  padding: 20px;
+}
+/* line 83, sass/_base.scss */
+.inside-content > .wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+/* line 90, sass/_base.scss */
+.inside-content > .wrapper > .side-left, .inside-content > .wrapper > .side-right {
+  flex-basis: 50%;
+}
+
+/* line 96, sass/_base.scss */
+.sidebar {
+  position: fixed;
+  width: 280px;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  background: white;
+  bottom: 0;
+  box-shadow: 5px 0px 10px 2px #d2d2d2;
+}
+/* line 106, sass/_base.scss */
+.sidebar .kat-title {
+  padding: 45px 20px 20px 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #696969;
+}
+/* line 113, sass/_base.scss */
+.sidebar .cat-list {
+  overflow: auto;
+  /* width */
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+/* line 117, sass/_base.scss */
+.sidebar .cat-list::-webkit-scrollbar {
+  width: 5px;
+}
+/* line 122, sass/_base.scss */
+.sidebar .cat-list::-webkit-scrollbar-track {
+  background: #edebeb;
+}
+/* line 127, sass/_base.scss */
+.sidebar .cat-list::-webkit-scrollbar-thumb {
+  background: #9e9e9e;
+}
+/* line 132, sass/_base.scss */
+.sidebar .cat-list::-webkit-scrollbar-thumb:hover {
+  background: #4c4c4c;
+}
+/* line 137, sass/_base.scss */
+.sidebar .copy {
+  text-align: center;
+  font-weight: 300;
+  line-height: 60px;
+  border-top: 0.5px solid #d9d9d9;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  bottom: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+/* line 151, sass/_base.scss */
+.bubble-block {
+  background: white;
+  border-radius: 5px;
+  margin: 15px 10px;
+  padding: 15px;
+  box-shadow: 0 3px 25px -5px #bdbcbc;
+}
+/* line 158, sass/_base.scss */
+.bubble-block > .header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  border-bottom: 0.5px solid #c8c8c8;
+  padding: 0 0 5px 0;
+}
+/* line 167, sass/_base.scss */
+.bubble-block > .header .title {
+  flex: 1;
+  text-transform: uppercase;
+  font-size: 1.35rem;
+}
+/* line 172, sass/_base.scss */
+.bubble-block > .header .act {
+  flex-basis: 50px;
+  text-align: right;
+}
+
 /* 1024 - 1050 px - MEDIUM */
 /* 0 - 1023 px - SMARTPHONE */
 /* 0 - 640 px - SMARTPHONE */
