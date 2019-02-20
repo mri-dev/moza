@@ -1,7 +1,6 @@
 <?
 use DatabaseManager\Database;
 use PortalManager\AdminUser;
-use PortalManager\Menus;
 use PortalManager\Template;
 use PortalManager\Installer;
 
