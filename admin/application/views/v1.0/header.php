@@ -13,12 +13,14 @@
 			var closeNum 	= slideMenu.width() - 58;
 			var isSlideOut 	= getMenuState();
 			var prePressed = false;
+
 			$(document).keyup(function(e){
 				var key = e.keyCode;
 				if(key === 17){
 					prePressed = false;
 				}
 			});
+
 			$(document).keydown(function(e){
 				var key = e.keyCode;
 				var keyUrl = new Array();
@@ -100,16 +102,16 @@
 		}
     </script>
 </head>
-<body class="<? if(!$this->adm->logged): ?>blured-bg<? endif; ?>" ng-app="Autoradiokeret">
+<body class="<? if(!$this->adm->logged): ?>blured-bg<? endif; ?>" ng-app="Moza">
 <div id="top" class="container-fluid">
-	<div class="row">
+	<div class="row" style="margin: 0 -15px;">
 		<? if(!$this->adm->logged): ?>
-		<div class="col-md-12 center"><img height="34" src="<?=IMG?>logo_white.svg" alt="<?=TITLE?>"></div>
+		<div class="col-md-12 center">&nbsp;</div>
 		<? else: ?>
     	<div class="col-md-7 left">
-    		<img height="34" class="top-logo" src="<?=IMG?>logo_white.svg" alt="<?=TITLE?>">
+    		<img height="58" class="top-logo" src="<?=IMG?>moza_motivum.svg" alt="<?=TITLE?>">
     		<div class="link">
-    			<a href="<?=HOMEDOMAIN?>" target="_blank">www.<?=str_replace(array('https://','www.'), '', $this->settings['page_url'])?></a>
+    			<a href="<?=HOMEDOMAIN?>" target="_blank"><strong><?php echo $this->settings['page_title']; ?></strong> &mdash; <?php echo $this->settings['page_description']; ?></a>
     		</div>
     	</div>
 
@@ -134,18 +136,24 @@
 <!-- Login module -->
 <? if(!$this->adm->logged): ?>
 <div id="login" class="container-fluid">
-	<div class="row">
-	    <div class="bg col-md-4 col-md-offset-4">
+  <div class="row justify-content-md-center">
+    <div class=" col-md-6 center">
+      <img src="<?=IMG?>moza_logo_hu.svg" alt="">
+    </div>
+  </div>
+  <br><br>
+	<div class="row justify-content-md-center">
+	    <div class="bg col-md-6">
 	    	<h3>Bejelentkezés</h3>
             <? if($this->err){ echo $this->bmsg; } ?>
             <form action="/" method="post">
 	            <div class="input-group">
-      	        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+      	        <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-user"></i></span></span>
       				  <input type="text" class="form-control" name="user">
       				</div>
                 <br>
                 <div class="input-group">
-	              <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+	              <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-lock"></i></span></span>
 				  <input type="password" class="form-control" name="pw">
 				</div>
                 <br>
@@ -167,15 +175,11 @@
    		<div class="menu">
         	<ul>
             	<li class="<?=($this->gets[0] == 'home')?'on':''?>"><a href="/" title="Dashboard"><span class="ni">1</span><i class="fa fa-life-saver"></i> Dashboard</a></li>
+              <li class="<?=($this->gets[0] == 'ajanlatkeresek')?'on':''?>"><a href="/ajanlatkeresek" title="Ajánlatkérések"><span class="ni">2</span><i class="fa fa-edit"></i> Ajánlatkérések</a></li>
               <li class="<?=($this->gets[0] == 'megrendelesek')?'on':''?>"><a href="/megrendelesek" title="Megrendelések"><span class="ni">2</span><i class="fa fa-briefcase"></i> Megrendelések</a></li>
-              <li class="<?=($this->gets[0] == 'markak')?'on':''?>"><a href="/markak" title="Márkák"><span class="ni">7</span><i class="fa fa-bookmark"></i> Márkák</a></li>
-              <li class="<?=($this->gets[0] == 'termekek')?'on':''?>"><a href="/termekek" title="Termékek"><span class="ni">2</span><i class="fa fa-cubes"></i> Termékek</a></li>
-              <li class="<?=($this->gets[0] == 'kategoriak')?'on':''?>"><a href="/kategoriak" title="Kategóriák"><span class="ni">6</span><i class="fa fa-bars"></i> Kategóriák</a></li>
-              <li class="<?=($this->gets[0] == 'felhasznalok')?'on':''?>"><a href="/felhasznalok" title="Felhasználók"><span class="ni">2</span><i class="fa fa-group"></i> Felhasználók</a></li>
-              <li class="<?=($this->gets[0] == 'uzenetek')?'on':''?>"><a href="/uzenetek" title="Üzenetek"><span class="ni">8</span><i class="fa fa-envelope-o"></i> Üzenetek</a></li>
-              <li class="<?=($this->gets[0] == 'menu')?'on':''?>"><a href="/menu" title="Menü"><span class="ni">4</span><i class="fa fa-ellipsis-h"></i> Menü</a></li>
-              <li class="<?=($this->gets[0] == 'oldalak')?'on':''?>"><a href="/oldalak" title="Oldalak"><span class="ni">5</span><i class="fa fa-file-o"></i> Oldalak</a></li>
               <li class="<?=($this->gets[0] == 'emails')?'on':''?>"><a href="/emails" title="Email sablonok"><span class="ni">8</span><i class="fa fa-envelope"></i> Email sablonok</a></li>
+              <li class="<?=($this->gets[0] == 'beallitasok')?'on':''?>"><a href="/beallitasok" title="Beállítások"><span class="ni">8</span><i class="fa fa-gear"></i> Beállítások</a></li>
+              <li class="div"></li>
               <!-- MODULS-->
               <?php if ( !empty($this->modules) ): ?>
               <li class="div"></li>
@@ -184,7 +188,10 @@
               <?php endforeach; ?>
               <?php endif; ?>
               <!-- End of MODULS-->
-              <li class="<?=($this->gets[0] == 'beallitasok')?'on':''?>"><a href="/beallitasok" title="Beállítások"><span class="ni">8</span><i class="fa fa-gear"></i> Beállítások</a></li>
+              <li class="<?=($this->gets[0] == 'kategoriak')?'on':''?>"><a href="/kategoriak" title="Kategóriák"><span class="ni">6</span><i class="fa fa-bars"></i> Kategóriák</a></li>
+              <li class="<?=($this->gets[0] == 'szinek')?'on':''?>"><a href="/szinek" title="Színek"><span class="ni">8</span><i class="fa fa-th"></i> Színek</a></li>
+              <li class="<?=($this->gets[0] == 'motivumok')?'on':''?>"><a href="/motivumok" title="Motívumok"><span class="ni">8</span><i class="fa fa-stop"></i> Motívumok</a></li>
+
         	</ul>
         </div>
     </div>
