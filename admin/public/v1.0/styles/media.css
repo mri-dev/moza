@@ -97,7 +97,7 @@ input, textarea{
   line-height: 45px;
 }
 a, a:visited {
-	color: #1e8bff;
+	color: #F05F42;
 }
 a:hover {
 	color: #ff9c1e;
@@ -1773,10 +1773,10 @@ table.termekfrissites > tbody > tr.not-in-product > td{
 	color: #D45B5B;
 }
 
-.con table.table {
+.card table.table {
 	margin:0;
 }
-.con .info {
+.card .info {
 	margin:5px 0;
 	font-size:12px;
 }
@@ -2390,11 +2390,13 @@ margin-bottom: 5px;
 	font-style: italic;
 	color: #aaa;
 }
-h3 .info {
+h3 .info,
+.card .card-header .info {
 	display: block;
 	text-transform: none;
-	color: #aaa;
+	color: #4c4c4c;
 	font-style: italic;
+  font-weight: normal;
 }
 fieldset.block > legend {
 	font-size: 1em;
