@@ -49,29 +49,11 @@
               if (c) {
               ctx.stroke();
               }";
-            echo "<script>
-              $(function(){
-                var c = false;
-                var colors = [];
-                colors[0] = '#000000';
-                colors[1] = '#ffffff';
-                var motivum = document.getElementById('motivum'),
-                  eleft = motivum.offsetLeft,
-                  etop = motivum.offsetTop;
-                var ctx = motivum.getContext('2d');
-                ctx.scale(1,1);
-                ".$js."
-                motivum.addEventListener('click', function(event) {
-                  var x = event.pageX - eleft,
-                      y = event.pageY - etop;
-                  console.log(event);
-                }, false);
-
-              });
-            </script>";
           ?>
           <br>
-          <canvas id="motivum" width="200" height="200"></canvas>
+          <div id="motivum"></div>
+          <div ng-click="currentFillColor='green'">Zöld</div>
+          <div ng-click="currentFillColor='red'">Piros</div>
         </div>
       </div>
     </div>

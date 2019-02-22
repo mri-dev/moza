@@ -11,7 +11,7 @@
     <?php endif; ?>
     <? $this->render('meta'); ?>
 </head>
-<body class="<?=$this->bodyclass?>">
+<body class="<?=$this->bodyclass?>" ng-app="Moza" ng-controller="App" ng-init="init()">
 <? if(!empty($this->settings[google_analitics])): ?>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -50,11 +50,18 @@
     <?php echo __('Kategóriák'); ?>
   </div>
   <div class="cat-list">
-    <?php for ($i=0; $i < 50 ; $i++) {?>
-      <div class="">
-        Kategória #<?php echo $i; ?>
+    <div class="cat" ng-class="(aktiv_kat==cat.ID)?'active':''" ng-repeat="cat in kategoria_lista">
+      <div class="title" ng-click="changeKat(cat.ID)">
+        {{cat.neve}}
       </div>
-    <? } ?>
+      <div class="motifs" ng-show="(aktiv_kat==cat.ID && kategoriak[cat.hashkey].length != 0)">
+        <div class="motiv" ng-repeat="m in kategoriak[cat.hashkey]">
+          <div class="wrapper" title="{{m.mintakod}}">
+            <canvas id="katmot{{m.mintakod}}" width="50" height="50"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="copy">
     <?php echo __('Minden jog fenntartva!'); ?>

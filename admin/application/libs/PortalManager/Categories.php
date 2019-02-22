@@ -134,7 +134,7 @@ class Categories
 			$qry .= " and ID IN (".implode(",",$arg['id_set']).") ";
 		}
 
-		$qry .= " ORDER BY 		sorrend ASC, ID ASC;";
+		$qry .= " ORDER BY sorrend ASC, ID ASC;";
 
 		$top_cat_qry 	= $this->db->query($qry);
 		$top_cat_data 	= $top_cat_qry->fetchAll(\PDO::FETCH_ASSOC);
