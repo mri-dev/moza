@@ -30,11 +30,12 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
               $scope.kategoriak[i.kat_hashkey].push(i);
             }
           });
+
+          // Kategória canvas
+          //$scope.buildCategoriesMotifs();
         }
       });
     });
-
-
 
     // STAGE
     $scope.workstage = new Konva.Stage({
@@ -49,22 +50,20 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     $scope.addShape(
       $scope.workstage,
       $scope.worklayer,
-      $scope.test
+      "ctx.beginPath();ctx.moveTo(0.5,0.5);ctx.lineTo(200.5,0.5);ctx.lineTo(200.5,200.5);ctx.lineTo(0.5,200.5);ctx.lineTo(0.5,0.5);ctx.closePath();",
+      {
+        fill: 'red'
+      }
     );
 
-    // create our shape
-    /*
-    var obj = new Konva.Path({
-      data: 'M100,100H0V0h100V100z M200,100H100v100h100V100z',
-      fill: $scope.originColors[0],
-    });
-    $scope.worklayer.add( obj );
-
-    obj.on('click', function() {
-      this.fill('#345422');
-      $scope.worklayer.draw();
-    });
-    */
+    $scope.addShape(
+      $scope.workstage,
+      $scope.worklayer,
+      "ctx.beginPath();ctx.moveTo(100.5,200.5);ctx.lineTo(100.5,0.5);ctx.lineTo(0.5,0.5);ctx.lineTo(0.5,100.5);ctx.lineTo(200.5,100.5);ctx.lineTo(200.5,200.5);ctx.lineTo(100.5,200.5);ctx.closePath();",
+      {
+        fill: 'black'
+      }
+    );
   }
 
   $scope.changeKat = function( id ) {
@@ -73,23 +72,33 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.addShape = function( stage, layer, context, options )
   {
+    var fillColor = '#000000';
+    if (options && typeof options.fill !== 'undefined') {
+      fillColor = options.fill;
+    }
+
     var shapeOptions = {
       sceneFunc: function(ctx)
       {
         eval(context);
         ctx.fillStrokeShape(this);
       },
-      fill: $scope.originColors[1]
+      fill: fillColor
     };
 
     angular.extend(shapeOptions, options);
 
     var shape =  new Konva.Shape(shapeOptions);
 
-    shape.on('click', function(){
-      this.fill( $scope.currentFillColor );
-      layer.draw();
-    });
+    if ( typeof options === 'undefined' || (typeof options === 'undefined' && typeof options.colorizable === 'undefined') || options.colorizable !== false)
+    {
+      shape.on('click', function(){
+        this.fill( $scope.currentFillColor );
+        layer.draw();
+      });
+    }
+
+    shape.scale(1,1);
 
     layer.add( shape );
     stage.add( layer );
@@ -106,7 +115,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         mode: 'getMotivumok'
       })
     }).success(function(r){
-      console.log(r);
       if (typeof callback !== 'undefined') {
         callback(r.data);
       }
@@ -123,7 +131,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         mode: 'getSettings'
       })
     }).success(function(r){
-      console.log(r);
       if (r.data) {
         if (r.data.kategoria_lista !== 'undefined') {
           $scope.kategoria_lista = r.data.kategoria_lista;
@@ -151,6 +158,38 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   }
 
 }]);
+
+app.directive('motivum', function($rootScope){
+  var motivum = {};
+  motivum.restrict = 'E';
+  motivum.scope = true;
+  motivum.transclude = true;
+  motivum.replace = true;
+  motivum.compile  = function(e, a){
+    return function($scope, e, a){
+      var konva = {};
+      var id = 'katmot'+$scope.m.mintakod;
+      e.attr("id", id);
+      konva.stage = new Konva.Stage({
+        container: id,
+        width: 90,
+        height: 90
+      });
+      konva.layer = new Konva.Layer();
+
+      if ($scope.m.shapes && $scope.m.shapes.length) {
+        angular.forEach( $scope.m.shapes, function(si, se){
+          // TODO: konva draw shape
+        });
+      }
+
+      $scope.konva = konva;
+      $rootScope.$broadcast('KONVA:READY', konva.stage);
+    }
+  }
+
+  return motivum;
+});
 
 
 app.filter('unsafe', function($sce){ return $sce.trustAsHtml; });

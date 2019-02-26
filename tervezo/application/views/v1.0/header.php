@@ -57,7 +57,7 @@
       <div class="motifs" ng-show="(aktiv_kat==cat.ID && kategoriak[cat.hashkey].length != 0)">
         <div class="motiv" ng-repeat="m in kategoriak[cat.hashkey]">
           <div class="wrapper" title="{{m.mintakod}}">
-            <canvas id="katmot{{m.mintakod}}" width="50" height="50"></canvas>
+            <motivum kod="m.mintakod" shapes="m.shapes"></motivum>
           </div>
         </div>
       </div>

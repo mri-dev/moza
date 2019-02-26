@@ -135,6 +135,19 @@ header{
       .motifs{
         background: #F2F2F3;
         padding: 4px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+
+        .motiv{
+          padding: 2px;
+          flex-basis: calc(100% / 3);
+          & > .wrapper{
+            border: 1px solid black;
+          }
+        }
       }
     }
 

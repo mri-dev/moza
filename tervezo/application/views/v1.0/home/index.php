@@ -24,33 +24,6 @@
           </div>
         </div>
         <div class="cwrapper">
-          <?php
-            $js = "ctx.beginPath();
-              ctx.moveTo(0.5, 0.5);
-              ctx.lineTo(200.5, 0.5);
-              ctx.lineTo(200.5, 200.5);
-              ctx.lineTo(0.5, 200.5);
-              ctx.lineTo(0.5, 0.5);
-              ctx.fillStyle = colors[0];
-              ctx.fill();
-              if (c) {
-              ctx.stroke();
-              }
-              ctx.beginPath();
-              ctx.moveTo(100.5, 200.5);
-              ctx.lineTo(100.5, 0.5);
-              ctx.lineTo(0.5, 0.5);
-              ctx.lineTo(0.5, 100.5);
-              ctx.lineTo(200.5, 100.5);
-              ctx.lineTo(200.5, 200.5);
-              ctx.lineTo(100.5, 200.5);
-              ctx.fillStyle = colors[1];
-              ctx.fill();
-              if (c) {
-              ctx.stroke();
-              }";
-          ?>
-          <br>
           <div id="motivum"></div>
           <div ng-click="currentFillColor='green'">Zöld</div>
           <div ng-click="currentFillColor='red'">Piros</div>
