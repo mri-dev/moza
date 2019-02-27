@@ -1,16 +1,22 @@
 var app = angular.module('Moza', ['ngMaterial', 'ngMessages', 'ngCookies']);
 
-app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$location','$cookies', '$cookieStore', function($scope, $sce, $http, $mdToast, $mdDialog, $location, $cookies, $cookieStore)
+app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$location','$cookies', '$cookieStore', '$timeout', function($scope, $sce, $http, $mdToast, $mdDialog, $location, $cookies, $cookieStore, $timeout)
 {
   $scope.originColors = ["#000000", "#666666", "#888888"];
   $scope.motivumok = {};
   $scope.kategoriak = {};
   $scope.kategoria_lista = [];
+  $scope.colors = [];
   $scope.aktiv_kat = 0;
   $scope.workstage = false;
   $scope.worklayer = false;
   $scope.test = "ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(100,0);ctx.quadraticCurveTo(100,0,100,0);ctx.lineTo(100,100);ctx.quadraticCurveTo(100,100,100,100);ctx.lineTo(0,100);ctx.quadraticCurveTo(0,100,0,100);ctx.lineTo(0,0);ctx.quadraticCurveTo(0,0,0,0);ctx.closePath();";
   $scope.currentFillColor = 'green';
+  $scope.changeColorObj = {};
+  $scope.grid = {
+    x: 16,
+    y: 16
+  };
 
   $scope.init = function()
   {
@@ -18,6 +24,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     {
       $scope.loadMotivums(function( motivums )
       {
+        console.log($scope.colors);
         if (motivums) {
           angular.forEach(motivums, function(i,e){
             if (typeof $scope.motivumok[i.mintakod] === 'undefined') {
@@ -35,35 +42,56 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           //$scope.buildCategoriesMotifs();
         }
       });
+
+      $timeout(function() {
+        var tiles_width = $('.colors-table').width();
+        var height = tiles_width / 12;
+        $('.colors-table .color').css({
+          height: height
+        });
+
+        // STAGE
+        $scope.workstage = new Konva.Stage({
+          container: 'motivum',
+          width: 200,
+          height: 200
+        });
+
+        // LAYER
+        $scope.worklayer = new Konva.Layer();
+
+        $scope.addShape(
+          $scope.workstage,
+          $scope.worklayer,
+          "ctx.beginPath();ctx.moveTo(0.5,0.5);ctx.lineTo(200.5,0.5);ctx.lineTo(200.5,200.5);ctx.lineTo(0.5,200.5);ctx.lineTo(0.5,0.5);ctx.closePath();",
+          {
+            fill: '#D86651'
+          }
+        );
+
+        $scope.addShape(
+          $scope.workstage,
+          $scope.worklayer,
+          "ctx.beginPath();ctx.moveTo(100.5,200.5);ctx.lineTo(100.5,0.5);ctx.lineTo(0.5,0.5);ctx.lineTo(0.5,100.5);ctx.lineTo(200.5,100.5);ctx.lineTo(200.5,200.5);ctx.lineTo(100.5,200.5);ctx.closePath();",
+          {
+            fill: '#D9D9D9'
+          }
+        );
+
+      }, 600);
+
     });
 
-    // STAGE
-    $scope.workstage = new Konva.Stage({
-      container: 'motivum',
-      width: 200,
-      height: 200
-    });
 
-    // LAYER
-    $scope.worklayer = new Konva.Layer();
+  }
 
-    $scope.addShape(
-      $scope.workstage,
-      $scope.worklayer,
-      "ctx.beginPath();ctx.moveTo(0.5,0.5);ctx.lineTo(200.5,0.5);ctx.lineTo(200.5,200.5);ctx.lineTo(0.5,200.5);ctx.lineTo(0.5,0.5);ctx.closePath();",
-      {
-        fill: 'red'
-      }
-    );
+  $scope.changingFillColor = function( color, rgb ) {
+    $scope.currentFillColor = '#'+rgb;
+    $scope.changeColorObj = color;
+  }
 
-    $scope.addShape(
-      $scope.workstage,
-      $scope.worklayer,
-      "ctx.beginPath();ctx.moveTo(100.5,200.5);ctx.lineTo(100.5,0.5);ctx.lineTo(0.5,0.5);ctx.lineTo(0.5,100.5);ctx.lineTo(200.5,100.5);ctx.lineTo(200.5,200.5);ctx.lineTo(100.5,200.5);ctx.closePath();",
-      {
-        fill: 'black'
-      }
-    );
+  $scope.getNumberRepeat = function( n ) {
+    return new Array( n );
   }
 
   $scope.changeKat = function( id ) {
@@ -135,6 +163,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         if (r.data.kategoria_lista !== 'undefined') {
           $scope.kategoria_lista = r.data.kategoria_lista;
         }
+        if (r.data.colors !== 'undefined') {
+          $scope.colors = r.data.colors;
+        }
       }
       if (typeof callback !== 'undefined') {
         callback();
@@ -202,7 +233,11 @@ $(function(){
     recalcPositions();
   });
 
-  function recalcPositions() {
+  function recalcPositions()
+  {
+    recalcGridSizes();
+    recalcColorTableSizes();
+
     var header_height = $('body header').height();
     var window_height = $(window).height();
     $('.inside-content').css({
@@ -218,6 +253,24 @@ $(function(){
     });
     $('.sidebar').css({
       top: header_height-1
+    });
+  }
+
+  function recalcGridSizes()
+  {
+    var tiles_width = $('.tiles').width();
+    var height = tiles_width / 16;
+    $('.tiles tr td').css({
+      height: height
+    });
+  }
+
+  function recalcColorTableSizes()
+  {
+    var tiles_width = $('.colors-table').width();
+    var height = tiles_width / 12;
+    $('.colors-table .color').css({
+      height: height
     });
   }
 

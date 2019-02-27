@@ -1,6 +1,7 @@
 <?php
 use PortalManager\Motivumok;
 use PortalManager\Categories;
+use PortalManager\Colors;
 
 class ajax extends Controller{
 		function __construct()
@@ -31,17 +32,28 @@ class ajax extends Controller{
 						case 'getSettings':
 							$settings = array();
 							$kategoriak = array();
+							$szinek = array();
 
+							// Kategóriák
 							$c = new Categories(array('db' => $this->db));
 							$cats = $c->getTree();
 
 							while( $cats->walk() )
 							{
-			  				$cat = $cats->the_cat();
+								$cat = $cats->the_cat();
 								$kategoriak[] = $cat;
 							}
-
 							$settings['kategoria_lista'] = $kategoriak;
+
+							// Színek
+							$colors = new Colors(array('db' => $this->db));
+							$colors = $colors->getTree();
+							while( $colors->walk() )
+							{
+								$cat = $colors->the_cat();
+								$szinek[] = $cat;
+							}
+							$settings['colors'] = $szinek;
 
 							$ret['data'] = $settings;
 						break;

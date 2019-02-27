@@ -370,7 +370,254 @@ header > .langs {
   right: 0;
 }
 
-/* line 189, sass/_base.scss */
+/* line 188, sass/_base.scss */
+.btn {
+  border-radius: 20px;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+
+/* line 193, sass/_base.scss */
+.btn .ico {
+  border-right: 1px solid white;
+  margin: 0 8px 0 0;
+  padding: 0 10px 0 0;
+}
+
+/* line 198, sass/_base.scss */
+.btn.btn-sm .ico i {
+  font-size: 14px;
+}
+
+/* line 201, sass/_base.scss */
+.btn:not(.btn-sm) .ico i {
+  font-size: 16px;
+}
+
+/* line 204, sass/_base.scss */
+.btn.btn-default {
+  background: #3a3a3a;
+  color: white;
+  border: none;
+}
+
+/* line 209, sass/_base.scss */
+.btn.btn-danger {
+  background: #f05f42;
+  color: white;
+  border: none;
+}
+
+/* line 214, sass/_base.scss */
+.btn.btn-info {
+  background: #43b6ef;
+  color: white;
+  border: none;
+}
+
+/* line 219, sass/_base.scss */
+.btn.btn-success {
+  background: #6b995a;
+  color: white;
+  border: none;
+}
+
+/* line 224, sass/_base.scss */
+.btn:focus, .btn:active {
+  outline: none !important;
+}
+
+/* line 228, sass/_base.scss */
+.divider {
+  border-top: 1.4px dashed #f05f42;
+  margin: 10px 0;
+}
+
+/* line 233, sass/_base.scss */
+.sample-editor {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  margin: 15px 0 0 0;
+}
+/* line 241, sass/_base.scss */
+.sample-editor .sample {
+  flex-basis: 30%;
+}
+/* line 243, sass/_base.scss */
+.sample-editor .sample #motivum {
+  border: 2px solid #dfdfdf;
+}
+/* line 248, sass/_base.scss */
+.sample-editor .sample-details {
+  flex-basis: 70%;
+  padding: 0 0 0 15px;
+}
+/* line 252, sass/_base.scss */
+.sample-editor .sample-details table {
+  width: 100%;
+  margin: 0 0 15px 0;
+}
+/* line 255, sass/_base.scss */
+.sample-editor .sample-details table tr td {
+  border: 0.5px solid #c3c3c3;
+  padding: 8px 5px;
+}
+/* line 260, sass/_base.scss */
+.sample-editor .sample-details table tr td.head {
+  width: 20%;
+  background: #f6f6f6;
+  color: #8d8d8d;
+}
+/* line 265, sass/_base.scss */
+.sample-editor .sample-details table tr td:not(.head) {
+  width: 30%;
+}
+/* line 270, sass/_base.scss */
+.sample-editor .sample-details .rotates {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+/* line 278, sass/_base.scss */
+.sample-editor .sample-details .rotates > div {
+  padding: 0 12px;
+}
+
+/* line 286, sass/_base.scss */
+.saver {
+  margin: 12px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+}
+/* line 293, sass/_base.scss */
+.saver .saver-email {
+  flex-basis: 70%;
+}
+/* line 296, sass/_base.scss */
+.saver .saver-loader {
+  flex-basis: 30%;
+  text-align: right;
+}
+/* line 301, sass/_base.scss */
+.saver input[type=text] {
+  border-radius: 0;
+  border: 0.6px solid #868686;
+  line-height: 30px;
+  height: 30px;
+  padding: 0 10px;
+  color: #f05f42;
+}
+
+/* line 311, sass/_base.scss */
+.colors-table {
+  margin: 5px 0;
+}
+/* line 313, sass/_base.scss */
+.colors-table > .wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+/* line 319, sass/_base.scss */
+.colors-table > .wrapper > div.color {
+  position: relative;
+  flex-basis: calc(100% / 12);
+  margin: 1px;
+  border: 0.6px solid #f1f1f1;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  cursor: pointer;
+  z-index: 1;
+}
+/* line 329, sass/_base.scss */
+.colors-table > .wrapper > div.color .szinkod {
+  display: none;
+  color: #222222;
+  position: absolute;
+  font-weight: bold;
+  font-size: 1.2rem;
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+/* line 342, sass/_base.scss */
+.colors-table > .wrapper > div.color:focus {
+  outline: none !important;
+}
+/* line 346, sass/_base.scss */
+.colors-table > .wrapper > div.color.selected {
+  z-index: 2;
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+  border: 2px solid white;
+}
+/* line 351, sass/_base.scss */
+.colors-table > .wrapper > div.color.selected .szinkod {
+  display: block;
+}
+/* line 357, sass/_base.scss */
+.colors-table > .wrapper > div.color:hover .szinkod {
+  display: block;
+}
+
+/* line 366, sass/_base.scss */
+.actions,
+.orders {
+  margin: 20px 0;
+}
+/* line 368, sass/_base.scss */
+.actions .button-groups,
+.orders .button-groups {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+/* line 376, sass/_base.scss */
+.actions .button-groups button,
+.orders .button-groups button {
+  margin: 4px;
+}
+
+/* line 382, sass/_base.scss */
+.orders {
+  margin: 20px 0 0 0;
+}
+
+/* line 386, sass/_base.scss */
+.tiles {
+  margin: 12px 0;
+}
+/* line 388, sass/_base.scss */
+.tiles table {
+  width: 100%;
+}
+/* line 391, sass/_base.scss */
+.tiles table tr td {
+  border: 1px solid #d5d5d5;
+}
+/* line 395, sass/_base.scss */
+.tiles table tr td:hover {
+  border: 1px solid #b7b7b7;
+  box-shadow: 0 0 5px 1px #ea5538;
+  cursor: pointer;
+}
+
+/* line 402, sass/_base.scss */
 .bubble-block {
   background: white;
   border-radius: 5px;
@@ -378,7 +625,7 @@ header > .langs {
   padding: 15px;
   box-shadow: 0 3px 25px -5px #bdbcbc;
 }
-/* line 196, sass/_base.scss */
+/* line 409, sass/_base.scss */
 .bubble-block > .header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -388,13 +635,13 @@ header > .langs {
   border-bottom: 0.5px solid #c8c8c8;
   padding: 0 0 5px 0;
 }
-/* line 205, sass/_base.scss */
+/* line 418, sass/_base.scss */
 .bubble-block > .header .title {
   flex: 1;
   text-transform: uppercase;
   font-size: 1.35rem;
 }
-/* line 210, sass/_base.scss */
+/* line 423, sass/_base.scss */
 .bubble-block > .header .act {
   flex-basis: 50px;
   text-align: right;
