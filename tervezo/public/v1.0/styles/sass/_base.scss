@@ -145,7 +145,14 @@ header{
           padding: 2px;
           flex-basis: calc(100% / 3);
           & > .wrapper{
-            border: 1px solid black;
+            border: 1px solid #d4d4d4;
+            transition: all .4s;
+          }
+
+          &:hover{
+            & > .wrapper{
+              box-shadow: 0 4px 12px -4px #454545;
+            }
           }
         }
       }
@@ -280,6 +287,15 @@ header{
       }
 
     }
+  }
+}
+
+.used-motifs,
+.used-colors{
+  margin: 15px 0 25px 0;
+
+  .no-dataset{
+    color: #acacac;
   }
 }
 

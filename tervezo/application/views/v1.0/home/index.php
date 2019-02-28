@@ -59,8 +59,32 @@
               </div>
             </div>
           </div>
-
           <div class="divider"></div>
+        </div>
+        <div class="header">
+          <div class="title">
+            <?php echo __('HASZNÁLT MINTÁK'); ?>
+          </div>
+        </div>
+        <div class="cwrapper">
+          <div class="used-motifs">
+            <div class="no-dataset" ng-hide="used_motifs.length!=0">
+              <?php echo __('Nincsenek jelenleg használtban lévő motívumok.'); ?>
+            </div>
+          </div>
+          <div class="divider"></div>
+        </div>
+        <div class="header">
+          <div class="title">
+            <?php echo __('HASZNÁLT SZÍNEK'); ?>
+          </div>
+        </div>
+        <div class="cwrapper">
+          <div class="used-colors">
+            <div class="no-dataset" ng-hide="used_colors.length!=0">
+              <?php echo __('Nincsenek jelenleg használtban lévő színek.'); ?>
+            </div>
+          </div>
         </div>
       </div>
     </div>

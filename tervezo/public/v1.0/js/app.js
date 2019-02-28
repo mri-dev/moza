@@ -13,10 +13,17 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.test = "ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(100,0);ctx.quadraticCurveTo(100,0,100,0);ctx.lineTo(100,100);ctx.quadraticCurveTo(100,100,100,100);ctx.lineTo(0,100);ctx.quadraticCurveTo(0,100,0,100);ctx.lineTo(0,0);ctx.quadraticCurveTo(0,0,0,0);ctx.closePath();";
   $scope.currentFillColor = 'green';
   $scope.changeColorObj = {};
+  $scope.used_motifs = [];
+  $scope.used_colors = [];
   $scope.grid = {
     x: 16,
     y: 16
   };
+  $scope.motiv_size = ($('.sidebar').width() - 8 - 12 - 6) / 3;
+
+  $scope.calcScaleFactor = function( size ){
+    return parseFloat( size / 200 );
+  }
 
   $scope.init = function()
   {
@@ -49,12 +56,13 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         $('.colors-table .color').css({
           height: height
         });
+        var target_size = 200;
 
         // STAGE
         $scope.workstage = new Konva.Stage({
           container: 'motivum',
-          width: 200,
-          height: 200
+          width: target_size,
+          height: target_size
         });
 
         // LAYER
@@ -126,7 +134,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       });
     }
 
-    shape.scale(1,1);
+    shape.scale($scope.calcScaleFactor(200),$scope.calcScaleFactor(200));
 
     layer.add( shape );
     stage.add( layer );
@@ -197,20 +205,37 @@ app.directive('motivum', function($rootScope){
   motivum.transclude = true;
   motivum.replace = true;
   motivum.compile  = function(e, a){
-    return function($scope, e, a){
+    return function($scope, e, a)
+    {
       var konva = {};
       var id = 'katmot'+$scope.m.mintakod;
       e.attr("id", id);
       konva.stage = new Konva.Stage({
         container: id,
-        width: 90,
-        height: 90
+        width: $scope.motiv_size,
+        height: $scope.motiv_size
       });
       konva.layer = new Konva.Layer();
 
       if ($scope.m.shapes && $scope.m.shapes.length) {
         angular.forEach( $scope.m.shapes, function(si, se){
           // TODO: konva draw shape
+          var shape =  new Konva.Shape({
+            sceneFunc: function(ctx)
+            {
+              eval(si.canvas_js);
+              ctx.fillStrokeShape(this);
+            },
+            fill: si.fill_color,
+            scale: {
+              x: $scope.calcScaleFactor($scope.motiv_size),
+              y:$scope.calcScaleFactor($scope.motiv_size)
+            }
+          });
+
+          konva.layer.add( shape );
+          konva.stage.add( konva.layer );
+          konva.layer.draw();
         });
       }
 
