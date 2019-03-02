@@ -1,0 +1,47 @@
+/* VÁLTOZÓK */
+$size-sidebar: 280px;
+$imgroot: "//www.cp.moza.web-pro.hu/src/images/";
+
+/* COLORS */
+
+$color-red: #cd2a30;
+$color-orange: #f05f42;
+$color-yellow: #ffcc00;
+$color-grey: #d9d9d9;
+$color-grey-dark: #333333;
+$color-green: #6b995a;
+$color-blue: #43b6ef;
+$color-pr: $color-grey;
+$color-sec: $color-grey-dark;
+
+/* FONTS */
+$font-cond: 'Roboto', sans-serif;
+$font-sans-narrow: 'Roboto', sans-serif;
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700&subset=latin-ext');
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+@mixin border-radius-top($radius) {
+  -webkit-border-radius: $radius $radius 0 0;
+     -moz-border-radius: $radius $radius 0 0;
+      -ms-border-radius: $radius $radius 0 0;
+          border-radius: $radius $radius 0 0;
+}
+@mixin border-radius-left($radius) {
+  -webkit-border-radius: $radius 0 0 $radius;
+     -moz-border-radius: $radius 0 0 $radius;
+      -ms-border-radius: $radius 0 0 $radius;
+          border-radius: $radius 0 0 $radius;
+}
+@mixin border-radius-right($radius) {
+  -webkit-border-radius: 0 $radius $radius 0;
+     -moz-border-radius: 0 $radius $radius 0;
+      -ms-border-radius: 0 $radius $radius 0;
+          border-radius: 0 $radius $radius 0;
+}

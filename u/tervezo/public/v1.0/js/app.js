@@ -20,7 +20,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     y: 16
   };
   $scope.motiv_size = ($('.sidebar').width() - 8 - 12 - 6) / 3;
-  $scope.workmotiv_size = 200;
 
   $scope.calcScaleFactor = function( size ){
     return parseFloat( size / 200 );
@@ -45,6 +44,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
               $scope.kategoriak[i.kat_hashkey].push(i);
             }
           });
+
+          // Kategória canvas
+          //$scope.buildCategoriesMotifs();
         }
       });
 
@@ -54,9 +56,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         $('.colors-table .color').css({
           height: height
         });
-        $scope.workmotiv_size = $('.sample-editor .sample').width()-5;
-        console.log($scope.workmotiv_size);
-        var target_size = $scope.workmotiv_size;
+        var target_size = 200;
 
         // STAGE
         $scope.workstage = new Konva.Stage({
@@ -73,8 +73,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           $scope.worklayer,
           "ctx.beginPath();ctx.moveTo(0.5,0.5);ctx.lineTo(200.5,0.5);ctx.lineTo(200.5,200.5);ctx.lineTo(0.5,200.5);ctx.lineTo(0.5,0.5);ctx.closePath();",
           {
-            fill: '#D86651',
-            shapesize: $scope.workmotiv_size
+            fill: '#D86651'
           }
         );
 
@@ -83,8 +82,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           $scope.worklayer,
           "ctx.beginPath();ctx.moveTo(100.5,200.5);ctx.lineTo(100.5,0.5);ctx.lineTo(0.5,0.5);ctx.lineTo(0.5,100.5);ctx.lineTo(200.5,100.5);ctx.lineTo(200.5,200.5);ctx.lineTo(100.5,200.5);ctx.closePath();",
           {
-            fill: '#D9D9D9',
-            shapesize: $scope.workmotiv_size
+            fill: '#D9D9D9'
           }
         );
 
@@ -121,21 +119,12 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         eval(context);
         ctx.fillStrokeShape(this);
       },
-      fill: fillColor,
-      shapesize: 200
+      fill: fillColor
     };
 
     angular.extend(shapeOptions, options);
 
-    shapeOptions.scale = {
-      x: $scope.calcScaleFactor(shapeOptions.shapesize),
-      y: $scope.calcScaleFactor(shapeOptions.shapesize)
-    };
-
-    console.log(shapeOptions);
-
     var shape =  new Konva.Shape(shapeOptions);
-    //shape.scale($scope.calcScaleFactor(shapeOptions.shapesize),$scope.calcScaleFactor(shapeOptions.shapesize));
 
     if ( typeof options === 'undefined' || (typeof options === 'undefined' && typeof options.colorizable === 'undefined') || options.colorizable !== false)
     {
@@ -144,6 +133,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         layer.draw();
       });
     }
+
+    shape.scale($scope.calcScaleFactor(200),$scope.calcScaleFactor(200));
 
     layer.add( shape );
     stage.add( layer );
