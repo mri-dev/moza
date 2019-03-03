@@ -17,6 +17,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.changeColorObj = {};
   $scope.used_motifs = [];
   $scope.used_colors = [];
+  $scope.color_size = 0;
+  $scope.tile_size = 0;
   $scope.grid = {
     x: 16,
     y: 16
@@ -50,11 +52,21 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       });
 
       $timeout(function() {
-        var tiles_width = $('.colors-table').width();
-        var height = tiles_width / 12;
+        var color_width = $('.colors-table').width();
+        var color_size = color_width / 12;
+        $scope.color_size = color_size;
         $('.colors-table .color').css({
-          height: height
+          height: color_size
         });
+
+        var tiles_width = $('.tiles').width();
+        var tile_size = tiles_width / $scope.grid.x;
+        $scope.tile_size = tile_size;
+        $('.tiles > table tbody tr td').css({
+          height: $scope.tile_size,
+          width: $scope.tile_size
+        });
+
         $scope.workmotiv_size = $('.sample-editor .sample').width()-5;
 
         // STAGE
@@ -161,9 +173,11 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.passMotivToResource = function( res, copystage )
   {
+    console.log(copystage);
+    /* */
     var layers = copystage.getLayers();
-    var width = res.width();
-    var height = res.height();
+    var width = $scope.tile_size-2;
+    var height = $scope.tile_size-2;
     var stage = new Konva.Stage({
       container: res.selector.replace("#",""),
       width: width,
@@ -180,7 +194,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       });
       stage.add( lay );
       lay.draw();
-    })
+    });
+    /* */
   }
 
   $scope.saveMotivsToList = function( m ) {
@@ -365,7 +380,6 @@ $(function(){
   function recalcPositions()
   {
     recalcGridSizes();
-    recalcColorTableSizes();
 
     var header_height = $('body header').height();
     var window_height = $(window).height();
@@ -394,14 +408,4 @@ $(function(){
       width: height
     });
   }
-
-  function recalcColorTableSizes()
-  {
-    var tiles_width = $('.colors-table').width();
-    var height = tiles_width / 12;
-    $('.colors-table .color').css({
-      height: height
-    });
-  }
-
 });

@@ -4,6 +4,10 @@ body{
   background-color: #edebeb;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 header{
   background: white;
   display: -webkit-box;
@@ -401,18 +405,18 @@ header{
 
 .tiles{
   margin: 12px 0;
-  table {
-    width: 100%;
-    border: 3px solid #e8e8e8;
+  table{
+    width: auto;
+    max-width: initial;
+    /*border: 3px solid #e8e8e8;*/
   }
-  table tr td {
+  table tr td{
     border: 1px solid #e8e8e8;
+    overflow: hidden;
   }
-
   table tr td:focus{
     outline: none !important;
   }
-
   table tr td:hover{
     border: 1px solid #b7b7b7;
     box-shadow: 0 0 5px 1px #ea5538;
