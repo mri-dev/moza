@@ -173,7 +173,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.passMotivToResource = function( res, copystage )
   {
-    console.log(copystage);
+    console.log( copystage );
     /* */
     var layers = copystage.getLayers();
     var width = $scope.tile_size-2;
