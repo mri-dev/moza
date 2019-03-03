@@ -38,7 +38,7 @@
               <table>
                 <tr>
                   <td class="head"><?php echo __('Minta'); ?>:</td>
-                  <td>{{currentMotivum.mintakod}}</td>
+                  <td></td>
                   <td class="head"><?php echo __('RGB'); ?>:</td>
                   <td><span ng-show="changeColorObj.szin_rgb">#{{changeColorObj.szin_rgb}}</span> </td>
                 </tr>
@@ -51,15 +51,12 @@
               </table>
               <div class="rotates">
                 <div class="">
-                  <button ng-click="rotateWorkMotiv(-90)" type="button" class="btn btn-sm btn-info"><span class="ico"><i class="fa fa-repeat"></i></span> <?php echo __('Forgatás jobbra'); ?></button>
+                  <button type="button" class="btn btn-sm btn-info"><span class="ico"><i class="fa fa-repeat"></i></span> <?php echo __('Forgatás jobbra'); ?></button>
                 </div>
                 <div class="">
-                  <button ng-click="rotateWorkMotiv(90)" type="button" class="btn btn-sm btn-info"><span class="ico"><i class="fa fa-undo"></i></span> <?php echo __('Forgatás balra'); ?></button>
+                  <button type="button" class="btn btn-sm btn-info"><span class="ico"><i class="fa fa-undo"></i></span> <?php echo __('Forgatás balra'); ?></button>
                 </div>
               </div>
-
-                <button ng-click="fillFullGrid()" type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-th"></i></span> <?php echo __('Kitölt'); ?></button>
-
             </div>
           </div>
           <div class="divider"></div>
@@ -74,7 +71,6 @@
             <div class="no-dataset" ng-hide="used_motifs.length!=0">
               <?php echo __('Nincsenek jelenleg használtban lévő motívumok.'); ?>
             </div>
-            {{used_motifs}}
           </div>
           <div class="divider"></div>
         </div>
@@ -118,7 +114,7 @@
           <div class="actions">
             <div class="button-groups">
               <div class="">
-                <button ng-click="resetGrid()" type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-plus"></i></span> <?php echo __('Új'); ?></button>
+                <button type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-plus"></i></span> <?php echo __('Új'); ?></button>
               </div>
               <div class="">
                 <button type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-download"></i></span> <?php echo __('Mentés'); ?></button>
@@ -136,8 +132,8 @@
           </div>
           <div class="tiles">
             <table>
-              <tr ng-repeat="(ri, row) in getNumberRepeat(grid.x) track by $index">
-                <td id="grid-h{{ri}}x{{ci}}" ng-repeat="(ci, col) in getNumberRepeat(grid.y) track by $index" ng-click="fillGrid(ri, ci)"></td>
+              <tr ng-repeat="row in getNumberRepeat(grid.x) track by $index">
+                <td ng-repeat="col in getNumberRepeat(grid.y) track by $index"></td>
               </tr>
             </table>
           </div>

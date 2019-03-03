@@ -403,9 +403,14 @@ header{
   margin: 12px 0;
   table {
     width: 100%;
+    border: 3px solid #e8e8e8;
   }
   table tr td {
-    border: 1px solid #d5d5d5;
+    border: 1px solid #e8e8e8;
+  }
+
+  table tr td:focus{
+    outline: none !important;
   }
 
   table tr td:hover{

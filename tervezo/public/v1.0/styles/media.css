@@ -1,187 +1,156 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700&subset=latin-ext");
+@charset "UTF-8";
 /* VÁLTOZÓK */
 /* COLORS */
 /* FONTS */
-/* normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
-/* line 1, sass/_base.scss */
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700&subset=latin-ext");
+/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 button, hr, input {
-  overflow: visible;
-}
+  overflow: visible; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 progress, sub, sup {
-  vertical-align: baseline;
-}
+  vertical-align: baseline; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 [type=checkbox], [type=radio], legend {
   box-sizing: border-box;
-  padding: 0;
-}
+  padding: 0; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 html {
   line-height: 1.15;
-  -webkit-text-size-adjust: 100%;
-}
+  -webkit-text-size-adjust: 100%; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 body {
-  margin: 0;
-}
+  margin: 0; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 details, main {
-  display: block;
-}
+  display: block; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 h1 {
   font-size: 2em;
-  margin: .67em 0;
-}
+  margin: .67em 0; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 hr {
   box-sizing: content-box;
-  height: 0;
-}
+  height: 0; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 code, kbd, pre, samp {
   font-family: monospace,monospace;
-  font-size: 1em;
-}
+  font-size: 1em; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 a {
-  background-color: transparent;
-}
+  background-color: transparent; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 abbr[title] {
   border-bottom: none;
   text-decoration: underline;
-  text-decoration: underline dotted;
-}
+  text-decoration: underline dotted; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 b, strong {
-  font-weight: bolder;
-}
+  font-weight: bolder; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 small {
-  font-size: 80%;
-}
+  font-size: 80%; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 sub, sup {
   font-size: 75%;
   line-height: 0;
-  position: relative;
-}
+  position: relative; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 sub {
-  bottom: -0.25em;
-}
+  bottom: -.25em; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 sup {
-  top: -0.5em;
-}
+  top: -.5em; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 img {
-  border-style: none;
-}
+  border-style: none; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 button, input, optgroup, select, textarea {
   font-family: inherit;
   font-size: 100%;
   line-height: 1.15;
-  margin: 0;
-}
+  margin: 0; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 button, select {
-  text-transform: none;
-}
+  text-transform: none; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 [type=button], [type=reset], [type=submit], button {
-  -webkit-appearance: button;
-}
+  -webkit-appearance: button; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 [type=button]::-moz-focus-inner, [type=reset]::-moz-focus-inner, [type=submit]::-moz-focus-inner, button::-moz-focus-inner {
   border-style: none;
-  padding: 0;
-}
+  padding: 0; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 [type=button]:-moz-focusring, [type=reset]:-moz-focusring, [type=submit]:-moz-focusring, button:-moz-focusring {
-  outline: ButtonText dotted 1px;
-}
+  outline: ButtonText dotted 1px; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 fieldset {
-  padding: .35em .75em .625em;
-}
+  padding: .35em .75em .625em; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 legend {
   color: inherit;
   display: table;
   max-width: 100%;
-  white-space: normal;
-}
+  white-space: normal; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 textarea {
-  overflow: auto;
-}
+  overflow: auto; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
-  height: auto;
-}
+  height: auto; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 [type=search] {
   -webkit-appearance: textfield;
-  outline-offset: -2px;
-}
+  outline-offset: -2px; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 [type=search]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
+  -webkit-appearance: none; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 ::-webkit-file-upload-button {
   -webkit-appearance: button;
-  font: inherit;
-}
+  font: inherit; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 summary {
-  display: list-item;
-}
+  display: list-item; }
 
-/* line 1, sass/_base.scss */
+/* line 1, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 [hidden], template {
-  display: none;
-}
+  display: none; }
 
-/* line 3, sass/_base.scss */
+/* line 3, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 body {
-  background-color: #edebeb;
-}
+  background-color: #edebeb; }
 
-/* line 7, sass/_base.scss */
+/* line 7, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 header {
   background: white;
   display: -webkit-box;
@@ -193,91 +162,80 @@ header {
   left: 0;
   right: 0;
   z-index: 100;
-  box-shadow: 0 5px 10px 3px rgba(204, 204, 204, 0.51);
-}
-/* line 20, sass/_base.scss */
-header > div {
-  min-height: 70px;
-  height: 5vw;
-  position: relative;
-}
-/* line 25, sass/_base.scss */
-header > div .in {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  top: 50%;
-  transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-}
-/* line 35, sass/_base.scss */
-header > .logo {
-  flex-basis: 280px;
-}
-/* line 37, sass/_base.scss */
-header > .logo img {
-  max-width: 70%;
-  margin: 0 auto;
-}
-/* line 43, sass/_base.scss */
-header > .backurl, header > .title {
-  flex-basis: 33%;
-  text-transform: uppercase;
-  font-size: 1.8rem;
-  color: white;
-}
-/* line 48, sass/_base.scss */
-header > .backurl a, header > .title a {
-  color: white;
-  display: block;
-  text-decoration: none;
-}
-/* line 55, sass/_base.scss */
-header > .backurl {
-  background-color: #9e9e9e;
-  font-size: 0.85vw;
-}
-/* line 59, sass/_base.scss */
-header > .backurl i {
-  background: #4c4c4c;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  margin: 0;
-  padding: 0;
-  font-size: 13px;
-  border-radius: 40px;
-}
-/* line 70, sass/_base.scss */
-header > .title {
-  background-color: #4c4c4c;
-  text-align: center;
-  font-size: 1.6vw;
-}
-/* line 75, sass/_base.scss */
-header > .langs {
-  flex: 1;
-}
+  box-shadow: 0 5px 10px 3px rgba(204, 204, 204, 0.51); }
+  /* line 20, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  header > div {
+    min-height: 70px;
+    height: 5vw;
+    position: relative; }
+    /* line 25, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    header > div .in {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      -moz-transform: translateY(-50%); }
+  /* line 35, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  header > .logo {
+    flex-basis: 280px; }
+    /* line 37, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    header > .logo img {
+      max-width: 70%;
+      margin: 0 auto; }
+  /* line 42, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  header > .backurl,
+  header > .title {
+    flex-basis: 33%;
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    color: white; }
+    /* line 48, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    header > .backurl a,
+    header > .title a {
+      color: white;
+      display: block;
+      text-decoration: none; }
+  /* line 55, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  header > .backurl {
+    background-color: #9e9e9e;
+    font-size: 0.85vw; }
+    /* line 59, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    header > .backurl i {
+      background: #4c4c4c;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      border-radius: 40px; }
+  /* line 70, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  header > .title {
+    background-color: #4c4c4c;
+    text-align: center;
+    font-size: 1.6vw; }
+  /* line 75, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  header > .langs {
+    flex: 1; }
 
-/* line 80, sass/_base.scss */
+/* line 80, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .inside-content {
   margin-left: 280px;
-  padding: 20px;
-}
-/* line 83, sass/_base.scss */
-.inside-content > .wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-/* line 90, sass/_base.scss */
-.inside-content > .wrapper > .side-left, .inside-content > .wrapper > .side-right {
-  flex-basis: 50%;
-}
+  padding: 20px; }
+  /* line 83, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .inside-content > .wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start; }
+    /* line 89, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .inside-content > .wrapper > .side-left,
+    .inside-content > .wrapper > .side-right {
+      flex-basis: 50%; }
 
-/* line 96, sass/_base.scss */
+/* line 96, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .sidebar {
   position: fixed;
   width: 280px;
@@ -286,385 +244,330 @@ header > .langs {
   z-index: 50;
   background: white;
   bottom: 0;
-  box-shadow: 5px 0px 10px 2px #d2d2d2;
-}
-/* line 106, sass/_base.scss */
-.sidebar .kat-title {
-  padding: 45px 20px 20px 20px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #696969;
-}
-/* line 113, sass/_base.scss */
-.sidebar .cat-list {
-  overflow: auto;
-  /* width */
-  /* Track */
-  /* Handle */
-  /* Handle on hover */
-}
-/* line 116, sass/_base.scss */
-.sidebar .cat-list .cat {
-  text-transform: uppercase;
-  font-weight: 300;
-}
-/* line 120, sass/_base.scss */
-.sidebar .cat-list .cat .title {
-  border-left: 5px solid transparent;
-  padding: 10px 25px 10px 30px;
-  cursor: pointer;
-  outline: none !important;
-}
-/* line 128, sass/_base.scss */
-.sidebar .cat-list .cat.active .title {
-  background: #999999;
-  border-left: 5px solid #4C4C4C;
-  color: white;
-}
-/* line 135, sass/_base.scss */
-.sidebar .cat-list .cat .motifs {
-  background: #F2F2F3;
-  padding: 4px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-/* line 144, sass/_base.scss */
-.sidebar .cat-list .cat .motifs .motiv {
-  padding: 2px;
-  flex-basis: calc(100% / 3);
-}
-/* line 147, sass/_base.scss */
-.sidebar .cat-list .cat .motifs .motiv > .wrapper {
-  border: 1px solid #d4d4d4;
-  transition: all .4s;
-}
-/* line 153, sass/_base.scss */
-.sidebar .cat-list .cat .motifs .motiv:hover > .wrapper {
-  box-shadow: 0 4px 12px -4px #454545;
-}
-/* line 162, sass/_base.scss */
-.sidebar .cat-list::-webkit-scrollbar {
-  width: 5px;
-}
-/* line 167, sass/_base.scss */
-.sidebar .cat-list::-webkit-scrollbar-track {
-  background: #edebeb;
-}
-/* line 172, sass/_base.scss */
-.sidebar .cat-list::-webkit-scrollbar-thumb {
-  background: #9e9e9e;
-}
-/* line 177, sass/_base.scss */
-.sidebar .cat-list::-webkit-scrollbar-thumb:hover {
-  background: #4c4c4c;
-}
-/* line 182, sass/_base.scss */
-.sidebar .copy {
-  text-align: center;
-  font-weight: 300;
-  line-height: 60px;
-  border-top: 0.5px solid #d9d9d9;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  bottom: 0;
-  position: absolute;
-  left: 0;
-  right: 0;
-}
+  box-shadow: 5px 0px 10px 2px #d2d2d2; }
+  /* line 106, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .sidebar .kat-title {
+    padding: 45px 20px 20px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #696969; }
+  /* line 113, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .sidebar .cat-list {
+    overflow: auto;
+    /* width */
+    /* Track */
+    /* Handle */
+    /* Handle on hover */ }
+    /* line 116, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .sidebar .cat-list .cat {
+      text-transform: uppercase;
+      font-weight: 300; }
+      /* line 120, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .sidebar .cat-list .cat .title {
+        border-left: 5px solid transparent;
+        padding: 10px 25px 10px 30px;
+        cursor: pointer;
+        outline: none !important; }
+      /* line 128, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .sidebar .cat-list .cat.active .title {
+        background: #999999;
+        border-left: 5px solid #4C4C4C;
+        color: white; }
+      /* line 135, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .sidebar .cat-list .cat .motifs {
+        background: #F2F2F3;
+        padding: 4px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start; }
+        /* line 144, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+        .sidebar .cat-list .cat .motifs .motiv {
+          padding: 2px;
+          flex-basis: calc(100% / 3); }
+          /* line 147, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+          .sidebar .cat-list .cat .motifs .motiv > .wrapper {
+            border: 1px solid #d4d4d4;
+            transition: all .4s; }
+          /* line 153, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+          .sidebar .cat-list .cat .motifs .motiv:hover > .wrapper {
+            box-shadow: 0 4px 12px -4px #454545; }
+    /* line 162, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .sidebar .cat-list::-webkit-scrollbar {
+      width: 5px; }
+    /* line 167, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .sidebar .cat-list::-webkit-scrollbar-track {
+      background: #edebeb; }
+    /* line 172, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .sidebar .cat-list::-webkit-scrollbar-thumb {
+      background: #9e9e9e; }
+    /* line 177, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .sidebar .cat-list::-webkit-scrollbar-thumb:hover {
+      background: #4c4c4c; }
+  /* line 182, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .sidebar .copy {
+    text-align: center;
+    font-weight: 300;
+    line-height: 60px;
+    border-top: 0.5px solid #d9d9d9;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    bottom: 0;
+    position: absolute;
+    left: 0;
+    right: 0; }
 
-/* line 195, sass/_base.scss */
+/* line 195, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .btn {
   border-radius: 20px;
   text-transform: uppercase;
-  text-shadow: none;
-}
+  text-shadow: none; }
 
-/* line 200, sass/_base.scss */
+/* line 200, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .btn .ico {
   border-right: 1px solid white;
   margin: 0 8px 0 0;
-  padding: 0 10px 0 0;
-}
+  padding: 0 10px 0 0; }
 
-/* line 205, sass/_base.scss */
+/* line 205, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .btn.btn-sm .ico i {
-  font-size: 14px;
-}
+  font-size: 14px; }
 
-/* line 208, sass/_base.scss */
+/* line 208, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .btn:not(.btn-sm) .ico i {
-  font-size: 16px;
-}
+  font-size: 16px; }
 
-/* line 211, sass/_base.scss */
+/* line 211, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .btn.btn-default {
   background: #3a3a3a;
   color: white;
-  border: none;
-}
+  border: none; }
 
-/* line 216, sass/_base.scss */
+/* line 216, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .btn.btn-danger {
   background: #f05f42;
   color: white;
-  border: none;
-}
+  border: none; }
 
-/* line 221, sass/_base.scss */
+/* line 221, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .btn.btn-info {
   background: #43b6ef;
   color: white;
-  border: none;
-}
+  border: none; }
 
-/* line 226, sass/_base.scss */
+/* line 226, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .btn.btn-success {
   background: #6b995a;
   color: white;
-  border: none;
-}
+  border: none; }
 
-/* line 231, sass/_base.scss */
+/* line 231, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .btn:focus, .btn:active {
-  outline: none !important;
-}
+  outline: none !important; }
 
-/* line 235, sass/_base.scss */
+/* line 235, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .divider {
   border-top: 1.4px dashed #f05f42;
-  margin: 10px 0;
-}
+  margin: 10px 0; }
 
-/* line 240, sass/_base.scss */
+/* line 240, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .sample-editor {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   flex-wrap: nowrap;
   align-items: flex-start;
-  margin: 15px 0 0 0;
-}
-/* line 248, sass/_base.scss */
-.sample-editor .sample {
-  flex-basis: 30%;
-}
-/* line 250, sass/_base.scss */
-.sample-editor .sample #motivum {
-  border: 2px solid #dfdfdf;
-}
-/* line 255, sass/_base.scss */
-.sample-editor .sample-details {
-  flex-basis: 70%;
-  padding: 0 0 0 15px;
-}
-/* line 259, sass/_base.scss */
-.sample-editor .sample-details table {
-  width: 100%;
-  margin: 0 0 15px 0;
-}
-/* line 262, sass/_base.scss */
-.sample-editor .sample-details table tr td {
-  border: 0.5px solid #c3c3c3;
-  padding: 8px 5px;
-}
-/* line 267, sass/_base.scss */
-.sample-editor .sample-details table tr td.head {
-  width: 20%;
-  background: #f6f6f6;
-  color: #8d8d8d;
-}
-/* line 272, sass/_base.scss */
-.sample-editor .sample-details table tr td:not(.head) {
-  width: 30%;
-}
-/* line 277, sass/_base.scss */
-.sample-editor .sample-details .rotates {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
-}
-/* line 285, sass/_base.scss */
-.sample-editor .sample-details .rotates > div {
-  padding: 0 12px;
-}
+  margin: 15px 0 0 0; }
+  /* line 248, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .sample-editor .sample {
+    flex-basis: 30%; }
+    /* line 250, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .sample-editor .sample #motivum {
+      border: 2px solid #dfdfdf; }
+  /* line 255, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .sample-editor .sample-details {
+    flex-basis: 70%;
+    padding: 0 0 0 15px; }
+    /* line 259, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .sample-editor .sample-details table {
+      width: 100%;
+      margin: 0 0 15px 0; }
+      /* line 262, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .sample-editor .sample-details table tr td {
+        border: 0.5px solid #c3c3c3;
+        padding: 8px 5px; }
+      /* line 267, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .sample-editor .sample-details table tr td.head {
+        width: 20%;
+        background: #f6f6f6;
+        color: #8d8d8d; }
+      /* line 272, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .sample-editor .sample-details table tr td:not(.head) {
+        width: 30%; }
+    /* line 277, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .sample-editor .sample-details .rotates {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center; }
+      /* line 285, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .sample-editor .sample-details .rotates > div {
+        padding: 0 12px; }
 
-/* line 294, sass/_base.scss */
+/* line 293, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .used-motifs,
 .used-colors {
-  margin: 15px 0 25px 0;
-}
-/* line 297, sass/_base.scss */
-.used-motifs .no-dataset,
-.used-colors .no-dataset {
-  color: #acacac;
-}
+  margin: 15px 0 25px 0; }
+  /* line 297, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .used-motifs .no-dataset,
+  .used-colors .no-dataset {
+    color: #acacac; }
 
-/* line 302, sass/_base.scss */
+/* line 302, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .saver {
   margin: 12px 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
-}
-/* line 309, sass/_base.scss */
-.saver .saver-email {
-  flex-basis: 70%;
-}
-/* line 312, sass/_base.scss */
-.saver .saver-loader {
-  flex-basis: 30%;
-  text-align: right;
-}
-/* line 317, sass/_base.scss */
-.saver input[type=text] {
-  border-radius: 0;
-  border: 0.6px solid #868686;
-  line-height: 30px;
-  height: 30px;
-  padding: 0 10px;
-  color: #f05f42;
-}
+  flex-wrap: wrap; }
+  /* line 309, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .saver .saver-email {
+    flex-basis: 70%; }
+  /* line 312, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .saver .saver-loader {
+    flex-basis: 30%;
+    text-align: right; }
+  /* line 317, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .saver input[type=text] {
+    border-radius: 0;
+    border: 0.6px solid #868686;
+    line-height: 30px;
+    height: 30px;
+    padding: 0 10px;
+    color: #f05f42; }
 
-/* line 327, sass/_base.scss */
+/* line 327, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .colors-table {
-  margin: 5px 0;
-}
-/* line 329, sass/_base.scss */
-.colors-table > .wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-/* line 335, sass/_base.scss */
-.colors-table > .wrapper > div.color {
-  position: relative;
-  flex-basis: calc(100% / 12);
-  margin: 1px;
-  border: 0.6px solid #f1f1f1;
-  -webkit-transition: all .3s;
-  transition: all .3s;
-  cursor: pointer;
-  z-index: 1;
-}
-/* line 345, sass/_base.scss */
-.colors-table > .wrapper > div.color .szinkod {
-  display: none;
-  color: #222222;
-  position: absolute;
-  font-weight: bold;
-  font-size: 1.2rem;
-  pointer-events: none;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-/* line 358, sass/_base.scss */
-.colors-table > .wrapper > div.color:focus {
-  outline: none !important;
-}
-/* line 362, sass/_base.scss */
-.colors-table > .wrapper > div.color.selected {
-  z-index: 2;
-  -webkit-transform: scale(1.2);
-  transform: scale(1.2);
-  border: 2px solid white;
-}
-/* line 367, sass/_base.scss */
-.colors-table > .wrapper > div.color.selected .szinkod {
-  display: block;
-}
-/* line 373, sass/_base.scss */
-.colors-table > .wrapper > div.color:hover .szinkod {
-  display: block;
-}
+  margin: 5px 0; }
+  /* line 329, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .colors-table > .wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; }
+    /* line 335, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .colors-table > .wrapper > div.color {
+      position: relative;
+      flex-basis: calc(100% / 12);
+      margin: 1px;
+      border: 0.6px solid #f1f1f1;
+      -webkit-transition: all .3s;
+      transition: all .3s;
+      cursor: pointer;
+      z-index: 1; }
+      /* line 345, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .colors-table > .wrapper > div.color .szinkod {
+        display: none;
+        color: #222222;
+        position: absolute;
+        font-weight: bold;
+        font-size: 1.2rem;
+        pointer-events: none;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); }
+      /* line 358, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .colors-table > .wrapper > div.color:focus {
+        outline: none !important; }
+      /* line 362, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .colors-table > .wrapper > div.color.selected {
+        z-index: 2;
+        -webkit-transform: scale(1.2);
+        transform: scale(1.2);
+        border: 2px solid white; }
+        /* line 367, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+        .colors-table > .wrapper > div.color.selected .szinkod {
+          display: block; }
+      /* line 373, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+      .colors-table > .wrapper > div.color:hover .szinkod {
+        display: block; }
 
-/* line 382, sass/_base.scss */
+/* line 381, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .actions,
 .orders {
-  margin: 20px 0;
-}
-/* line 384, sass/_base.scss */
-.actions .button-groups,
-.orders .button-groups {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-/* line 392, sass/_base.scss */
-.actions .button-groups button,
-.orders .button-groups button {
-  margin: 4px;
-}
+  margin: 20px 0; }
+  /* line 384, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .actions .button-groups,
+  .orders .button-groups {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between; }
+    /* line 392, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .actions .button-groups button,
+    .orders .button-groups button {
+      margin: 4px; }
 
-/* line 398, sass/_base.scss */
+/* line 398, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .orders {
-  margin: 20px 0 0 0;
-}
+  margin: 20px 0 0 0; }
 
-/* line 402, sass/_base.scss */
+/* line 402, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .tiles {
-  margin: 12px 0;
-}
-/* line 404, sass/_base.scss */
-.tiles table {
-  width: 100%;
-}
-/* line 407, sass/_base.scss */
-.tiles table tr td {
-  border: 1px solid #d5d5d5;
-}
-/* line 411, sass/_base.scss */
-.tiles table tr td:hover {
-  border: 1px solid #b7b7b7;
-  box-shadow: 0 0 5px 1px #ea5538;
-  cursor: pointer;
-}
+  margin: 12px 0; }
+  /* line 404, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .tiles table {
+    width: 100%;
+    border: 3px solid #e8e8e8; }
+  /* line 408, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .tiles table tr td {
+    border: 1px solid #e8e8e8; }
+  /* line 412, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .tiles table tr td:focus {
+    outline: none !important; }
+  /* line 416, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .tiles table tr td:hover {
+    border: 1px solid #b7b7b7;
+    box-shadow: 0 0 5px 1px #ea5538;
+    cursor: pointer; }
 
-/* line 418, sass/_base.scss */
+/* line 423, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
 .bubble-block {
   background: white;
   border-radius: 5px;
   margin: 15px 10px;
   padding: 15px;
-  box-shadow: 0 3px 25px -5px #bdbcbc;
-}
-/* line 425, sass/_base.scss */
-.bubble-block > .header {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  border-bottom: 0.5px solid #c8c8c8;
-  padding: 0 0 5px 0;
-}
-/* line 434, sass/_base.scss */
-.bubble-block > .header .title {
-  flex: 1;
-  text-transform: uppercase;
-  font-size: 1.35rem;
-}
-/* line 439, sass/_base.scss */
-.bubble-block > .header .act {
-  flex-basis: 50px;
-  text-align: right;
-}
+  box-shadow: 0 3px 25px -5px #bdbcbc; }
+  /* line 430, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+  .bubble-block > .header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    border-bottom: 0.5px solid #c8c8c8;
+    padding: 0 0 5px 0; }
+    /* line 439, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .bubble-block > .header .title {
+      flex: 1;
+      text-transform: uppercase;
+      font-size: 1.35rem; }
+    /* line 444, /Users/MolnarIstvan/Documents/Munka/moza/tervezo/public/v1.0/styles/sass/_base.scss */
+    .bubble-block > .header .act {
+      flex-basis: 50px;
+      text-align: right; }
 
 /* 1024 - 1050 px - MEDIUM */
 /* 0 - 1023 px - SMARTPHONE */
 /* 0 - 640 px - SMARTPHONE */
 /* 0 - 375 px - SMARTPHONE */
 /* 0 - 375 px - SMARTPHONE */
+
+/*# sourceMappingURL=../media.map */

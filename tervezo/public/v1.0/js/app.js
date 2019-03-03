@@ -10,8 +10,10 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.aktiv_kat = 0;
   $scope.workstage = false;
   $scope.worklayer = false;
+  $scope.workrotate = 0;
   $scope.test = "ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(100,0);ctx.quadraticCurveTo(100,0,100,0);ctx.lineTo(100,100);ctx.quadraticCurveTo(100,100,100,100);ctx.lineTo(0,100);ctx.quadraticCurveTo(0,100,0,100);ctx.lineTo(0,0);ctx.quadraticCurveTo(0,0,0,0);ctx.closePath();";
   $scope.currentFillColor = 'green';
+  $scope.currentMotivum = false;
   $scope.changeColorObj = {};
   $scope.used_motifs = [];
   $scope.used_colors = [];
@@ -32,7 +34,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     {
       $scope.loadMotivums(function( motivums )
       {
-        console.log($scope.colors);
         if (motivums) {
           angular.forEach(motivums, function(i,e){
             if (typeof $scope.motivumok[i.mintakod] === 'undefined') {
@@ -55,14 +56,12 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           height: height
         });
         $scope.workmotiv_size = $('.sample-editor .sample').width()-5;
-        console.log($scope.workmotiv_size);
-        var target_size = $scope.workmotiv_size;
 
         // STAGE
         $scope.workstage = new Konva.Stage({
           container: 'motivum',
-          width: target_size,
-          height: target_size
+          width: $scope.workmotiv_size,
+          height: $scope.workmotiv_size
         });
 
         // LAYER
@@ -91,8 +90,106 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       }, 600);
 
     });
+  }
 
+  $scope.rotateWorkMotiv = function( r ) {
+    if ( $scope.workstage ) {
+      if ( r >= 0 ) {
+        $scope.workrotate += r;
+      } else if( r <= 0 ){
+        $scope.workrotate -= r;
+      }
+      if ($scope.workrotate >= 360 || $scope.workrotate <= -360) {
+        $scope.workrotate = 0;
+      }
+      $scope.workstage.rotation( $scope.workrotate );
+      console.log($scope.workstage.rotation());
+      $scope.workstage.draw();
+    }
+  }
 
+  $scope.pickNewMotiv = function( m )
+  {
+    if ( m ) {
+      // STAGE
+      $scope.workstage = new Konva.Stage({
+        container: 'motivum',
+        width: $scope.workmotiv_size,
+        height: $scope.workmotiv_size
+      });
+
+      // LAYER
+      $scope.worklayer = new Konva.Layer();
+
+      $scope.workstage.clear();
+      $scope.workrotate = 0;
+
+      if ( m.shapes && m.shapes.length ) {
+        angular.forEach( m.shapes, function(si, se){
+          $scope.addShape(
+            $scope.workstage,
+            $scope.worklayer,
+            si.canvas_js,
+            {
+              fill: si.fill_color,
+              shapesize: $scope.workmotiv_size
+            }
+          );
+        });
+        $scope.currentMotivum = m;
+      }
+    }
+  }
+
+  $scope.fillFullGrid = function()
+  {
+    for (var x = 0; x < $scope.grid.x; x++) {
+      for (var y = 0; y < $scope.grid.y; y++) {
+        $scope.fillGrid( x, y);
+      }
+    }
+  }
+
+  $scope.resetGrid = function()
+  {
+    for (var x = 0; x < $scope.grid.x; x++) {
+      for (var y = 0; y < $scope.grid.y; y++) {
+        $('#grid-h'+x+'x'+y).find('.konvajs-content').remove();
+      }
+    }
+  }
+
+  $scope.passMotivToResource = function( res, copystage )
+  {
+    var layers = copystage.getLayers();
+    var width = res.width();
+    var height = res.height();
+    var stage = new Konva.Stage({
+      container: res.selector.replace("#",""),
+      width: width,
+      height: height
+    });
+
+    layers.each(function(layer, n) {
+      var lay = layer.clone();
+      lay.getChildren(function( shapes ){
+        shapes.scale({
+          x: $scope.calcScaleFactor(width),
+          y: $scope.calcScaleFactor(height)
+        });
+      });
+      stage.add( lay );
+      lay.draw();
+    })
+  }
+
+  $scope.saveMotivsToList = function( m ) {
+    $scope.used_motifs.push( m );
+  }
+
+  $scope.fillGrid = function(ri, ci) {
+    var fillholder = $('#grid-h'+ri+'x'+ci);
+    $scope.passMotivToResource( fillholder, $scope.workstage );
   }
 
   $scope.changingFillColor = function( color, rgb ) {
@@ -131,8 +228,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       x: $scope.calcScaleFactor(shapeOptions.shapesize),
       y: $scope.calcScaleFactor(shapeOptions.shapesize)
     };
-
-    console.log(shapeOptions);
 
     var shape =  new Konva.Shape(shapeOptions);
     //shape.scale($scope.calcScaleFactor(shapeOptions.shapesize),$scope.calcScaleFactor(shapeOptions.shapesize));
@@ -295,7 +390,8 @@ $(function(){
     var tiles_width = $('.tiles').width();
     var height = tiles_width / 16;
     $('.tiles tr td').css({
-      height: height
+      height: height,
+      width: height
     });
   }
 
