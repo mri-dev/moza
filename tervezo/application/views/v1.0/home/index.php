@@ -38,13 +38,13 @@
               <table>
                 <tr>
                   <td class="head"><?php echo __('Minta'); ?>:</td>
-                  <td>{{currentMotivum.mintakod}}</td>
+                  <td class="bigt">{{currentMotivum.mintakod}}</td>
                   <td class="head"><?php echo __('RGB'); ?>:</td>
                   <td><span ng-show="changeColorObj.szin_rgb">#{{changeColorObj.szin_rgb}}</span> </td>
                 </tr>
                 <tr>
                   <td class="head"><?php echo __('Szín'); ?>:</td>
-                  <td>{{changeColorObj.kod}}</td>
+                  <td class="bigt">{{changeColorObj.kod}}</td>
                   <td class="head"><?php echo __('NCS'); ?>:</td>
                   <td>{{changeColorObj.szin_ncs}}</td>
                 </tr>
@@ -57,9 +57,7 @@
                   <button ng-click="rotateWorkMotiv(90)" type="button" class="btn btn-sm btn-info"><span class="ico"><i class="fa fa-undo"></i></span> <?php echo __('Forgatás balra'); ?></button>
                 </div>
               </div>
-
-                <button ng-click="fillFullGrid()" type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-th"></i></span> <?php echo __('Kitölt'); ?></button>
-
+              <button ng-click="fillFullGrid()" type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-th"></i></span> <?php echo __('Kitölt'); ?></button>
             </div>
           </div>
           <div class="divider"></div>
@@ -74,7 +72,6 @@
             <div class="no-dataset" ng-hide="used_motifs.length!=0">
               <?php echo __('Nincsenek jelenleg használtban lévő motívumok.'); ?>
             </div>
-            {{used_motifs}}
           </div>
           <div class="divider"></div>
         </div>
@@ -87,6 +84,13 @@
           <div class="used-colors">
             <div class="no-dataset" ng-hide="used_colors.length!=0">
               <?php echo __('Nincsenek jelenleg használtban lévő színek.'); ?>
+            </div>
+            <div class="colors-table" ng-show="used_colors.length!=0">
+              <div class="wrapper">
+                <div class="color" ng-repeat="color in used_colors" ng-click="changingFillColor(color, color)" style="background: {{color}};">
+                  <div class="szinkod" style="color:;">&nbsp;</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

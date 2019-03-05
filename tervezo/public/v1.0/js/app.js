@@ -15,7 +15,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.currentFillColor = 'green';
   $scope.currentMotivum = false;
   $scope.changeColorObj = {};
-  $scope.used_motifs = [];
+  $scope.used_motifs = {};
   $scope.used_colors = [];
   $scope.color_size = 0;
   $scope.tile_size = 0;
@@ -51,14 +51,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         }
       });
 
-      $timeout(function() {
-        var color_width = $('.colors-table').width();
-        var color_size = color_width / 12;
-        $scope.color_size = color_size;
-        $('.colors-table .color').css({
-          height: color_size
-        });
+      $scope.fixColorTableSizes(200);
 
+      $timeout(function() {
         var tiles_width = $('.tiles').width();
         var tile_size = tiles_width / $scope.grid.x;
         $scope.tile_size = tile_size;
@@ -104,6 +99,17 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     });
   }
 
+  $scope.fixColorTableSizes = function( delay ) {
+    $timeout(function() {
+      var color_width = $('.colors-table').width();
+      var color_size = color_width / 12;
+      $scope.color_size = color_size;
+      $('.colors-table .color').css({
+        height: color_size
+      });
+    }, delay);
+  }
+
   $scope.rotateWorkMotiv = function( r ) {
     if ( $scope.workstage ) {
       if ( r >= 0 ) {
@@ -115,7 +121,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         $scope.workrotate = 0;
       }
       $scope.workstage.rotation( $scope.workrotate );
-      console.log($scope.workstage.rotation());
       $scope.workstage.draw();
     }
   }
@@ -123,12 +128,14 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.pickNewMotiv = function( m )
   {
     if ( m ) {
+      console.log(m);
       // STAGE
       $scope.workstage = new Konva.Stage({
         container: 'motivum',
         width: $scope.workmotiv_size,
         height: $scope.workmotiv_size
       });
+      $scope.workstage.setAttr('minta', m.mintakod);
 
       // LAYER
       $scope.worklayer = new Konva.Layer();
@@ -173,8 +180,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.passMotivToResource = function( res, copystage )
   {
-    console.log( copystage );
     /* */
+    var colors = [];
+    var hashid = copystage.getAttr('minta');
     var layers = copystage.getLayers();
     var width = $scope.tile_size-2;
     var height = $scope.tile_size-2;
@@ -187,6 +195,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     layers.each(function(layer, n) {
       var lay = layer.clone();
       lay.getChildren(function( shapes ){
+        var fillcolor = shapes.getAttr('fill');
+        hashid += fillcolor;
+        colors.push( fillcolor );
         shapes.scale({
           x: $scope.calcScaleFactor(width),
           y: $scope.calcScaleFactor(height)
@@ -195,11 +206,56 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       stage.add( lay );
       lay.draw();
     });
+
+    hashid = $scope.generHash(hashid);
+    stage.setAttr('hashid', hashid);
+
+    $scope.refreshHistoryLists( copystage, colors, hashid);
     /* */
   }
 
-  $scope.saveMotivsToList = function( m ) {
-    $scope.used_motifs.push( m );
+  $scope.generHash = function( string ){
+    var hash = 0, i, chr;
+    if (string.length === 0) return hash;
+    for (i = 0; i < string.length; i++) {
+      chr   = string.charCodeAt(i);
+      hash  = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    hash = (hash < 0) ? hash * -1 : hash;
+    return hash;
+  }
+
+  $scope.refreshHistoryLists = function( stage, colors, hashid )
+  {
+    var colorstack = [];
+
+    var minta = stage.getAttr('minta');
+
+    $scope.saveMotivsToList( minta, hashid, stage, colors );
+
+    if ($scope.used_motifs && $scope.used_motifs.length != 0) {
+      angular.forEach($scope.used_motifs, function(e,i){
+        angular.forEach(e.colors, function(color,i){
+          if (colorstack.indexOf(color) === -1) {
+            colorstack.push(color);
+          }
+        });
+      });
+    };
+    $scope.used_colors = colorstack;
+    $scope.fixColorTableSizes(0);
+  }
+
+  $scope.saveMotivsToList = function( minta, hashid, stage, colors ) {
+    if (typeof $scope.used_motifs[hashid] == 'undefined') {
+      $scope.used_motifs[hashid] = {
+        'minta': minta,
+        'hasahid': hashid,
+        'colors': colors,
+        'stage': stage
+      };
+    }
   }
 
   $scope.fillGrid = function(ri, ci) {
@@ -208,8 +264,27 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   }
 
   $scope.changingFillColor = function( color, rgb ) {
-    $scope.currentFillColor = '#'+rgb;
-    $scope.changeColorObj = color;
+    if (typeof color === 'string') {
+      $scope.findColorObjectByRGB( rgb.replace("#",""),  function( color ){
+        $scope.currentFillColor = rgb;
+        $scope.changeColorObj = color;
+      } );
+    } else {
+      $scope.currentFillColor = '#'+rgb;
+      $scope.changeColorObj = color;
+    }
+  }
+
+  $scope.findColorObjectByRGB = function( rgb, callback ){
+    if ($scope.colors && $scope.colors.length != 0) {
+      angular.forEach( $scope.colors, function(c,i){
+        if( c.szin_rgb == rgb ) {
+          callback(c);
+        }
+      });
+    }
+
+    return rgb;
   }
 
   $scope.getNumberRepeat = function( n ) {
@@ -334,6 +409,7 @@ app.directive('motivum', function($rootScope){
         width: $scope.motiv_size,
         height: $scope.motiv_size
       });
+      konva.stage.setAttr('minta', $scope.m.mintakod);
       konva.layer = new Konva.Layer();
 
       if ($scope.m.shapes && $scope.m.shapes.length) {

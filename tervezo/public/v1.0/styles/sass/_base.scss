@@ -267,11 +267,16 @@ header{
         border: 0.5px solid #c3c3c3;
         padding: 8px 5px;
       }
-
       tr td.head{
         width: 20%;
         background: #f6f6f6;
         color: #8d8d8d;
+      }
+      tr td.bigt{
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: #5c5c5c;
+        line-height: 20px;
       }
       tr td:not(.head){
         width: 30%;
@@ -419,8 +424,10 @@ header{
   }
   table tr td:hover{
     border: 1px solid #b7b7b7;
-    box-shadow: 0 0 5px 1px #ea5538;
+    box-shadow: 0 0 10px 2px #ea5538;
     cursor: pointer;
+    z-index: 1;
+    position: relative;
   }
 }
 
