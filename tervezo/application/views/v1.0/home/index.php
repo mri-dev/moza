@@ -72,6 +72,11 @@
             <div class="no-dataset" ng-hide="used_motifs.length!=0">
               <?php echo __('Nincsenek jelenleg használtban lévő motívumok.'); ?>
             </div>
+            <div class="list">
+              <div class="shape" ng-repeat="(hash, shape) in used_motifs">
+                <div class="shapemotiv{{hash}}"></div>
+              </div>
+            </div>
           </div>
           <div class="divider"></div>
         </div>

@@ -128,7 +128,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.pickNewMotiv = function( m )
   {
     if ( m ) {
-      console.log(m);
       // STAGE
       $scope.workstage = new Konva.Stage({
         container: 'motivum',
@@ -243,6 +242,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         });
       });
     };
+
+    console.log($scope.used_motifs);
+
     $scope.used_colors = colorstack;
     $scope.fixColorTableSizes(0);
   }
