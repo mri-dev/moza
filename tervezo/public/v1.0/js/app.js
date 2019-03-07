@@ -15,6 +15,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.currentFillColor = 'green';
   $scope.currentMotivum = false;
   $scope.changeColorObj = {};
+  $scope.lastbuildmotifs = false;
   $scope.used_motifs = {};
   $scope.used_colors = [];
   $scope.color_size = 0;
@@ -163,7 +164,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   {
     for (var x = 0; x < $scope.grid.x; x++) {
       for (var y = 0; y < $scope.grid.y; y++) {
-        $scope.fillGrid( x, y);
+        $scope.fillGrid( x, y, true);
       }
     }
   }
@@ -177,7 +178,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     }
   }
 
-  $scope.passMotivToResource = function( res, copystage )
+  $scope.passMotivToResource = function( res, copystage, use_delay )
   {
     /* */
     var colors = [];
@@ -209,7 +210,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     hashid = $scope.generHash(hashid);
     stage.setAttr('hashid', hashid);
 
-    $scope.refreshHistoryLists( copystage, colors, hashid);
+    $scope.refreshHistoryLists( copystage, colors, hashid, use_delay);
     /* */
   }
 
@@ -225,12 +226,10 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     return hash;
   }
 
-  $scope.refreshHistoryLists = function( stage, colors, hashid )
+  $scope.refreshHistoryLists = function( stage, colors, hashid, use_delay )
   {
     var colorstack = [];
-
     var minta = stage.getAttr('minta');
-
     $scope.saveMotivsToList( minta, hashid, stage, colors );
 
     if ($scope.used_motifs && $scope.used_motifs.length != 0) {
@@ -243,10 +242,17 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       });
     };
 
-    console.log($scope.used_motifs);
+    var current_date = new Date().getTime();
 
-    $scope.used_colors = colorstack;
-    $scope.fixColorTableSizes(0);
+    if (
+      (typeof use_delay === 'undefined' || use_delay === false ) ||
+      (typeof use_delay !== 'undefined' && use_delay && ($scope.lastbuildmotifs == false || (current_date - $scope.lastbuildmotifs) > 2000))
+    ){
+      $scope.lastbuildmotifs = new Date().getTime();
+      $scope.used_colors = colorstack;
+      $scope.fixColorTableSizes(0);
+      console.log($scope.used_motifs);
+    }
   }
 
   $scope.saveMotivsToList = function( minta, hashid, stage, colors ) {
@@ -260,9 +266,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     }
   }
 
-  $scope.fillGrid = function(ri, ci) {
+  $scope.fillGrid = function(ri, ci, use_delay) {
     var fillholder = $('#grid-h'+ri+'x'+ci);
-    $scope.passMotivToResource( fillholder, $scope.workstage );
+    $scope.passMotivToResource( fillholder, $scope.workstage, use_delay );
   }
 
   $scope.changingFillColor = function( color, rgb ) {
