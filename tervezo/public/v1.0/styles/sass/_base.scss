@@ -387,6 +387,47 @@ header{
   }
 }
 
+.used-motifs {
+  .list{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    & > div.shape {
+      position: relative;
+      flex-basis: calc(100% / 12);
+      margin: 1px;
+      border: 0.6px solid #f1f1f1;
+      -webkit-transition: all .3s;
+      transition: all .3s;
+      /*cursor: pointer;*/
+      z-index: 1;
+
+      &:focus{
+        outline: none !important;
+      }
+
+      &.selected{
+        z-index: 2;
+        -webkit-transform:scale(1.2);
+          transform:scale(1.2);
+        border: 2px solid white;
+        .szinkod{
+          display: block;
+        }
+      }
+
+      &:hover{
+        .szinkod{
+          display: block;
+        }
+      }
+    }
+  }
+}
+
 .actions,
 .orders{
   margin: 20px 0;

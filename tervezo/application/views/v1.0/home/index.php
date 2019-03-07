@@ -74,7 +74,7 @@
             </div>
             <div class="list">
               <div class="shape" ng-repeat="(hash, shape) in used_motifs">
-                <div class="shapemotiv{{hash}}"></div>
+                <div id="shapemotiv{{hash}}"></div>
               </div>
             </div>
           </div>

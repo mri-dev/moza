@@ -229,40 +229,78 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.refreshHistoryLists = function( stage, colors, hashid, use_delay )
   {
     var colorstack = [];
+
     var minta = stage.getAttr('minta');
-    $scope.saveMotivsToList( minta, hashid, stage, colors );
 
-    if ($scope.used_motifs && $scope.used_motifs.length != 0) {
-      angular.forEach($scope.used_motifs, function(e,i){
-        angular.forEach(e.colors, function(color,i){
-          if (colorstack.indexOf(color) === -1) {
-            colorstack.push(color);
-          }
+    $scope.saveMotivsToList( minta, hashid, stage, colors, function()
+    {
+      if ($scope.used_motifs && $scope.used_motifs.length != 0) {
+        angular.forEach($scope.used_motifs, function(e,i){
+          angular.forEach(e.colors, function(color,i){
+            if (colorstack.indexOf(color) === -1) {
+              colorstack.push(color);
+            }
+          });
         });
-      });
-    };
+      };
+      var current_date = new Date().getTime();
 
-    var current_date = new Date().getTime();
+      if (
+        (typeof use_delay === 'undefined' || use_delay === false ) ||
+        (typeof use_delay !== 'undefined' && use_delay && ($scope.lastbuildmotifs == false || (current_date - $scope.lastbuildmotifs) > 2000))
+      ){
+        $scope.lastbuildmotifs = new Date().getTime();
+        $scope.used_colors = colorstack;
+        $scope.fixColorTableSizes(0);
 
-    if (
-      (typeof use_delay === 'undefined' || use_delay === false ) ||
-      (typeof use_delay !== 'undefined' && use_delay && ($scope.lastbuildmotifs == false || (current_date - $scope.lastbuildmotifs) > 2000))
-    ){
-      $scope.lastbuildmotifs = new Date().getTime();
-      $scope.used_colors = colorstack;
-      $scope.fixColorTableSizes(0);
-      console.log($scope.used_motifs);
-    }
+        if ( $scope.used_motifs && $scope.used_motifs.length != 0) {
+          var width = $scope.color_size-2;
+          var height = $scope.color_size-2;
+
+          $timeout(function(){
+            angular.forEach($scope.used_motifs, function(m,i){
+              if (m.stage) {
+                console.log($scope.used_motifs);
+                var historystage = new Konva.Stage({
+                  container: 'shapemotiv'+m.hashid,
+                  width: width,
+                  height: height
+                });
+                var layers = m.stage.getLayers();
+
+                layers.each(function(layer, n) {
+                  var lay = layer.clone();
+                  var si = 0;
+                  lay.getChildren(function( shapes ){
+                    shapes.scale({
+                      x: $scope.calcScaleFactor(width),
+                      y: $scope.calcScaleFactor(height)
+                    });
+                    shapes.fill( m.colors[si] );
+                    si++;
+                  });
+                  historystage.add( lay );
+                  lay.draw();
+                });
+              }
+            });
+          }, 100);
+        }
+      }
+    } );
   }
 
-  $scope.saveMotivsToList = function( minta, hashid, stage, colors ) {
+  $scope.saveMotivsToList = function( minta, hashid, stage, colors, callback ) {
     if (typeof $scope.used_motifs[hashid] == 'undefined') {
       $scope.used_motifs[hashid] = {
         'minta': minta,
-        'hasahid': hashid,
+        'hashid': hashid,
         'colors': colors,
         'stage': stage
       };
+    }
+    if (typeof callback !== 'undefined') {
+      callback();
     }
   }
 

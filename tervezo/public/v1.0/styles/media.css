@@ -601,11 +601,50 @@ header > .langs {
 }
 
 /* line 391, sass/_base.scss */
+.used-motifs .list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+/* line 398, sass/_base.scss */
+.used-motifs .list > div.shape {
+  position: relative;
+  flex-basis: calc(100% / 12);
+  margin: 1px;
+  border: 0.6px solid #f1f1f1;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  /*cursor: pointer;*/
+  z-index: 1;
+}
+/* line 408, sass/_base.scss */
+.used-motifs .list > div.shape:focus {
+  outline: none !important;
+}
+/* line 412, sass/_base.scss */
+.used-motifs .list > div.shape.selected {
+  z-index: 2;
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+  border: 2px solid white;
+}
+/* line 417, sass/_base.scss */
+.used-motifs .list > div.shape.selected .szinkod {
+  display: block;
+}
+/* line 423, sass/_base.scss */
+.used-motifs .list > div.shape:hover .szinkod {
+  display: block;
+}
+
+/* line 432, sass/_base.scss */
 .actions,
 .orders {
   margin: 20px 0;
 }
-/* line 393, sass/_base.scss */
+/* line 434, sass/_base.scss */
 .actions .button-groups,
 .orders .button-groups {
   display: -webkit-box;
@@ -615,37 +654,37 @@ header > .langs {
   flex-wrap: wrap;
   justify-content: space-between;
 }
-/* line 401, sass/_base.scss */
+/* line 442, sass/_base.scss */
 .actions .button-groups button,
 .orders .button-groups button {
   margin: 4px;
 }
 
-/* line 407, sass/_base.scss */
+/* line 448, sass/_base.scss */
 .orders {
   margin: 20px 0 0 0;
 }
 
-/* line 411, sass/_base.scss */
+/* line 452, sass/_base.scss */
 .tiles {
   margin: 12px 0;
 }
-/* line 413, sass/_base.scss */
+/* line 454, sass/_base.scss */
 .tiles table {
   width: auto;
   max-width: initial;
   /*border: 3px solid #e8e8e8;*/
 }
-/* line 418, sass/_base.scss */
+/* line 459, sass/_base.scss */
 .tiles table tr td {
   border: 1px solid #e8e8e8;
   overflow: hidden;
 }
-/* line 422, sass/_base.scss */
+/* line 463, sass/_base.scss */
 .tiles table tr td:focus {
   outline: none !important;
 }
-/* line 425, sass/_base.scss */
+/* line 466, sass/_base.scss */
 .tiles table tr td:hover {
   border: 1px solid #b7b7b7;
   box-shadow: 0 0 10px 2px #ea5538;
@@ -654,7 +693,7 @@ header > .langs {
   position: relative;
 }
 
-/* line 434, sass/_base.scss */
+/* line 475, sass/_base.scss */
 .bubble-block {
   background: white;
   border-radius: 5px;
@@ -662,7 +701,7 @@ header > .langs {
   padding: 15px;
   box-shadow: 0 3px 25px -5px #bdbcbc;
 }
-/* line 441, sass/_base.scss */
+/* line 482, sass/_base.scss */
 .bubble-block > .header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -672,13 +711,13 @@ header > .langs {
   border-bottom: 0.5px solid #c8c8c8;
   padding: 0 0 5px 0;
 }
-/* line 450, sass/_base.scss */
+/* line 491, sass/_base.scss */
 .bubble-block > .header .title {
   flex: 1;
   text-transform: uppercase;
   font-size: 1.35rem;
 }
-/* line 455, sass/_base.scss */
+/* line 496, sass/_base.scss */
 .bubble-block > .header .act {
   flex-basis: 50px;
   text-align: right;
