@@ -2,6 +2,7 @@ var app = angular.module('Moza', ['ngMaterial', 'ngMessages', 'ngCookies']);
 
 app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$location','$cookies', '$cookieStore', '$timeout', function($scope, $sce, $http, $mdToast, $mdDialog, $location, $cookies, $cookieStore, $timeout)
 {
+  $scope.current_lang = 'hu';
   $scope.originColors = ["#000000", "#666666", "#888888"];
   $scope.motivumok = {};
   $scope.kategoriak = {};
@@ -14,6 +15,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.test = "ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(100,0);ctx.quadraticCurveTo(100,0,100,0);ctx.lineTo(100,100);ctx.quadraticCurveTo(100,100,100,100);ctx.lineTo(0,100);ctx.quadraticCurveTo(0,100,0,100);ctx.lineTo(0,0);ctx.quadraticCurveTo(0,0,0,0);ctx.closePath();";
   $scope.currentFillColor = 'green';
   $scope.currentMotivum = false;
+  $scope.usingHistoryHash = false;
   $scope.changeColorObj = {};
   $scope.lastbuildmotifs = false;
   $scope.used_motifs = {};
@@ -64,37 +66,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         });
 
         $scope.workmotiv_size = $('.sample-editor .sample').width()-5;
-
-        // STAGE
-        $scope.workstage = new Konva.Stage({
-          container: 'motivum',
-          width: $scope.workmotiv_size,
+        $('#motivum').css({
           height: $scope.workmotiv_size
         });
-
-        // LAYER
-        $scope.worklayer = new Konva.Layer();
-
-        $scope.addShape(
-          $scope.workstage,
-          $scope.worklayer,
-          "ctx.beginPath();ctx.moveTo(0.5,0.5);ctx.lineTo(200.5,0.5);ctx.lineTo(200.5,200.5);ctx.lineTo(0.5,200.5);ctx.lineTo(0.5,0.5);ctx.closePath();",
-          {
-            fill: '#D86651',
-            shapesize: $scope.workmotiv_size
-          }
-        );
-
-        $scope.addShape(
-          $scope.workstage,
-          $scope.worklayer,
-          "ctx.beginPath();ctx.moveTo(100.5,200.5);ctx.lineTo(100.5,0.5);ctx.lineTo(0.5,0.5);ctx.lineTo(0.5,100.5);ctx.lineTo(200.5,100.5);ctx.lineTo(200.5,200.5);ctx.lineTo(100.5,200.5);ctx.closePath();",
-          {
-            fill: '#D9D9D9',
-            shapesize: $scope.workmotiv_size
-          }
-        );
-
       }, 600);
 
     });
@@ -156,6 +130,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           );
         });
         $scope.currentMotivum = m;
+        $scope.usingHistoryHash = false;
       }
     }
   }
@@ -180,38 +155,41 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.passMotivToResource = function( res, copystage, use_delay )
   {
-    /* */
-    var colors = [];
-    var hashid = copystage.getAttr('minta');
-    var layers = copystage.getLayers();
-    var width = $scope.tile_size-2;
-    var height = $scope.tile_size-2;
-    var stage = new Konva.Stage({
-      container: res.selector.replace("#",""),
-      width: width,
-      height: height
-    });
-
-    layers.each(function(layer, n) {
-      var lay = layer.clone();
-      lay.getChildren(function( shapes ){
-        var fillcolor = shapes.getAttr('fill');
-        hashid += fillcolor;
-        colors.push( fillcolor );
-        shapes.scale({
-          x: $scope.calcScaleFactor(width),
-          y: $scope.calcScaleFactor(height)
-        });
+    console.log($scope.workstage);
+    if ($scope.workstage) {
+      var colors = [];
+      var hashid = copystage.getAttr('minta');
+      var layers = copystage.getLayers();
+      var width = $scope.tile_size-2;
+      var height = $scope.tile_size-2;
+      var stage = new Konva.Stage({
+        container: res.selector.replace("#",""),
+        width: width,
+        height: height
       });
-      stage.add( lay );
-      lay.draw();
-    });
 
-    hashid = $scope.generHash(hashid);
-    stage.setAttr('hashid', hashid);
+      layers.each(function(layer, n) {
+        var lay = layer.clone();
+        lay.getChildren(function( shapes ){
+          var fillcolor = shapes.getAttr('fill');
+          hashid += fillcolor;
+          colors.push( fillcolor );
+          shapes.scale({
+            x: $scope.calcScaleFactor(width),
+            y: $scope.calcScaleFactor(height)
+          });
+        });
+        stage.add( lay );
+        lay.draw();
+      });
 
-    $scope.refreshHistoryLists( copystage, colors, hashid, use_delay);
-    /* */
+      hashid = $scope.generHash(hashid);
+      stage.setAttr('hashid', hashid);
+
+      $scope.refreshHistoryLists( copystage, colors, hashid, use_delay);
+    } else {
+      $scope.toast($scope.translate('no_motiv_selected'), 'error', 5000);
+    }
   }
 
   $scope.generHash = function( string ){
@@ -260,7 +238,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           $timeout(function(){
             angular.forEach($scope.used_motifs, function(m,i){
               if (m.stage) {
-                console.log($scope.used_motifs);
                 var historystage = new Konva.Stage({
                   container: 'shapemotiv'+m.hashid,
                   width: width,
@@ -288,6 +265,43 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         }
       }
     } );
+  }
+
+  $scope.loadHistoryMotiv = function( hash )
+  {
+    var motiv = $scope.used_motifs[hash];
+    $scope.usingHistoryHash = hash;
+    $scope.workstage = new Konva.Stage({
+      container: 'motivum',
+      width: $scope.workmotiv_size,
+      height: $scope.workmotiv_size,
+      hashid: hash,
+      loadfromhistory: true,
+      minta: motiv.minta
+    });
+
+    var layers = motiv.stage.getLayers();
+
+    layers.each(function(layer, n) {
+      var lay = layer.clone();
+      var si = 0;
+      lay.getChildren(function( shapes ){
+        shapes.scale({
+          x: $scope.calcScaleFactor($scope.workmotiv_size),
+          y: $scope.calcScaleFactor($scope.workmotiv_size)
+        });
+        shapes.on('click', function(){
+          this.fill( $scope.currentFillColor );
+          lay.draw();
+        });
+        shapes.fill( motiv.colors[si] );
+        si++;
+      });
+      $scope.workstage.add( lay );
+      lay.draw();
+    });
+
+    $scope.currentMotivum = $scope.motivumok[motiv.minta];
   }
 
   $scope.saveMotivsToList = function( minta, hashid, stage, colors, callback ) {
@@ -419,6 +433,21 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         callback();
       }
     });
+  }
+
+  $scope.emptyObject = function( obj ) {
+    return (Object.keys(obj).length === 0) ? true : false;
+  }
+
+  $scope.translate = function( id ) {
+    var lang = $scope.current_lang;
+    var translates = {
+      'hu':{
+        'no_motiv_selected': 'Nincs kiválasztva aktív minta motívum. Válasszon a kategóriák közül.'
+      }
+    }
+
+    return translates[lang][id];
   }
 
   $scope.toast = function( text, mode, delay ){

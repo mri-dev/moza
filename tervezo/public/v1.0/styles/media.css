@@ -616,7 +616,7 @@ header > .langs {
   border: 0.6px solid #f1f1f1;
   -webkit-transition: all .3s;
   transition: all .3s;
-  /*cursor: pointer;*/
+  cursor: pointer;
   z-index: 1;
 }
 /* line 408, sass/_base.scss */
@@ -638,13 +638,24 @@ header > .langs {
 .used-motifs .list > div.shape:hover .szinkod {
   display: block;
 }
+/* line 428, sass/_base.scss */
+.used-motifs .list > div.shape.active {
+  outline: 2px solid #f06347;
+  box-shadow: 0 0 14px 3px #f06347;
+  z-index: 10;
+}
 
-/* line 432, sass/_base.scss */
+/* line 439, sass/_base.scss */
+md-toast.alert-toast.mode-error .md-toast-content {
+  background: #cd2a30 !important;
+}
+
+/* line 446, sass/_base.scss */
 .actions,
 .orders {
   margin: 20px 0;
 }
-/* line 434, sass/_base.scss */
+/* line 448, sass/_base.scss */
 .actions .button-groups,
 .orders .button-groups {
   display: -webkit-box;
@@ -654,37 +665,37 @@ header > .langs {
   flex-wrap: wrap;
   justify-content: space-between;
 }
-/* line 442, sass/_base.scss */
+/* line 456, sass/_base.scss */
 .actions .button-groups button,
 .orders .button-groups button {
   margin: 4px;
 }
 
-/* line 448, sass/_base.scss */
+/* line 462, sass/_base.scss */
 .orders {
   margin: 20px 0 0 0;
 }
 
-/* line 452, sass/_base.scss */
+/* line 466, sass/_base.scss */
 .tiles {
   margin: 12px 0;
 }
-/* line 454, sass/_base.scss */
+/* line 468, sass/_base.scss */
 .tiles table {
   width: auto;
   max-width: initial;
   /*border: 3px solid #e8e8e8;*/
 }
-/* line 459, sass/_base.scss */
+/* line 473, sass/_base.scss */
 .tiles table tr td {
   border: 1px solid #e8e8e8;
   overflow: hidden;
 }
-/* line 463, sass/_base.scss */
+/* line 477, sass/_base.scss */
 .tiles table tr td:focus {
   outline: none !important;
 }
-/* line 466, sass/_base.scss */
+/* line 480, sass/_base.scss */
 .tiles table tr td:hover {
   border: 1px solid #b7b7b7;
   box-shadow: 0 0 10px 2px #ea5538;
@@ -693,7 +704,7 @@ header > .langs {
   position: relative;
 }
 
-/* line 475, sass/_base.scss */
+/* line 489, sass/_base.scss */
 .bubble-block {
   background: white;
   border-radius: 5px;
@@ -701,7 +712,7 @@ header > .langs {
   padding: 15px;
   box-shadow: 0 3px 25px -5px #bdbcbc;
 }
-/* line 482, sass/_base.scss */
+/* line 496, sass/_base.scss */
 .bubble-block > .header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -711,13 +722,13 @@ header > .langs {
   border-bottom: 0.5px solid #c8c8c8;
   padding: 0 0 5px 0;
 }
-/* line 491, sass/_base.scss */
+/* line 505, sass/_base.scss */
 .bubble-block > .header .title {
   flex: 1;
   text-transform: uppercase;
   font-size: 1.35rem;
 }
-/* line 496, sass/_base.scss */
+/* line 510, sass/_base.scss */
 .bubble-block > .header .act {
   flex-basis: 50px;
   text-align: right;

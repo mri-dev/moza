@@ -69,12 +69,12 @@
         </div>
         <div class="cwrapper">
           <div class="used-motifs">
-            <div class="no-dataset" ng-hide="used_motifs.length!=0">
+            <div class="no-dataset" ng-show="emptyObject(used_motifs)">
               <?php echo __('Nincsenek jelenleg használtban lévő motívumok.'); ?>
             </div>
             <div class="list">
-              <div class="shape" ng-repeat="(hash, shape) in used_motifs">
-                <div id="shapemotiv{{hash}}"></div>
+              <div class="shape" ng-repeat="(hash, shape) in used_motifs" ng-class="(usingHistoryHash == hash)?'active':''">
+                <div id="shapemotiv{{hash}}" ng-click="loadHistoryMotiv(hash)"></div>
               </div>
             </div>
           </div>

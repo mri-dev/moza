@@ -402,7 +402,7 @@ header{
       border: 0.6px solid #f1f1f1;
       -webkit-transition: all .3s;
       transition: all .3s;
-      /*cursor: pointer;*/
+      cursor: pointer;
       z-index: 1;
 
       &:focus{
@@ -424,6 +424,20 @@ header{
           display: block;
         }
       }
+
+      &.active{
+        outline: 2px solid #f06347;
+        box-shadow: 0 0 14px 3px #f06347;
+        z-index: 10;
+      }
+    }
+  }
+}
+
+md-toast.alert-toast{
+  &.mode-error{
+    .md-toast-content{
+      background: $color-red !important;
     }
   }
 }
