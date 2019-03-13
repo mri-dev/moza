@@ -9,6 +9,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.kategoria_lista = [];
   $scope.colors = [];
   $scope.aktiv_kat = 0;
+  $scope.deletemode = false;
   $scope.workstage = false;
   $scope.worklayer = false;
   $scope.workrotate = 0;
@@ -155,7 +156,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.passMotivToResource = function( res, copystage, use_delay )
   {
-    console.log($scope.workstage);
     if ($scope.workstage) {
       var colors = [];
       var hashid = copystage.getAttr('minta');
@@ -189,6 +189,14 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       $scope.refreshHistoryLists( copystage, colors, hashid, use_delay);
     } else {
       $scope.toast($scope.translate('no_motiv_selected'), 'error', 5000);
+    }
+  }
+
+  $scope.toggleDeleteMode = function() {
+    if ($scope.deletemode) {
+      $scope.deletemode = false;
+    } else {
+      $scope.deletemode = true;
     }
   }
 
@@ -320,7 +328,19 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.fillGrid = function(ri, ci, use_delay) {
     var fillholder = $('#grid-h'+ri+'x'+ci);
-    $scope.passMotivToResource( fillholder, $scope.workstage, use_delay );
+    if ( !$scope.deletemode ) {
+      $scope.passMotivToResource( fillholder, $scope.workstage, use_delay );
+    } else {
+      $scope.removeMotivFromGrid( fillholder );
+    }
+  }
+
+  $scope.removeMotivFromGrid = function( res ) {
+    var stage = new Konva.Stage({
+      container: res.selector.replace("#","")
+    });
+
+    stage.remove();
   }
 
   $scope.changingFillColor = function( color, rgb ) {

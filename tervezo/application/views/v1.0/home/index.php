@@ -32,7 +32,13 @@
         <div class="cwrapper">
           <div class="sample-editor">
             <div class="sample">
-              <div id="motivum"></div>
+              <div id="motivum">
+                <div class="alert-msg" ng-show="!currentMotivum">
+                  <i class="fa fa-bell-o"></i> <br>
+                  <strong><?php echo __('Nincs minta kiválasztva!'); ?></strong><br>
+                  <?php echo __('Válasszon egy mintát.'); ?>
+                </div>
+              </div>
             </div>
             <div class="sample-details">
               <table>
@@ -139,11 +145,11 @@
                 <button type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-upload"></i></span> <?php echo __('Betöltés'); ?></button>
               </div>
               <div class="">
-                <button type="button" class="btn btn-sm btn-danger"><span class="ico"><i class="fa fa-trash"></i></span> <?php echo __('Törlés'); ?></button>
+                <button type="button" class="btn btn-sm" ng-class="(deletemode)?'btn-danger':'btn-default'" ng-click="toggleDeleteMode()"><span class="ico"><i class="fa fa-trash"></i></span> <?php echo __('Törlés'); ?></button>
               </div>
             </div>
           </div>
-          <div class="tiles">
+          <div class="tiles" ng-class="(deletemode)?'deleting-mode':''">
             <table>
               <tr ng-repeat="(ri, row) in getNumberRepeat(grid.x) track by $index">
                 <td id="grid-h{{ri}}x{{ci}}" ng-repeat="(ci, col) in getNumberRepeat(grid.y) track by $index" ng-click="fillGrid(ri, ci)"></td>
