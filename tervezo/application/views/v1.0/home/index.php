@@ -130,10 +130,10 @@
                 <button ng-click="resetGrid()" type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-plus"></i></span> <?php echo __('Új'); ?></button>
               </div>
               <div class="">
-                <button type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-download"></i></span> <?php echo __('Mentés'); ?></button>
+                <button type="button" class="btn btn-sm btn-default" ng-click="saveProject()"><span class="ico"><i class="fa fa-download"></i></span> <?php echo __('Mentés'); ?></button>
               </div>
               <div class="">
-                <button type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-download"></i></span> <?php echo __('Mentés másként'); ?></button>
+                <button type="button" class="btn btn-sm btn-default" ng-click="saveProjectAs()"><span class="ico"><i class="fa fa-download"></i></span> <?php echo __('Mentés másként'); ?></button>
               </div>
               <div class="">
                 <button type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-upload"></i></span> <?php echo __('Betöltés'); ?></button>

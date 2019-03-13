@@ -347,6 +347,10 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     return rgb;
   }
 
+  $scope.saveProject = function() {
+    
+  }
+
   $scope.getNumberRepeat = function( n ) {
     return new Array( n );
   }
