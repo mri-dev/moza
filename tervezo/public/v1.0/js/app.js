@@ -367,8 +367,20 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     return rgb;
   }
 
-  $scope.saveProject = function() {
-    
+  $scope.saveProject = function()
+  {
+    var dataset = $scope.collectDataToSave();
+
+    console.log(dataset);
+  }
+
+  $scope.collectDataToSave = function() {
+    var set = {};
+
+    set.used_motifs = $scope.used_motifs;
+    set.used_colors = $scope.used_colors;
+
+    return set;
   }
 
   $scope.getNumberRepeat = function( n ) {
