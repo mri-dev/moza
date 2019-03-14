@@ -14,13 +14,16 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.worklayer = false;
   $scope.workrotate = 0;
   $scope.test = "ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(100,0);ctx.quadraticCurveTo(100,0,100,0);ctx.lineTo(100,100);ctx.quadraticCurveTo(100,100,100,100);ctx.lineTo(0,100);ctx.quadraticCurveTo(0,100,0,100);ctx.lineTo(0,0);ctx.quadraticCurveTo(0,0,0,0);ctx.closePath();";
-  $scope.currentFillColor = 'green';
+  $scope.currentFillColor = '#333333';
+  $scope.strokeWidth = 0.5;
+  $scope.showStrokes = false;
   $scope.currentMotivum = false;
   $scope.usingHistoryHash = false;
   $scope.changeColorObj = {};
   $scope.lastbuildmotifs = false;
   $scope.used_motifs = {};
   $scope.used_colors = [];
+  $scope.gridStages = {};
   $scope.color_size = 0;
   $scope.tile_size = 0;
   $scope.grid = {
@@ -28,10 +31,10 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     y: 16
   };
   $scope.motiv_size = ($('.sidebar').width() - 8 - 12 - 6) / 3;
-  $scope.workmotiv_size = 200;
+  $scope.workmotiv_size = 202;
 
   $scope.calcScaleFactor = function( size ){
-    return parseFloat( size / 200 );
+    return parseFloat( size / 200);
   }
 
   $scope.init = function()
@@ -66,13 +69,41 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           width: $scope.tile_size
         });
 
-        $scope.workmotiv_size = $('.sample-editor .sample').width()-5;
+        $scope.workmotiv_size = $('.sample-editor .sample').width()-4;
         $('#motivum').css({
           height: $scope.workmotiv_size
         });
       }, 600);
 
     });
+  }
+
+  $scope.toggleBorderOnSample = function()
+  {
+    if ($scope.showStrokes) {
+      $scope.showStrokes = false;
+    } else {
+      $scope.showStrokes = true;
+    }
+
+    if ( $scope.workstage ) {
+      var layers = $scope.workstage.getLayers();
+
+      layers.each(function(layer, n) {
+        layer.getChildren(function( shapes ){
+          if ( $scope.showStrokes ) {
+            shapes.stroke('black');
+            shapes.strokeWidth($scope.strokeWidth);
+          } else {
+            shapes.stroke('');
+            shapes.strokeWidth(0);
+          }
+        });
+        layer.draw();
+      });
+
+      console.log($scope.workstage);
+    }
   }
 
   $scope.fixColorTableSizes = function( delay ) {
@@ -120,14 +151,19 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
       if ( m.shapes && m.shapes.length ) {
         angular.forEach( m.shapes, function(si, se){
+          var settings = {
+            fill: si.fill_color,
+            shapesize: $scope.workmotiv_size
+          };
+          if ($scope.showStrokes) {
+            settings.stroke = 'black';
+            settings.strokeWidth = $scope.strokeWidth;
+          }
           $scope.addShape(
             $scope.workstage,
             $scope.worklayer,
             si.canvas_js,
-            {
-              fill: si.fill_color,
-              shapesize: $scope.workmotiv_size
-            }
+            settings
           );
         });
         $scope.currentMotivum = m;
@@ -138,10 +174,14 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.fillFullGrid = function()
   {
-    for (var x = 0; x < $scope.grid.x; x++) {
-      for (var y = 0; y < $scope.grid.y; y++) {
-        $scope.fillGrid( x, y, true);
+    if ($scope.workstage) {
+      for (var x = 0; x < $scope.grid.x; x++) {
+        for (var y = 0; y < $scope.grid.y; y++) {
+          $scope.fillGrid( x, y, true);
+        }
       }
+    } else {
+      $scope.toast($scope.translate('no_motiv_selected'), 'error', 5000);
     }
   }
 
@@ -158,6 +198,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   {
     if ($scope.workstage) {
       var colors = [];
+      var gridx = res.data('grid-x');
+      var gridy = res.data('grid-y');
       var hashid = copystage.getAttr('minta');
       var layers = copystage.getLayers();
       var width = $scope.tile_size-2;
@@ -186,6 +228,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       hashid = $scope.generHash(hashid);
       stage.setAttr('hashid', hashid);
 
+      $scope.gridStages[gridx+'x'+gridy] = stage;
       $scope.refreshHistoryLists( copystage, colors, hashid, use_delay);
     } else {
       $scope.toast($scope.translate('no_motiv_selected'), 'error', 5000);
@@ -335,12 +378,16 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     }
   }
 
-  $scope.removeMotivFromGrid = function( res ) {
+  $scope.removeMotivFromGrid = function( res )
+  {
+    var gridx = res.data('grid-x');
+    var gridy = res.data('grid-y');
     var stage = new Konva.Stage({
       container: res.selector.replace("#","")
     });
 
     stage.remove();
+    delete $scope.gridStages[gridx+'x'+gridy];
   }
 
   $scope.changingFillColor = function( color, rgb ) {
@@ -369,18 +416,26 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.saveProject = function()
   {
-    var dataset = $scope.collectDataToSave();
-
-    console.log(dataset);
+    $scope.collectDataToSave(function( dataset ) {
+      console.log(dataset);
+    });
   }
 
-  $scope.collectDataToSave = function() {
+  $scope.collectDataToSave = function( callback ) {
     var set = {};
 
     set.used_motifs = $scope.used_motifs;
     set.used_colors = $scope.used_colors;
+    set.grid = {};
+    set.grid.size = {
+      x: $scope.grid.x,
+      y: $scope.grid.y
+    };
+    set.grid.stages = $scope.gridStages;
 
-    return set;
+    if (typeof callback !== 'undefined') {
+      callback(set);
+    }
   }
 
   $scope.getNumberRepeat = function( n ) {

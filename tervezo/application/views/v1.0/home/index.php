@@ -63,7 +63,15 @@
                   <button ng-click="rotateWorkMotiv(90)" type="button" class="btn btn-sm btn-info"><span class="ico"><i class="fa fa-undo"></i></span> <?php echo __('Forgatás balra'); ?></button>
                 </div>
               </div>
-              <button ng-click="fillFullGrid()" type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-th"></i></span> <?php echo __('Kitölt'); ?></button>
+              <div class="action-buttons">
+                <div class="">
+                  {{showStrokes}}
+                  <button ng-click="toggleBorderOnSample()" type="button" class="btn btn-sm btn-clear"><span class="ico"><i class="fa fa-th"></i></span> <?php echo __('Körvonal megjelenítés'); ?></button>
+                </div>
+                <div class="">
+                  <button ng-click="fillFullGrid()" type="button" class="btn btn-sm btn-clear"><span class="ico"><i class="fa fa-th"></i></span> <?php echo __('Teljes kitöltés'); ?></button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="divider"></div>
@@ -152,7 +160,7 @@
           <div class="tiles" ng-class="(deletemode)?'deleting-mode':''">
             <table>
               <tr ng-repeat="(ri, row) in getNumberRepeat(grid.x) track by $index">
-                <td id="grid-h{{ri}}x{{ci}}" ng-repeat="(ci, col) in getNumberRepeat(grid.y) track by $index" ng-click="fillGrid(ri, ci)"></td>
+                <td id="grid-h{{ri}}x{{ci}}" data-grid-x="{{ri}}" data-grid-y="{{ci}}" ng-repeat="(ci, col) in getNumberRepeat(grid.y) track by $index" ng-click="fillGrid(ri, ci)"></td>
               </tr>
             </table>
           </div>
