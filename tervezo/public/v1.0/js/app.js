@@ -220,6 +220,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
             x: $scope.calcScaleFactor(width),
             y: $scope.calcScaleFactor(height)
           });
+          shapes.stroke('');
+          shapes.strokeWidth(0);
         });
         stage.add( lay );
         lay.draw();
@@ -304,6 +306,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
                       x: $scope.calcScaleFactor(width),
                       y: $scope.calcScaleFactor(height)
                     });
+                    shapes.stroke('');
+                    shapes.strokeWidth(0);
                     shapes.fill( m.colors[si] );
                     si++;
                   });
@@ -341,6 +345,13 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           x: $scope.calcScaleFactor($scope.workmotiv_size),
           y: $scope.calcScaleFactor($scope.workmotiv_size)
         });
+        if ($scope.showStrokes) {
+          shapes.stroke('black');
+          shapes.strokeWidth($scope.strokeWidth);
+        } else {
+          shapes.stroke('');
+          shapes.strokeWidth(0);
+        }
         shapes.on('click', function(){
           this.fill( $scope.currentFillColor );
           lay.draw();
@@ -414,11 +425,37 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     return rgb;
   }
 
-  $scope.saveProject = function()
+  $scope.saveProject = function(ev)
   {
     $scope.collectDataToSave(function( dataset ) {
       console.log(dataset);
+      $mdDialog.show({
+        controller: DialogController,
+        templateUrl: 'dialog1.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose:true,
+      })
+      .then(function(answer) {
+        $scope.status = 'You said the information was "' + answer + '".';
+      }, function() {
+        $scope.status = 'You cancelled the dialog.';
+      });
     });
+  }
+
+  function DialogController($scope, $mdDialog) {
+    $scope.hide = function() {
+      $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+      $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+      $mdDialog.hide(answer);
+    };
   }
 
   $scope.collectDataToSave = function( callback ) {

@@ -65,11 +65,10 @@
               </div>
               <div class="action-buttons">
                 <div class="">
-                  {{showStrokes}}
-                  <button ng-click="toggleBorderOnSample()" type="button" class="btn btn-sm btn-clear"><span class="ico"><i class="fa fa-th"></i></span> <?php echo __('Körvonal megjelenítés'); ?></button>
+                  <button ng-click="toggleBorderOnSample()" type="button" class="btn btn-sm btn-clear"><span class="ico"><i class="fa " ng-class="(showStrokes)?'fa-circle':'fa-circle-o'"></i></span> <?php echo __('Körvonal megjelenítés'); ?></button>
                 </div>
                 <div class="">
-                  <button ng-click="fillFullGrid()" type="button" class="btn btn-sm btn-clear"><span class="ico"><i class="fa fa-th"></i></span> <?php echo __('Teljes kitöltés'); ?></button>
+                  <button ng-click="fillFullGrid()" type="button" class="btn btn-sm btn-clear"><span class="ico"><i class="fa fa-th-large"></i></span> <?php echo __('Teljes kitöltés'); ?></button>
                 </div>
               </div>
             </div>
@@ -144,10 +143,10 @@
                 <button ng-click="resetGrid()" type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-plus"></i></span> <?php echo __('Új'); ?></button>
               </div>
               <div class="">
-                <button type="button" class="btn btn-sm btn-default" ng-click="saveProject()"><span class="ico"><i class="fa fa-download"></i></span> <?php echo __('Mentés'); ?></button>
+                <button type="button" class="btn btn-sm btn-default" ng-click="saveProject($event)"><span class="ico"><i class="fa fa-download"></i></span> <?php echo __('Mentés'); ?></button>
               </div>
               <div class="">
-                <button type="button" class="btn btn-sm btn-default" ng-click="saveProjectAs()"><span class="ico"><i class="fa fa-download"></i></span> <?php echo __('Mentés másként'); ?></button>
+                <button type="button" class="btn btn-sm btn-default" ng-click="saveProjectAs($event)"><span class="ico"><i class="fa fa-download"></i></span> <?php echo __('Mentés másként'); ?></button>
               </div>
               <div class="">
                 <button type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-upload"></i></span> <?php echo __('Betöltés'); ?></button>

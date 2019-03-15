@@ -259,7 +259,7 @@ header{
   margin: 15px 0 0 0;
 
   .sample{
-    flex-basis: 30%;
+    flex-basis: 200px;
     #motivum{
       position: relative;
       border: 2px solid #dfdfdf;
@@ -300,7 +300,7 @@ header{
   }
 
   .sample-details{
-    flex-basis: 70%;
+    flex: 1;
     padding: 0 0 0 15px;
 
     table{
