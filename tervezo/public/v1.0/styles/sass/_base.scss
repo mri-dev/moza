@@ -84,6 +84,7 @@ header{
 .inside-content{
   margin-left: $size-sidebar;
   padding: 20px;
+  background: #edebeb;
   & > .wrapper{
     display: -webkit-box;
     display: -ms-flexbox;
@@ -194,6 +195,18 @@ header{
     position: absolute;
     left: 0;
     right: 0;
+
+    .creator{
+      position: absolute;
+      line-height: 1;
+      bottom: 10px;
+      left: 50%;
+      text-transform: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      -moz-transform: translateX(-50%);
+      transform: translateX(-50%);
+    }
   }
 }
 .btn{
@@ -339,6 +352,10 @@ header{
         flex-basis: 50%;
         text-align: center;
 
+        button {
+          font-size: 0.94rem;
+        }
+
         i{
           font-size: 1.4rem;
           vertical-align: middle;
@@ -359,6 +376,10 @@ header{
         flex-basis: 50%;
         padding: 12px 12px 0 12px;
         text-align: center;
+
+        button {
+          font-size: 0.8rem;
+        }
       }
 
     }
@@ -588,5 +609,16 @@ md-toast.alert-toast{
       flex-basis: 50px;
       text-align: right;
     }
+  }
+}
+
+md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar){
+  background-color: #f05f42;
+}
+
+@media screen and (min-width:700px){
+  md-dialog{
+    max-width: 550px !important;
+    min-width: 550px !important;
   }
 }

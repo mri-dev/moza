@@ -65,5 +65,8 @@
   </div>
   <div class="copy">
     <?php echo __('Minden jog fenntartva!'); ?>
+    <div class="creator">
+      <a href="https://www.web-pro.hu/?ref=moza" target="_blank">powered by WEBPRO</a>
+    </div>
   </div>
 </div>

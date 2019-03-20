@@ -24,6 +24,8 @@ class ajax extends Controller{
 
 					switch ( $mode )
 					{
+						case 'saveProject':
+						break;
 						case 'getMotivumok':
 							$m = new Motivumok(array('db' => $this->db));
 							$list = $m->getAll();
@@ -234,6 +236,10 @@ class ajax extends Controller{
 			}
 
 			$this->view->render(__CLASS__.'/'.__FUNCTION__.'/'.$type, true);
+		}
+
+		function template(){
+			$this->view->render(__CLASS__.'/'.__FUNCTION__.'/'.$this->gets[2], true);
 		}
 
 		function __destruct(){

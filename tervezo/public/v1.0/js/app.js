@@ -230,7 +230,10 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       hashid = $scope.generHash(hashid);
       stage.setAttr('hashid', hashid);
 
-      $scope.gridStages[gridx+'x'+gridy] = stage;
+      $scope.gridStages[gridx+'x'+gridy] = {
+        hashid: stage.getAttr('hashid'),
+        //stage: stage.toObject()
+      };
       $scope.refreshHistoryLists( copystage, colors, hashid, use_delay);
     } else {
       $scope.toast($scope.translate('no_motiv_selected'), 'error', 5000);
@@ -428,40 +431,57 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.saveProject = function(ev)
   {
     $scope.collectDataToSave(function( dataset ) {
-      console.log(dataset);
       $mdDialog.show({
         controller: DialogController,
-        templateUrl: 'dialog1.tmpl.html',
+        templateUrl: '/ajax/template/saveProject',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose:true,
+        locals: {
+          save: {
+            name: '',
+            email: ''
+          }
+        }
       })
-      .then(function(answer) {
-        $scope.status = 'You said the information was "' + answer + '".';
+      .then(function(form) {
+        if (form) {
+          $scope.savingProject(form.name, form.email, dataset );
+        }
       }, function() {
-        $scope.status = 'You cancelled the dialog.';
+
       });
     });
   }
 
-  function DialogController($scope, $mdDialog) {
+  function DialogController($scope, $mdDialog, save) {
+    $scope.save = save;
     $scope.hide = function() {
-      $mdDialog.hide();
+      $mdDialog.hide(false);
     };
 
     $scope.cancel = function() {
-      $mdDialog.cancel();
+      $mdDialog.cancel(false);
     };
 
-    $scope.answer = function(answer) {
-      $mdDialog.hide(answer);
+    $scope.saving = function() {
+      $mdDialog.hide($scope.save);
     };
   }
 
   $scope.collectDataToSave = function( callback ) {
     var set = {};
 
-    set.used_motifs = $scope.used_motifs;
+    var um = {};
+    angular.forEach($scope.used_motifs, function(m,i){
+      um[i] = {
+        colors: m.colors,
+        hashid: m.hashid,
+        minta: m.stage.getAttr('minta')
+      };
+    });
+    set.used_motifs = um;
+    um = null;
     set.used_colors = $scope.used_colors;
     set.grid = {};
     set.grid.size = {
@@ -521,6 +541,28 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     layer.add( shape );
     stage.add( layer );
     layer.draw();
+  }
+
+  $scope.savingProject = function( name, email, data ){
+    console.log(data);
+    $http({
+      method: 'POST',
+      url: '/ajax/post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: $.param({
+        type: "Moza",
+        mode: 'saveProject',
+        form: {
+          name: name,
+          email: email
+        },
+        used_colors: data.used_colors,
+        used_motifs: data.used_motifs,
+        grid: data.grid
+      })
+    }).success(function(r){
+      console.log(r);
+    });
   }
 
   $scope.loadMotivums = function( callback ){
@@ -663,8 +705,7 @@ $(function(){
     var header_height = $('body header').height();
     var window_height = $(window).height();
     $('.inside-content').css({
-      paddingTop: header_height + 20,
-      height: window_height
+      paddingTop: header_height + 20
     });
 
     var copy_height = $('.sidebar .copy').height();
