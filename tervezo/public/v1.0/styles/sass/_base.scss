@@ -409,13 +409,49 @@ header{
     flex-basis: 30%;
     text-align: right;
   }
+  .saver-list{
+    margin: 15px 0 0 0;
+    flex-basis: 100%;
+    .project-selector{
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      flex-wrap: nowrap;
+      .list{
+        flex-basis: 60%;
+      }
+      .pselected{
+        font-size: 1.2rem;
+        flex-basis: 40%;
+        padding: 0 0 0 15px;
+        color: #538b46;
+        label {
+          font-weight: bold;
+          margin: 0 0 5px 0;
+          color: black;
+        }
 
-  input[type=text]{
+        ul, li {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        li {
+          margin: 4px 0;
+        }
+      }
+    }
+  }
+
+  input[type=text],
+  select{
     border-radius: 0;
     border: 0.6px solid #868686;
     line-height: 30px;
     height: 30px;
     padding: 0 10px;
+    width: 100%;
     color: $color-orange;
   }
 }
@@ -525,6 +561,11 @@ md-toast.alert-toast{
   &.mode-error{
     .md-toast-content{
       background: $color-red !important;
+    }
+  }
+  &.mode-success{
+    .md-toast-content{
+      background: $color-green !important;
     }
   }
 }

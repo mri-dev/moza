@@ -8,6 +8,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.kategoriak = {};
   $scope.kategoria_lista = [];
   $scope.colors = [];
+  $scope.loaded_projects = [];
   $scope.aktiv_kat = 0;
   $scope.deletemode = false;
   $scope.workstage = false;
@@ -21,6 +22,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.usingHistoryHash = false;
   $scope.changeColorObj = {};
   $scope.lastbuildmotifs = false;
+  $scope.project_load_email = 'demo@demo.hu';
+  $scope.project_loading = false;
+  $scope.selected_project = false;
   $scope.used_motifs = {};
   $scope.used_colors = [];
   $scope.gridStages = {};
@@ -561,8 +565,50 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         grid: data.grid
       })
     }).success(function(r){
-      console.log(r);
+      if (r.success == 1) {
+        $scope.toast( r.msg, 'success', 5000);
+      } else {
+        $scope.toast( r.msg, 'error', 5000);
+      }
     });
+  }
+
+  $scope.loadProjects = function() {
+    if ($scope.project_load_email == '')
+    {
+      $scope.toast($scope.translate('missing_project_loading_email'), 'error', 5000);
+      $('#project_load_email').focus();
+    } else {
+      $scope.project_loading = true;
+      $http({
+        method: 'POST',
+        url: '/ajax/post',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        data: $.param({
+          type: "Moza",
+          mode: 'getProjects',
+          email: $scope.project_load_email
+        })
+      }).success(function(r){
+        if (r.success == 1) {
+          if (r.data.length != 0) {
+            $scope.loaded_projects = r.data;
+          }
+        }
+        $scope.project_loading = false;
+      });
+    }
+  }
+
+  $scope.loadProject = function() {
+    console.log($scope.selected_project);
+    var p = $scope.selected_project;
+
+    if ( p.used_colors && p.used_colors.length != 0 )  {
+      $scope.used_colors = p.used_colors;
+    }
+        
+    $scope.fixColorTableSizes(0);
   }
 
   $scope.loadMotivums = function( callback ){
@@ -613,7 +659,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     var lang = $scope.current_lang;
     var translates = {
       'hu':{
-        'no_motiv_selected': 'Nincs kiválasztva aktív minta motívum. Válasszon a kategóriák közül.'
+        'no_motiv_selected': 'Nincs kiválasztva aktív minta motívum. Válasszon a kategóriák közül.',
+        'missing_project_loading_email': 'A projektek betöltéséhez adja meg az e-mail címét!',
       }
     }
 

@@ -1,6 +1,7 @@
 <?php
 use PortalManager\Motivumok;
 use PortalManager\Categories;
+use PortalManager\Projects;
 use PortalManager\Colors;
 
 class ajax extends Controller{
@@ -24,7 +25,36 @@ class ajax extends Controller{
 
 					switch ( $mode )
 					{
+						case 'getProjects':
+							$projects = new Projects( array('db' => $this->db) );
+							try {
+								$list = $projects->getAll(array('email' => $email));
+								$ret['data'] = $list;
+								$ret['success'] = 1;
+							} catch (\Exception $e) {
+								$err = $this->escape($e->getMessage());
+								$ret[errorCode] = $e->getCode();
+							}
+						break;
 						case 'saveProject':
+							$projects = new Projects( array('db' => $this->db) );
+							try {
+								$projects->add( $form, $used_motifs, $used_colors, $grid );
+								$ret['success'] = 1;
+								$ret['msg'] = __('Sikeresen mentette a(z) "'.$form['name'].'" projektjét ide: '.$form['email']);
+							} catch (\Exception $e) {
+								$err = $this->escape($e->getMessage());
+								$ret[errorCode] = $e->getCode();
+							}
+
+							try {
+								$projects->add( $form, $used_motifs, $used_colors, $grid );
+								$ret['success'] = 1;
+								$ret['msg'] = __('Sikeresen mentette a(z) "'.$form['name'].'" projektjét ide: '.$form['email']);
+							} catch (\Exception $e) {
+								$err = $this->escape($e->getMessage());
+								$ret[errorCode] = $e->getCode();
+							}
 						break;
 						case 'getMotivumok':
 							$m = new Motivumok(array('db' => $this->db));

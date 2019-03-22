@@ -127,13 +127,26 @@
         <div class="cwrapper">
           <div class="saver">
             <div class="saver-email">
-              <input type="text" ng-model="saver.email" class="form-control" placeholder="<?php echo __('Adja meg az e-mail címét'); ?>" value="">
+              <input type="text" ng-model="project_load_email" id="project_load_email" class="form-control" placeholder="<?php echo __('Adja meg az e-mail címét'); ?>" value="">
             </div>
             <div class="saver-loader">
-              <button type="button" class="btn btn-sm btn-default"><span class="ico"><i class="fa fa-refresh"></i></span> <?php echo __('Terveim betöltése'); ?></button>
+              <button type="button" class="btn btn-sm btn-default" ng-class="(project_loading)?'btn-danger':'btn-default'" ng-click="loadProjects()"><span class="ico"><i class="fa fa-refresh" ng-class="(project_loading)?'fa-spinner fa-spin':'fa-refresh'"></i></span> <?php echo __('Terveim betöltése'); ?></button>
             </div>
-            <div class="saver-list">
-
+            <div class="saver-list" ng-show="loaded_projects.length!=0">
+              <div class="divider"></div>
+              <div class="project-selector">
+                <div class="list">
+                  <label for="project_selector">{{loaded_projects.length}} db <?php echo __('mentett projekt'); ?>:</label>
+                  <select id="project_selector" ng-change="loadProject()" ng-model="selected_project" ng-options="project as project.title for project in loaded_projects"></select>
+                </div>
+                <div class="pselected" ng-show="selected_project">
+                  <label><?php echo __('Projekt adatok'); ?>:</label>
+                  <ul>
+                    <li><?php echo __('Név'); ?>: {{selected_project.title}}</li>
+                    <li><?php echo __('Mentve'); ?>: {{selected_project.savedate}}</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
           <div class="divider"></div>
