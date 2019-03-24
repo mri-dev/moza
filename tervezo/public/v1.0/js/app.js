@@ -105,8 +105,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         });
         layer.draw();
       });
-
-      console.log($scope.workstage);
     }
   }
 
@@ -601,14 +599,68 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   }
 
   $scope.loadProject = function() {
-    console.log($scope.selected_project);
     var p = $scope.selected_project;
 
+    // Színek betöltése
     if ( p.used_colors && p.used_colors.length != 0 )  {
       $scope.used_colors = p.used_colors;
     }
-        
+    // Szín box-ok méret fixálás
     $scope.fixColorTableSizes(0);
+
+    // Motívumok betöltése és stage generálása
+    if ( p.used_motifs && p.used_motifs.length != 0 ) {
+      // reset
+      $scope.used_motifs = {};
+
+      angular.forEach(p.used_motifs, function(motiv,hash){
+        var mot = motiv;
+
+        // Motivum stage helyreállítás
+        var m = $scope.motivumok[mot.minta];
+
+        if ( m ) {
+          // STAGE
+          var stage = new Konva.Stage({
+            container: 'shapemotiv'+hash,
+            width: $scope.workmotiv_size,
+            height: $scope.workmotiv_size
+          });
+          stage.setAttr('minta', m.mintakod);
+
+          // LAYER
+          $scope.worklayer = new Konva.Layer();
+
+          $scope.workstage.clear();
+          $scope.workrotate = 0;
+
+          if ( m.shapes && m.shapes.length ) {
+            angular.forEach( m.shapes, function(si, se){
+              var settings = {
+                fill: si.fill_color,
+                shapesize: $scope.workmotiv_size
+              };
+              if ($scope.showStrokes) {
+                settings.stroke = 'black';
+                settings.strokeWidth = $scope.strokeWidth;
+              }
+              $scope.addShape(
+                $scope.workstage,
+                $scope.worklayer,
+                si.canvas_js,
+                settings
+              );
+            });
+            $scope.currentMotivum = m;
+            $scope.usingHistoryHash = false;
+          }
+        }
+
+        $scope.used_motifs[hash] = mot;
+      });
+
+      console.log($scope.motivumok);
+    }
   }
 
   $scope.loadMotivums = function( callback ){

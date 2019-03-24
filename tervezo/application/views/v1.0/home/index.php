@@ -82,6 +82,7 @@
         </div>
         <div class="cwrapper">
           <div class="used-motifs">
+            {{used_motifs}}
             <div class="no-dataset" ng-show="emptyObject(used_motifs)">
               <?php echo __('Nincsenek jelenleg használtban lévő motívumok.'); ?>
             </div>
