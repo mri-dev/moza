@@ -1,4 +1,10 @@
 <div class="home inside-content">
+  <div id="preloader" ng-show="apploading" class="site-preloader">
+    <div class="inside">
+      <h2>{{loader_title}}</h2>
+      <?=__('Betöltés folyamatban')?> <i class="fa fa-spin fa-spinner"></i>
+    </div>
+  </div>
   <div class="wrapper">
     <div class="side-left">
       <div class="bubble-block block-szinek">
@@ -82,7 +88,6 @@
         </div>
         <div class="cwrapper">
           <div class="used-motifs">
-            {{used_motifs}}
             <div class="no-dataset" ng-show="emptyObject(used_motifs)">
               <?php echo __('Nincsenek jelenleg használtban lévő motívumok.'); ?>
             </div>

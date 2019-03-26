@@ -2,6 +2,8 @@ var app = angular.module('Moza', ['ngMaterial', 'ngMessages', 'ngCookies']);
 
 app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$location','$cookies', '$cookieStore', '$timeout', function($scope, $sce, $http, $mdToast, $mdDialog, $location, $cookies, $cookieStore, $timeout)
 {
+  $scope.loader_title = '';
+  $scope.apploading = true;
   $scope.current_lang = 'hu';
   $scope.originColors = ["#000000", "#666666", "#888888"];
   $scope.motivumok = {};
@@ -43,6 +45,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.init = function()
   {
+    $scope.loader_title = $scope.translate('default_loader_title');
     $scope.loadSettings(function()
     {
       $scope.loadMotivums(function( motivums )
@@ -77,6 +80,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         $('#motivum').css({
           height: $scope.workmotiv_size
         });
+        $scope.apploading = false;
       }, 600);
 
     });
@@ -198,7 +202,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.passMotivToResource = function( res, copystage, use_delay )
   {
-    if ($scope.workstage) {
+    if ( copystage ) {
       var colors = [];
       var gridx = res.data('grid-x');
       var gridy = res.data('grid-y');
@@ -600,6 +604,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.loadProject = function() {
     var p = $scope.selected_project;
+    $scope.loader_title = $scope.translate('loader_title_loadproject');
+    $scope.apploading = true;
 
     // Színek betöltése
     if ( p.used_colors && p.used_colors.length != 0 )  {
@@ -612,54 +618,85 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     if ( p.used_motifs && p.used_motifs.length != 0 ) {
       // reset
       $scope.used_motifs = {};
+      var width = $scope.color_size-2;
+      var height = $scope.color_size-2;
 
       angular.forEach(p.used_motifs, function(motiv,hash){
         var mot = motiv;
-
-        // Motivum stage helyreállítás
-        var m = $scope.motivumok[mot.minta];
-
-        if ( m ) {
-          // STAGE
-          var stage = new Konva.Stage({
-            container: 'shapemotiv'+hash,
-            width: $scope.workmotiv_size,
-            height: $scope.workmotiv_size
-          });
-          stage.setAttr('minta', m.mintakod);
-
-          // LAYER
-          $scope.worklayer = new Konva.Layer();
-
-          $scope.workstage.clear();
-          $scope.workrotate = 0;
-
-          if ( m.shapes && m.shapes.length ) {
-            angular.forEach( m.shapes, function(si, se){
-              var settings = {
-                fill: si.fill_color,
-                shapesize: $scope.workmotiv_size
-              };
-              if ($scope.showStrokes) {
-                settings.stroke = 'black';
-                settings.strokeWidth = $scope.strokeWidth;
-              }
-              $scope.addShape(
-                $scope.workstage,
-                $scope.worklayer,
-                si.canvas_js,
-                settings
-              );
-            });
-            $scope.currentMotivum = m;
-            $scope.usingHistoryHash = false;
-          }
-        }
-
         $scope.used_motifs[hash] = mot;
-      });
 
-      console.log($scope.motivumok);
+        $timeout(function(){
+          // Motivum stage helyreállítás
+          var m = $scope.motivumok[mot.minta];
+
+          if ( m ) {
+            // STAGE
+            var stage = new Konva.Stage({
+              container: 'shapemotiv'+hash,
+              width: width,
+              height: height
+            });
+            stage.setAttr('minta', m.mintakod);
+
+            // LAYER
+            var layer = new Konva.Layer();
+
+            if ( m.shapes && m.shapes.length ) {
+              angular.forEach( m.shapes, function(si, se){
+                var settings = {
+                  fill: mot.colors[se],
+                  shapesize: width
+                };
+                if ($scope.showStrokes) {
+                  settings.stroke = 'black';
+                  settings.strokeWidth = $scope.strokeWidth;
+                }
+                $scope.addShape(
+                  stage,
+                  layer,
+                  si.canvas_js,
+                  settings
+                );
+              });
+              $scope.used_motifs[hash].stage = stage;
+            }
+          }
+        }, 100);
+
+      });
+    }
+
+    // Grid feltöltése
+    var _g = p.grid;
+    console.log(p.used_motifs);
+    if ( _g && _g.stages ) {
+      // Grid tábla fixálás
+      if (_g.size.x && _g.size.y) {
+        $scope.grid.x = parseInt(_g.size.x);
+        $scope.grid.y = parseInt(_g.size.y);
+      }
+
+      if (_g.stages) {
+        $scope.resetGrid();
+      }
+
+      $timeout(function(){
+        angular.forEach(_g.stages, function(h, gridpos){
+          var width = $scope.color_size-2;
+          var height = $scope.color_size-2;
+          var mot = p.used_motifs[h.hashid];
+
+          var fillholder = $('#grid-h'+gridpos);
+          var current_stage = $scope.used_motifs[h.hashid].stage;
+
+          if (current_stage) {
+            $scope.passMotivToResource( fillholder, current_stage, false );
+          }
+        });
+
+        $scope.loader_title = $scope.translate('default_loader_title');
+        $scope.apploading = false;
+      }, 100);
     }
   }
 
@@ -711,6 +748,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     var lang = $scope.current_lang;
     var translates = {
       'hu':{
+        'default_loader_title': 'MOZA Tervező',
+        'loader_title_loadproject': 'Saját projekt betöltése',
         'no_motiv_selected': 'Nincs kiválasztva aktív minta motívum. Válasszon a kategóriák közül.',
         'missing_project_loading_email': 'A projektek betöltéséhez adja meg az e-mail címét!',
       }

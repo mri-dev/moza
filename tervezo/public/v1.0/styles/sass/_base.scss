@@ -8,6 +8,33 @@ body{
   box-sizing: border-box;
 }
 
+.site-preloader{
+  position: fixed;
+  background: rgba(224, 224, 224, 0.95);
+  top: 90px;
+  bottom: 0;
+  left: $size-sidebar;
+  right: 0;
+  z-index: 99;
+  color: #7b7b7b;
+  .inside{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 1.5rem;
+
+    h2 {
+      text-transform: uppercase;
+      line-height:1;
+      margin: 0 0 2rem 0;
+      color: black;
+    }
+  }
+}
+
 header{
   background: white;
   display: -webkit-box;
