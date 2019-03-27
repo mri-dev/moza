@@ -38,6 +38,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   };
   $scope.motiv_size = ($('.sidebar').width() - 8 - 12 - 6) / 3;
   $scope.workmotiv_size = 202;
+  $scope.csempenmdb = 25;
 
   $scope.calcScaleFactor = function( size ){
     return parseFloat( size / 200);
@@ -434,11 +435,103 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     return rgb;
   }
 
+  $scope.order = function(ev) {
+    $scope.collectDataToOrder(function( data ) {
+      console.log(data);
+      $mdDialog.show({
+        controller: OrderDialogController,
+        templateUrl: '/ajax/template/order',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose:true,
+        locals: {
+          motifs: data.motifs,
+          dbnm: $scope.csempenmdb
+        }
+      })
+      .then(function(form) {
+        if (form) {
+          console.log(form);
+        }
+      }, function() {
+
+      });
+    });
+  }
+
+  function OrderDialogController($scope, $mdDialog, motifs, dbnm) {
+    $scope.motifs = motifs;
+    $scope.csempenmdb = dbnm;
+    $scope.qtyconf = {};
+
+    /*$scope.$watch('qtyconf', function(n,o,s){
+      console.log(n);
+      console.log(o);
+    }, true);*/
+
+    $scope.hide = function() {
+      $mdDialog.hide(false);
+    };
+
+    $scope.cancel = function() {
+      $mdDialog.cancel(false);
+    };
+
+    $scope.saving = function() {
+      $mdDialog.hide();
+    };
+    $scope.modifyQty = function(hash, by) {
+      var n = $scope.qtyconf[hash].nm;
+      var d = $scope.qtyconf[hash].db;
+
+      // reset
+      $scope.qtyconf[hash].nm = 0;
+      $scope.qtyconf[hash].db = 0;
+
+      if (by == 'db') {
+        $scope.qtyconf[hash].nm = d / $scope.csempenmdb;
+        $scope.qtyconf[hash].db = d;
+      } else if( by == 'nm') {
+        $scope.qtyconf[hash].db = n * $scope.csempenmdb;
+        $scope.qtyconf[hash].nm = n;
+      }
+    }
+  }
+
+  $scope.collectDataToOrder = function( callback ) {
+    var data = {};
+    data.motifs = [];
+
+    if ($scope.used_motifs) {
+      angular.forEach($scope.used_motifs, function(e,i){
+        var colors = [];
+        angular.forEach(e.colors, function(c,ii){
+          $scope.findColorObjectByRGB( c.replace("#",""),  function( color ){
+            colors.push({
+              'obj': color,
+              'rgb': c
+            })
+          } );
+        });
+
+        e.colors = colors;
+        e.imageurl = e.stage.toDataURL({
+          pixelRatio: 2
+        });
+        data.motifs.push(e);
+      });
+    }
+
+    if (typeof callback !== 'undefined') {
+      callback( data );
+    }
+  }
+
   $scope.saveProject = function(ev)
   {
     $scope.collectDataToSave(function( dataset ) {
       $mdDialog.show({
-        controller: DialogController,
+        controller: SaveDialogController,
         templateUrl: '/ajax/template/saveProject',
         parent: angular.element(document.body),
         targetEvent: ev,
@@ -460,7 +553,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     });
   }
 
-  function DialogController($scope, $mdDialog, save) {
+  function SaveDialogController($scope, $mdDialog, save) {
     $scope.save = save;
     $scope.hide = function() {
       $mdDialog.hide(false);

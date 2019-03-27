@@ -188,7 +188,7 @@
                 <button type="button" class="btn btn-default"><span class="ico"><i class="fa fa-file-text"></i></span> <?php echo __('Ajánlatkérés'); ?></button>
               </div>
               <div class="">
-                <button type="button" class="btn btn-success"><span class="ico"><i class="fa fa-cart-plus"></i></span> <?php echo __('Megrendelés'); ?></button>
+                <button type="button" ng-click="order($event)" class="btn btn-success"><span class="ico"><i class="fa fa-cart-plus"></i></span> <?php echo __('Megrendelés'); ?></button>
               </div>
             </div>
           </div>

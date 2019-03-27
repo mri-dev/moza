@@ -680,13 +680,111 @@ md-toast.alert-toast{
   }
 }
 
+.order-modal-overall{
+  .motifs{
+    padding: 5px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    margin: -5px;
+
+    & > div {
+      padding: 5px;
+    }
+
+    .csempe{
+      flex-basis: 94px;
+      img {
+        width: 94px;
+        height: 94px;
+        border: 1px solid #acacac;
+      }
+    }
+    .data{
+      color: #5c5c5c;
+      flex: 1;
+      .motiv{
+        font-size: 1.4rem;
+        text-transform: uppercase;
+        padding: 0 0 4px 0;
+        margin: 0 0 4px 0;
+        border-bottom: 1px solid #d8d8d8;
+
+        strong {
+          color: black;
+          font-size: 1.8rem;
+        }
+      }
+      .colors{
+        .h{
+          font-size: 1.2rem;
+          margin: 0 0 5px 0;
+          color: #8e8e8e;
+        }
+        .color-config{
+          line-height: 15px;
+          margin: 2px 0;
+          font-size: 1rem;
+          .color-preview{
+            width: 15px;
+            height: 15px;
+            margin: 0 10px 0 0;
+            vertical-align: middle;
+            display: block;
+            float: left;
+            border: 0.7px solid #acacac;
+          }
+        }
+      }
+    }
+    .order-details{
+      flex-basis: calc(50% - 94px);
+      .fconf{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+
+        .t{
+          padding: 0 10px;
+          white-space:nowrap;
+          line-height: 30px;
+        }
+        .f {
+          input{
+            width: 100%;
+            line-height: 30px;
+            height: 30px;
+            padding: 0 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
 md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar){
   background-color: #f05f42;
+}
+md-toolbar.md-default-theme:not(.md-menu-toolbar).order, md-toolbar:not(.md-menu-toolbar).order{
+  background-color: $color-green;
+}
+md-toolbar{
+  md-input-container{
+    margin: 5px 0 !important;
+  }
 }
 
 @media screen and (min-width:700px){
   md-dialog{
     max-width: 550px !important;
     min-width: 550px !important;
+  }
+  md-dialog.order-dialog{
+    max-width: 750px !important;
+    min-width: 750px !important;
   }
 }
