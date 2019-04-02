@@ -60,11 +60,14 @@
         <div style="color: #e66363;" ng-show="!order.name || !order.email || !order.phone">
           <?php echo __('A megrendelés leadásához adja meg az adatait!'); ?>
         </div>
+        <div class="alert alert-warning" ng-show="savingorder">
+          <?php echo __('A megrendelés leadása folyamatban...'); ?>
+        </div>
       </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
-      <md-button ng-click="saving()" ng-if="order.name && order.email && order.phone">
+      <md-button ng-click="saving()" ng-if="order.name && order.email && order.phone && !savingorder">
         <?php echo __('Megrendelés leadása'); ?>
       </md-button>
     </md-dialog-actions>

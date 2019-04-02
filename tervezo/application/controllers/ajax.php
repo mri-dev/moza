@@ -25,6 +25,9 @@ class ajax extends Controller{
 
 					switch ( $mode )
 					{
+						case 'Order':
+
+						break;
 						case 'getProjects':
 							$projects = new Projects( array('db' => $this->db) );
 							try {

@@ -446,7 +446,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         clickOutsideToClose:true,
         locals: {
           motifs: data.motifs,
-          dbnm: $scope.csempenmdb
+          dbnm: $scope.csempenmdb,
+          grid: $scope.grid,
+          gridstages: $scope.gridStages
         }
       })
       .then(function(form) {
@@ -459,10 +461,13 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     });
   }
 
-  function OrderDialogController($scope, $mdDialog, motifs, dbnm) {
+  function OrderDialogController($scope, $mdDialog, motifs, dbnm, grid, gridstages ) {
     $scope.motifs = motifs;
     $scope.csempenmdb = dbnm;
     $scope.qtyconf = {};
+    $scope.grid = grid;
+    $scope.gridStages = gridstages;
+    $scope.savingorder = false;
 
     /*$scope.$watch('qtyconf', function(n,o,s){
       console.log(n);
@@ -478,8 +483,32 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     };
 
     $scope.saving = function() {
-      $mdDialog.hide();
+      $scope.savingorder = true;
+      console.log($scope.grid);
+      console.log($scope.gridStages);
+
+      $http({
+        method: 'POST',
+        url: '/ajax/post',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        data: $.param({
+          type: "Moza",
+          mode: 'Order',
+          gridsizes: $scope.grid,
+          gridconfig: $scope.gridStages,
+          qtyconfig: $scope.qtyconf,
+          motifs: $scope.motifs
+        })
+      }).success(function(r){
+        console.log(r);
+        if (r.success == 1) {
+          $scope.savingorder = false;
+          $mdDialog.hide();
+        } else {
+        }
+      });
     };
+
     $scope.modifyQty = function(hash, by) {
       var n = $scope.qtyconf[hash].nm;
       var d = $scope.qtyconf[hash].db;
@@ -518,6 +547,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         e.imageurl = e.stage.toDataURL({
           pixelRatio: 2
         });
+        delete e.stage;
         data.motifs.push(e);
       });
     }
