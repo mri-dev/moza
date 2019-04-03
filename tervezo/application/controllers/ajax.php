@@ -2,6 +2,7 @@
 use PortalManager\Motivumok;
 use PortalManager\Categories;
 use PortalManager\Projects;
+use PortalManager\Orders;
 use PortalManager\Colors;
 
 class ajax extends Controller{
@@ -26,7 +27,14 @@ class ajax extends Controller{
 					switch ( $mode )
 					{
 						case 'Order':
-
+							$orders = new Orders( array('db' => $this->db) );
+							try {
+								$msg = $orders->create( $_POST['orderer'], $_POST['motifs'], $_POST['qtyconfig'], $_POST['gridsizes'], $_POST['gridconfig'], $_POST['project'] );
+								$ret['success'] = 1;
+								$ret['msg'] = $msg;
+							} catch (\Exception $e) {
+								$this->escape($e->getMessage(), $ret);
+							}
 						break;
 						case 'getProjects':
 							$projects = new Projects( array('db' => $this->db) );
@@ -35,7 +43,7 @@ class ajax extends Controller{
 								$ret['data'] = $list;
 								$ret['success'] = 1;
 							} catch (\Exception $e) {
-								$err = $this->escape($e->getMessage());
+								$err = $this->escape($e->getMessage(), $ret);
 								$ret[errorCode] = $e->getCode();
 							}
 						break;

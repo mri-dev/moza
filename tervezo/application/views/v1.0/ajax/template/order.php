@@ -41,7 +41,7 @@
                 <div class="h">
                   <?php echo __('Színkonfiguráció'); ?>:
                 </div>
-                <div class="color-config" ng-repeat="color in m.colors">
+                <div class="color-config" ng-repeat="color in m.coloring">
                   <span class="color-preview" style="background:{{color.rgb}};">&nbsp;</span>
                   <strong>{{color.obj.kod}}</strong> - {{color.obj.neve}} &bull; {{color.obj.szin_ncs}}
                 </div>
@@ -59,6 +59,11 @@
         </div>
         <div style="color: #e66363;" ng-show="!order.name || !order.email || !order.phone">
           <?php echo __('A megrendelés leadásához adja meg az adatait!'); ?>
+        </div>
+        <div class="" ng-show="error">
+          <div class="alert alert-danger">
+            {{error}}
+          </div>
         </div>
         <div class="alert alert-warning" ng-show="savingorder">
           <?php echo __('A megrendelés leadása folyamatban...'); ?>

@@ -324,6 +324,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
                   historystage.add( lay );
                   lay.draw();
                 });
+                // Refresg stage if colors fixed
+                $scope.used_motifs[m.hashid].stage = historystage;
               }
             });
           }, 100);
@@ -445,10 +447,12 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         targetEvent: ev,
         clickOutsideToClose:true,
         locals: {
+          toast: $scope.toast,
           motifs: data.motifs,
           dbnm: $scope.csempenmdb,
           grid: $scope.grid,
-          gridstages: $scope.gridStages
+          gridstages: $scope.gridStages,
+          project: $scope.selected_project
         }
       })
       .then(function(form) {
@@ -461,13 +465,16 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     });
   }
 
-  function OrderDialogController($scope, $mdDialog, motifs, dbnm, grid, gridstages ) {
+  function OrderDialogController($scope, $mdDialog, toast, motifs, dbnm, grid, gridstages, project ) {
+    $scope.toast = toast;
     $scope.motifs = motifs;
     $scope.csempenmdb = dbnm;
     $scope.qtyconf = {};
     $scope.grid = grid;
     $scope.gridStages = gridstages;
     $scope.savingorder = false;
+    $scope.project = project;
+    $scope.error = false;
 
     /*$scope.$watch('qtyconf', function(n,o,s){
       console.log(n);
@@ -484,8 +491,15 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
     $scope.saving = function() {
       $scope.savingorder = true;
-      console.log($scope.grid);
-      console.log($scope.gridStages);
+      $scope.error = false;
+
+      // Delete stage
+      var motifs = angular.copy( $scope.motifs );
+      console.log(motifs);
+
+      angular.forEach(motifs, function(m,i){
+        delete m.stage;
+      });
 
       $http({
         method: 'POST',
@@ -494,17 +508,21 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         data: $.param({
           type: "Moza",
           mode: 'Order',
+          orderer: $scope.order,
           gridsizes: $scope.grid,
           gridconfig: $scope.gridStages,
           qtyconfig: $scope.qtyconf,
-          motifs: $scope.motifs
+          motifs: motifs,
+          project: $scope.project.ID
         })
       }).success(function(r){
         console.log(r);
+        $scope.savingorder = false;
         if (r.success == 1) {
-          $scope.savingorder = false;
+          $scope.toast(r.msg, 'success', 5000);
           $mdDialog.hide();
         } else {
+          $scope.error = r.msg;
         }
       });
     };
@@ -542,12 +560,10 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
             })
           } );
         });
-
-        e.colors = colors;
+        e.coloring = colors;
         e.imageurl = e.stage.toDataURL({
-          pixelRatio: 2
+          pixelRatio: 3
         });
-        delete e.stage;
         data.motifs.push(e);
       });
     }
