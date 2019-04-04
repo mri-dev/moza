@@ -118,7 +118,7 @@ class Controller {
 
         $protocol = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
 
-        $v['domain'] = $protocol.str_replace( array('http://','https://'), '', $v['page_url']);
+        $v['domain'] = $protocol.str_replace( array('https://www.','http://www.','http://','https://'), '', $v['page_url']);
 
         if (strpos($v['alert_email'],",") !== false)
         {

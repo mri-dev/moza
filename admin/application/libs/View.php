@@ -5,16 +5,15 @@
 		function __construct(){}
 
 		function render($item,$fnList = null){
-            $step = 0;
-
-            if($fnList){
-                $f = VIEW.$item.'.php';
-                $f = rtrim($f,'/');
-                if(file_exists($f)){
-                    require $f;
-                    return true;
-                }
-            }
+      $step = 0;
+      if($fnList){
+          $f = VIEW.$item.'.php';
+          $f = rtrim($f,'/');
+          if(file_exists($f)){
+              require $f;
+              return true;
+          }
+      }
 
 			if(strpos($item,"::") !== false){
 				$ext 	= explode("::",$item);

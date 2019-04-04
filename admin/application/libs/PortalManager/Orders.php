@@ -1,6 +1,8 @@
 <?
 namespace PortalManager;
 
+use MailManager\Mailer;
+use PortalManager\Template;
 /**
 * class Orders
 * @package PortalManager
@@ -26,11 +28,12 @@ class Orders
       throw new \Exception(__('Kérjük, hogy adja meg a motívumoknál a rendelendő mennyiségeket (darab vagy nm)!'), 1);
     }
 
+    $hashkey = md5(uniqid());
 		$this->db->insert(
 			self::DB_ORDERS,
 			array(
         'saved_project_id' => ($project && $project != '') ? $project : NULL,
-        'hashkey' => md5(uniqid()),
+        'hashkey' => $hashkey,
         'orderer_name' => trim($orderer['name']),
         'orderer_phone' => trim($orderer['phone']),
         'orderer_email' => trim($orderer['email']),
@@ -60,6 +63,30 @@ class Orders
     		);
       }
     }
+
+    $mail = new Mailer(
+      $this->db->settings['page_title'],
+      SMTP_USER,
+      $this->db->settings['mail_sender_mode']
+    );
+
+    $mail->add( 'molnar.istvan@web-pro.hu' );
+
+    $arg = array(
+      'settings' => $this->db->settings,
+      'hashkey' => $hashkey,
+      'order_name' => trim($orderer['name']),
+      'order_email' => trim($orderer['email']),
+      'order_phone' => trim($orderer['phone']),
+      'gridsizes' => $gridsizes,
+      'gridconfig' => $gridconfig,
+      'qtyconfig' => $qtyconfig,
+      'motifs' => $motifs
+    );
+
+    $mail->setSubject( 'Visszaigazolás: megrendelés igényét fogadtuk.' );
+    $mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'order_new_user', $arg ) );
+    $re = $mail->sendMail();
 
     return __('Sikeresen megrendelte a konfigurációt. Hamarosan felvesszük Önnel a kapcsolatot!');
 	}
