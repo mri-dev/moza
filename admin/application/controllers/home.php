@@ -1,5 +1,6 @@
 <?
 use PortalManager\Portal;
+use PortalManager\Orders;
 
 class home extends Controller{
 		function __construct(){
@@ -18,6 +19,12 @@ class home extends Controller{
 
 			$this->view->adm = $this->AdminUser;
 			$this->view->adm->logged = $this->AdminUser->isLogged();
+
+			$orders = new Orders(array('db' => $this->db));
+			$order_list = $orders->getAll(array(
+				'only_unseen' => true
+			));
+			$this->out( 'orders', $order_list );
 
 			if($this->gets[1] == 'exit'){
 				$this->AdminUser->logout();

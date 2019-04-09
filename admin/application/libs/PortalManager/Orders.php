@@ -99,15 +99,28 @@ class Orders
 
 		$qry = "SELECT
       p.*
-		FROM ".self::DB_PROJECTS." as p
+		FROM ".self::DB_ORDERS." as p
 		WHERE 1=1";
 
-    if (!empty($arg['email'])) {
-      $qry .= " and p.email = :email";
-      $qryp['email'] = trim($arg['email']);
+    if (isset($arg['session'])) {
+      $qry .= " and p.hashkey = '".$arg['session']."'";
     }
 
-		$qry .= " ORDER BY p.savedate DESC ";
+    if (isset($arg['only_unseen'])) {
+      $qry .= " and p.megtekintve IS NULL ";
+    }
+
+    if (isset($arg['show_archive'])) {
+      $qry .= " and p.archivalt = 1 ";
+    } else {
+      $qry .= " and p.archivalt = 0 ";
+    }
+
+    if (isset($arg['show_unwatched'])) {
+      $qry .= " and p.megtekintve IS NULL ";
+    }
+
+		$qry .= " ORDER BY p.archivalt ASC, p.megtekintve ASC, p.idopont DESC ";
 
 		$qry = $this->db->squery( $qry, $qryp );
 
@@ -116,11 +129,8 @@ class Orders
 		$data = $qry->fetchAll(\PDO::FETCH_ASSOC);
 
 		foreach ( $data as $d ) {
-      $d['grid'] = json_decode($d['gridconfig'], true);
-      $d['used_motifs'] = json_decode($d['used_motifs'], true);
-      $d['used_colors'] = json_decode($d['used_colors'], true);
-      unset($d['email']);
-      unset($d['gridconfig']);
+      $d['gridconfig'] = json_decode($d['gridconfig'], true);
+      $d['motifs'] = $this->getMotifs( $d['ID'] );
 			$tree[] = $d;
 		}
 
@@ -129,8 +139,56 @@ class Orders
 		return $tree;
 	}
 
+  public function getEmailOrders( $email )
+  {
+    $qryp = array();
+    $qry = "SELECT
+      p.ID,p.hashkey,p.idopont
+    FROM ".self::DB_ORDERS." as p
+    WHERE 1=1 and p.orderer_email = :email ORDER BY p.idopont DESC";
+    $qryp['email'] = $email;
+    $qry = $this->db->squery( $qry, $qryp );
+
+    if( $qry->rowCount() == 0 ) return array();
+
+    $data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+
+    $tree = array();
+    foreach ( $data as $d ) {
+      $tree[] = $d;
+    }
+
+    return $tree;
+  }
+
+  public function getMotifs( $order )
+  {
+
+    $qryp = array();
+    $qry = "SELECT
+      p.*
+		FROM ".self::DB_ORDER_ITEMS." as p
+		WHERE 1=1 and p.rendeles_id = :order";
+    $qryp['order'] = (int)$order;
+
+		$qry = $this->db->squery( $qry, $qryp );
+
+		if( $qry->rowCount() == 0 ) return $this;
+
+		$data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+
+    $tree = array();
+		foreach ( $data as $d ) {
+      $d['szinek'] = json_decode($d['szinek'], true);
+			$tree[] = $d;
+		}
+
+    return $tree;
+  }
+
 	public function __destruct()
 	{
+    $this->tree = array();
     $this->db = null;
 	}
 }

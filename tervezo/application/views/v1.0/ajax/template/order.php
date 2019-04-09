@@ -1,8 +1,8 @@
-<md-dialog class="order-dialog" aria-label="<?php echo __('Megrendelés'); ?>">
+<md-dialog class="order-dialog" aria-label="<?php echo __('Ajánlatkérés'); ?>">
   <form ng-cloak>
     <md-toolbar class="order">
       <div class="md-toolbar-tools">
-        <h2><?php echo __('Megrendelés'); ?></h2>
+        <h2><?php echo __('Ajánlatkérés'); ?></h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
           <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -58,7 +58,7 @@
           </div>
         </div>
         <div style="color: #e66363;" ng-show="!order.name || !order.email || !order.phone">
-          <?php echo __('A megrendelés leadásához adja meg az adatait!'); ?>
+          <?php echo __('Az ajánlatkérés leadásához adja meg az adatait!'); ?>
         </div>
         <div class="" ng-show="error">
           <div class="alert alert-danger">
@@ -66,14 +66,14 @@
           </div>
         </div>
         <div class="alert alert-warning" ng-show="savingorder">
-          <?php echo __('A megrendelés leadása folyamatban...'); ?>
+          <?php echo __('Ajánlatkérés leadása folyamatban...'); ?>
         </div>
       </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
       <md-button ng-click="saving()" ng-if="order.name && order.email && order.phone && !savingorder">
-        <?php echo __('Megrendelés leadása'); ?>
+        <?php echo __('Ajánlatkérés leadása'); ?>
       </md-button>
     </md-dialog-actions>
   </form>

@@ -145,7 +145,7 @@ div[class*=col-p-5]{
 .con > form > .row {
 	margin: 0 -15px;
 }
-.dashboard .row{
+.dashboard > .row{
   margin-bottom: 35px;
 }
 button, input[type=button], input[type=submit]{
@@ -3164,4 +3164,62 @@ md-toast.mode-success .md-toast-content{
 .compatibility-list .manufacturer .models .model .type-restricts .restrict .act{
   flex-basis: 25px;
   text-align: center;
+}
+.card-item-holder{
+  font-size: 0.8rem;
+}
+.card-item-holder .more-details{
+  background: #fafafa;
+  display: none;
+}
+.card-item-holder .row.row-head{
+  background: #f3f3f3;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #808080;
+}
+.card-item-holder .row:not(.row-head){
+  border-bottom: 0.5px solid #e2e2e2;
+}
+.card-item-holder .row.row-head > div{
+  padding: 10px 15px;
+}
+.card-item-holder .row:not(.row-head) > div{
+  padding: 10px 15px;
+}
+.card-item-holder .row:not(.row-head).untouched{
+  background: #ffffe6;
+}
+.card-item-holder .row:not(.row-head).touched{
+  background: #ffffff;
+}
+.card-item-holder .row:not(.row-head).welldone{
+  background: #dcebd7;
+}
+.card-item-holder .row:not(.row-head).archived{
+  background: #ededed;
+}
+.jel-info{
+  font-size: 0.6rem;
+}
+.jel-info .background {
+  padding: 5px;
+  border: 0.5px solid #acacac;
+  text-transform: uppercase;
+  color: black;
+}
+.jel-info > div{
+  margin: 4px 0;
+}
+.jel-info .background.untouched{
+  background: #ffffe6;
+}
+.jel-info .background.touched{
+  background: #ffffff;
+}
+.jel-info .background.welldone{
+  background: #dcebd7;
+}
+.jel-info .background.archived{
+  background: #ededed;
 }

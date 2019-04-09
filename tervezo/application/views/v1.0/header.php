@@ -31,12 +31,20 @@
   </div>
   <div class="backurl">
     <div class="in">
-      <a href="http://www.moza.hu"> <i class="fa fa-angle-left"></i> <?php echo __('vissza a moza cementlap manufaktúra weboldalára'); ?></a>
+      <?php if ($this->sessionpage): ?>
+        <a href="/"> <i class="fa fa-angle-left"></i> <?php echo __('vissza a moza cementlap tervezőbe'); ?></a>
+      <?php else: ?>
+        <a href="http://www.moza.hu"> <i class="fa fa-angle-left"></i> <?php echo __('vissza a moza cementlap manufaktúra weboldalára'); ?></a>
+      <?php endif; ?>
     </div>
   </div>
   <div class="title">
     <div class="in">
-      <?php echo __('Cementlap tervező program'); ?>
+      <?php if ($this->sessionpage): ?>
+          <?php echo $this->order['orderer_name'].' '.__('ajánlatkérése'); ?>
+      <?php else: ?>
+        <?php echo __('Cementlap tervező program'); ?>
+      <?php endif; ?>
     </div>
   </div>
   <div class="langs">
@@ -46,23 +54,39 @@
   </div>
 </header>
 <div class="sidebar">
-  <div class="kat-title">
-    <?php echo __('Kategóriák'); ?>
-  </div>
-  <div class="cat-list">
-    <div class="cat" ng-class="(aktiv_kat==cat.ID)?'active':''" ng-repeat="cat in kategoria_lista">
-      <div class="title" ng-click="changeKat(cat.ID)">
-        {{cat.neve}}
+  <?php if ($this->sessionpage): ?>
+    <div class="kat-title">
+      <?php echo __('Ajánlatkérések'); ?>:
+      <div class="subtitle">
+        <?=$this->order['orderer_email']?>
       </div>
-      <div class="motifs" ng-show="(aktiv_kat==cat.ID && kategoriak[cat.hashkey].length != 0)">
-        <div class="motiv" ng-repeat="m in kategoriak[cat.hashkey]">
-          <div class="wrapper" title="{{m.mintakod}}" ng-click="pickNewMotiv(m)">
-            <motivum kod="m.mintakod" shapes="m.shapes"></motivum>
+    </div>
+    <div class="cat-list">
+      <?php foreach ((array)$this->allorders as $o): ?>
+        <div class="cat<?=($o['hashkey'] == $this->order['hashkey'])?' active':''?>">
+          <div class="title"><a href="/sessions/<?=$o['hashkey']?>">#<?=$o['ID']?> <?=date('Y-m-d', strtotime($o['idopont']))?></a></div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  <?php else: ?>
+    <div class="kat-title">
+      <?php echo __('Kategóriák'); ?>
+    </div>
+    <div class="cat-list">
+      <div class="cat" ng-class="(aktiv_kat==cat.ID)?'active':''" ng-repeat="cat in kategoria_lista">
+        <div class="title" ng-click="changeKat(cat.ID)">
+          {{cat.neve}}
+        </div>
+        <div class="motifs" ng-show="(aktiv_kat==cat.ID && kategoriak[cat.hashkey].length != 0)">
+          <div class="motiv" ng-repeat="m in kategoriak[cat.hashkey]">
+            <div class="wrapper" title="{{m.mintakod}}" ng-click="pickNewMotiv(m)">
+              <motivum kod="m.mintakod" shapes="m.shapes"></motivum>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  <?php endif; ?>
   <div class="copy">
     <?php echo __('Minden jog fenntartva!'); ?>
     <div class="creator">

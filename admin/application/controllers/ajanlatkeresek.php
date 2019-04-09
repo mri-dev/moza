@@ -1,9 +1,10 @@
 <?php
+use PortalManager\Orders;
 
-class megrendelesek extends Controller{
+class ajanlatkeresek extends Controller{
 		function __construct(){
 			parent::__construct();
-			parent::$pageTitle = 'Megrendelések';
+			parent::$pageTitle = 'Ajánlatkérések';
 
     	$this->view->adm = $this->AdminUser;
 			$this->view->adm->logged = $this->AdminUser->isLogged();
@@ -11,6 +12,10 @@ class megrendelesek extends Controller{
 			if($this->gets[1] == 'exit'){
 				$this->AdminUser->logout();
 			}
+
+			$orders = new Orders(array('db' => $this->db));
+			$order_list = $orders->getAll();
+			$this->out( 'orders', $order_list );
 
 			// SEO Információk
 			$SEO = null;

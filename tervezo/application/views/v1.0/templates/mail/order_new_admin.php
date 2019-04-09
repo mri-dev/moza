@@ -77,6 +77,6 @@
 
 <br>
 <strong>A megrendelés adatlapja megtekinthető a következő linken:</strong><br />
-<a href="<?=$settings['domain']?>/order/<?=$hashkey?>"><?=$settings['domain']?>/order/<?=$hashkey?></a>
+<a href="<?=$settings['domain']?>/sessions/<?=$hashkey?>?av=1"><?=$settings['domain']?>/sessions/<?=$hashkey?></a>
 </div>
 <? require "footer.php"; ?>

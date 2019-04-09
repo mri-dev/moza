@@ -140,6 +140,13 @@ header{
     font-weight: bold;
     text-transform: uppercase;
     color: #696969;
+
+    .subtitle{
+      font-weight: normal;
+      font-size: 1.3rem;
+      color: $color-orange;
+      text-transform: none;
+    }
   }
 
   .cat-list {
@@ -154,6 +161,14 @@ header{
         padding: 10px 25px 10px 30px;
         cursor: pointer;
         outline: none !important;
+
+        a{
+          text-decoration: none;
+          color: $color-blue;
+        }
+        a:visited{
+          color: #7c7c7c;
+        }
       }
 
       &.active{
@@ -161,6 +176,10 @@ header{
           background: #999999;
           border-left:5px solid #4C4C4C;
           color: white;
+
+          a {
+            color: white;
+          }
         }
       }
 
@@ -761,6 +780,100 @@ md-toast.alert-toast{
             padding: 0 5px;
           }
         }
+      }
+    }
+  }
+}
+
+.sessionpage{
+  .block{
+    margin: 0 0 25px 0;
+  }
+  h3{
+    text-transform: uppercase;
+    color: $color-orange;
+    margin: 0 0 15px 0;
+    font-size: 1.4vw;
+  }
+  table.preview{
+    border-color: #d5d4d4;
+    td {
+      img {
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+  }
+  table.config{
+    border-color: #d5d4d4;
+    background: white;
+    td {
+      padding: 15px;
+      vertical-align: top;
+    }
+    tr td:first-child {
+      padding: 0;
+      border-right: none;
+    }
+  }
+  .data-rows{
+    font-size: 1vw;
+    & > .row{
+      margin: 10px 0;
+    }
+  }
+
+  .config{
+    .clr{
+      clear: both;
+    }
+    .each{
+      font-size: 0.8vw;
+      margin: 0 0 20px 0;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+
+      .mot{
+        flex-basis: 80px;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 2px 4px 16px -4px black;
+      }
+      .data{
+        padding: 0 0 0 8px;
+        flex-basis: calc(50% - 40px);
+        .minta {
+          font-size: 1.1vw;
+        }
+        .wrapper{
+          background: white;
+          padding: 8px;
+          border-radius: 3px;
+        }
+      }
+      .colors{
+          padding: 0 0 0 8px;
+          flex-basis: calc(50% - 40px);
+          .h{
+            text-transform: uppercase;
+            color: #838383;
+            font-size: 0.6vw;
+            margin: 0 0 10px 0;
+          }
+          .col{
+            margin: 3px 0;
+            .color-preview{
+              border: 0.5px solid #acacac;
+            }
+          }
+          .wrapper{
+            background: white;
+            padding: 8px;
+            border-radius: 3px;
+          }
       }
     }
   }
