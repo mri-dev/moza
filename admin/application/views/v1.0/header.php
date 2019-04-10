@@ -189,7 +189,7 @@
               <!-- End of MODULS-->
               <li class="<?=($this->gets[0] == 'kategoriak')?'on':''?>"><a href="/kategoriak" title="Kategóriák"><span class="ni">6</span><i class="fa fa-bars"></i> Kategóriák</a></li>
               <li class="<?=($this->gets[0] == 'szinek')?'on':''?>"><a href="/szinek" title="Színek"><span class="ni">8</span><i class="fa fa-th"></i> Színek</a></li>
-              <li class="<?=($this->gets[0] == 'motivumok')?'on':''?>"><a href="/motivumok" title="Motívumok"><span class="ni">8</span><i class="fa fa-stop"></i> Motívumok</a></li>
+              <li class="<?=($this->gets[0] == 'motivumjaim')?'on':''?>"><a href="/motivumjaim" title="Motívumok"><span class="ni">8</span><i class="fa fa-stop"></i> Motívumok</a></li>
 
         	</ul>
         </div>

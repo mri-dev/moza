@@ -16,41 +16,78 @@ class Motivumok
 	function __construct( $arg = array() )
 	{
 		$this->db = $arg[db];
-    }
+  }
 
-	/**
-	 * Kategória létrehzás
-	 * @param array $data új kategória létrehozásához szükséges adatok
-	 * @return void
-	 */
-	public function add( $data = array() )
+	public function add( $id = 0, $data = array() )
 	{
-		$name = ($data['name']) ?: false;
-		$sort = ($data['sortnumber']) ?: 0;
-		$kod = ($data['kod']) ?: NULL;
-		$szin_rgb = ($data['szin_rgb']) ?: NULL;
-    $szin_ncs = ($data['szin_ncs']) ?: NULL;
+		$kod = ($data['mintakod']) ? $data['mintakod'] : false;
 
-		if ( !$name ) {
-			throw new \Exception( "Kérjük, hogy adja meg a szín elnevezését!" );
-		}
-    if ( !$kod ) {
-			throw new \Exception( "Kérjük, hogy adja meg a szín azonosítóját!" );
-		}
-    if ( !$szin_rgb ) {
-			throw new \Exception( "Kérjük, hogy adja meg a szín RGB színkódját!" );
+		if ( !$kod ) {
+			throw new \Exception( "Kérjük, hogy adja meg a motívum mintakódját!" );
 		}
 
-		$this->db->insert(
-			"motivumok",
-			array(
-				'neve' => $name,
-				'sorrend' => $sort,
-        'kod' => $kod,
-        'szin_rgb' => $szin_rgb,
-        'szin_ncs' => $szin_ncs
-			)
-		);
+		$svgpath = $this->prepareShapeSVGScript( $data['svgpath'] );
+
+		if ($id == 0) {
+			$this->db->insert(
+				"motivumok",
+				array(
+					'lathato' => ($data['lathato'] == 'false') ? 0 : 1,
+					'mintakod' => $data['mintakod'],
+					'sorrend' => (int)$data['sorrend'],
+					'svgpath' => $svgpath['cleared']
+				)
+			);
+		} else {
+			$this->db->update(
+				"motivumok",
+				array(
+					'lathato' => ($data['lathato'] == 'false') ? 0 : 1,
+					'mintakod' => $data['mintakod'],
+					'sorrend' => (int)$data['sorrend'],
+					'svgpath' => $svgpath['cleared']
+				),
+				sprintf("ID = %d", $id)
+			);
+		}
+
+		// has shapes
+		$sh = $this->db->squery("SELECT ID FROM motivum_layers WHERE motivumID = :mid", array('mid' => $kod ));
+
+		if ( $sh->rowCount() == 0 ) {
+			if ($svgpath['shapes'] && count($svgpath['shapes']) != 0) {
+				$si = 0;
+				foreach ((array)$svgpath['shapes'] as $shape) {
+					$si++;
+					$shape_js  = '';
+					foreach ((array)$shape as $s) {
+						$shape_js .= $s.';';
+					}
+					if ($shape_js != '') {
+						$this->db->insert(
+							'motivum_layers',
+							array(
+								'motivumID' => $kod,
+								'canvas_js' => $shape_js,
+								'sortindex' => $si,
+								'fill_color' => '#333333'
+							)
+						);
+					}
+				}
+			}
+		} else {
+			// shape fill color
+			foreach ((array)$data['shapes'] as $sh) {
+				$this->db->update(
+					'motivum_layers',
+					array(
+						'fill_color' => $sh['fill_color']
+					),
+					sprintf("ID = %d", (int)$sh['ID'])
+				);
+			}
+		}
 	}
 
 	public function edit( Color $color, $new_data = array() )
@@ -77,7 +114,7 @@ class Motivumok
   {
     $shapes = array();
 
-    $qry = "SELECT ID, canvas_js, fill_color FROM motivum_layers WHERE 1=1 and motivumID = :mid ORDER BY sortindex ASC, ID ASC";
+    $qry = "SELECT ID, canvas_js, fill_color, sortindex  FROM motivum_layers WHERE 1=1 and motivumID = :mid ORDER BY sortindex ASC, ID ASC";
     $qry = $this->db->squery( $qry, array( 'mid' => $motivum ) );
 
     if ($qry->rowCount() == 0) {
@@ -130,6 +167,9 @@ class Motivumok
 		foreach ( $data as $d ) {
       $d['ID'] = (int)$d['ID'];
       $d['kategoria'] = (int)$d['kategoria'];
+			if ($arg['admin'] === true) {
+				$d['shapetrim'] = $this->prepareShapeSVGScript( $d['svgpath'] );
+			}
       $d['shapes'] = $this->getMotivumShapes( $d['mintakod'] );
 			$tree[] = $d;
 		}
@@ -137,6 +177,77 @@ class Motivumok
     $this->tree = $tree;
 
 		return $tree;
+	}
+
+	public function prepareShapeSVGScript( $svg )
+	{
+		$back = array();
+		$clearsvg = '';
+
+		// trim
+		$svg = trim($svg);
+		// remove whitespaces
+		$svg = preg_replace('/\s+/', '', $svg);
+		// remove if-s
+		$svg = str_replace(array('if(c){','}'), '', $svg);
+		// renames
+		$svg = str_replace('canvas.', 'ctx.', $svg);
+		// explode line
+		$xsvg = explode(";", rtrim($svg,";"));
+		unset($svg);
+
+		// Grouping
+		$shapes = array();
+		$groupindex = 0;
+		$current_line = 0;
+		foreach ((array)$xsvg as $s) {
+			// excludes
+			if ( $this->expludeSVGLineCheck($s) ) {
+				continue;
+			}
+			if (strpos($s, '.beginPath()') !== false) {
+				$groupindex++;
+			}
+			$shapes[$groupindex][] = $s;
+			$current_line++;
+		}
+		unset($xsvg);
+
+		$reshape = array();
+		foreach ((array)$shapes as $index => $shape) {
+			if (strpos(end($shape), '.closePath()') === false) {
+				$shape[] = 'ctx.closePath()';
+			}
+			$reshape[$index] = $shape;
+		}
+		unset($shapes);
+
+		// collect clear svg
+		foreach ( (array)$reshape as $s ) {
+			foreach ((array)$s as $ss) {
+				$clearsvg .= $ss.';';
+			}
+		}
+
+
+		$back['shapes'] = $reshape;
+		$back['cleared'] = $clearsvg;
+		unset($reshape);
+
+		return $back;
+	}
+
+	private function expludeSVGLineCheck( $line )
+	{
+		if (strpos($line,'ctx.fillStyle') !== false) {
+			return true;
+		}
+		if (strpos($line,'ctx.fill()') !== false) {
+			return true;
+		}
+		if (strpos($line,'ctx.stroke()') !== false) {
+			return true;
+		}
 	}
 
 	public function __destruct()

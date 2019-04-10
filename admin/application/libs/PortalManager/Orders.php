@@ -21,6 +21,64 @@ class Orders
 		$this->db = $arg[db];
   }
 
+  public function save( $id, $post )
+  {
+    if ($post['order']['orderer_name'] == '') {
+      throw new \Exception("Az ajánlatkérő nevét kötelező megadni!");
+    }
+    if ($post['order']['orderer_phone'] == '') {
+      throw new \Exception("Az ajánlatkérő telefonszámát kötelező megadni!");
+    }
+    if ($post['order']['orderer_email'] == '') {
+      throw new \Exception("Az ajánlatkérő e-mail címét kötelező megadni!");
+    }
+    $this->db->update(
+      self::DB_ORDERS,
+      array(
+        'orderer_name' => trim($post['order']['orderer_name']),
+        'orderer_email' => trim($post['order']['orderer_email']),
+        'orderer_phone' => trim($post['order']['orderer_phone']),
+        'admin_megjegyzes' => addslashes(trim($post['admin_megjegyzes']))
+      ),
+      sprintf("ID = %d", $id)
+    );
+
+    if ($post['items']) {
+      foreach ((array)$post['items'] as $id => $v) {
+        $this->db->update(
+          self::DB_ORDER_ITEMS,
+          array(
+            'me_db' => (float)trim($v['me_db']),
+            'me_nm' => (float)trim($v['me_nm'])
+          ),
+          sprintf("ID = %d", $id)
+        );
+      }
+    }
+  }
+
+  public function setWelldone( $id, $state )
+  {
+    $this->db->update(
+      self::DB_ORDERS,
+      array(
+        'welldone' => ($state === true) ? 1 : false
+      ),
+      sprintf("ID = %d", $id)
+    );
+  }
+
+  public function setArchived( $id, $state )
+  {
+    $this->db->update(
+      self::DB_ORDERS,
+      array(
+        'archivalt' => ($state === true) ? 1 : false
+      ),
+      sprintf("ID = %d", $id)
+    );
+  }
+
 	public function create( $orderer, $motifs, $qtyconfig, $gridsizes, $gridconfig, $project = false )
 	{
 
@@ -91,6 +149,17 @@ class Orders
     return __('Sikeresen megrendelte a konfigurációt. Hamarosan felvesszük Önnel a kapcsolatot!');
 	}
 
+  public function logAdminVisit( $id )
+  {
+    $this->db->update(
+      self::DB_ORDERS,
+      array(
+        'megtekintve' => NOW
+      ),
+      sprintf("ID = %d and megtekintve IS NULL", $id)
+    );
+  }
+
 	public function getAll( $arg = array() )
 	{
 		$tree = array();
@@ -101,6 +170,22 @@ class Orders
       p.*
 		FROM ".self::DB_ORDERS." as p
 		WHERE 1=1";
+
+    // Filters
+    if (isset($arg['filters'])) {
+      if(!empty($arg['filters']['src'])){
+        $src = trim($arg['filters']['src']);
+        $qry .= " and (";
+          $qry .= "p.orderer_name LIKE '%".$src."%' or ";
+          $qry .= "p.orderer_email = '".$src."' or ";
+          $qry .= "p.orderer_phone LIKE '%".$src."%' ";
+        $qry .= ")";
+      }
+    }
+
+    if (isset($arg['ID'])) {
+      $qry .= " and p.ID = '".$arg['ID']."'";
+    }
 
     if (isset($arg['session'])) {
       $qry .= " and p.hashkey = '".$arg['session']."'";
@@ -120,11 +205,13 @@ class Orders
       $qry .= " and p.megtekintve IS NULL ";
     }
 
-		$qry .= " ORDER BY p.archivalt ASC, p.megtekintve ASC, p.idopont DESC ";
+		$qry .= " ORDER BY p.archivalt ASC, p.welldone ASC, p.megtekintve ASC, p.idopont DESC ";
+
+    //echo $qry;
 
 		$qry = $this->db->squery( $qry, $qryp );
 
-		if( $qry->rowCount() == 0 ) return $this;
+		if( $qry->rowCount() == 0 ) return array();
 
 		$data = $qry->fetchAll(\PDO::FETCH_ASSOC);
 

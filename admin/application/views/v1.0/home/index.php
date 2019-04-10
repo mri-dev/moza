@@ -7,8 +7,8 @@
   </div>
   <div class="row">
     <div class="col-md-8">
-      <div class="card border-success">
-        <div class="card-header"><i class="fa fa-file-text-o"></i> Új Ajánlatkérések</div>
+      <div class="card bg-warning border-warning">
+        <div class="card-header text-white"><i class="fa fa-eye-slash"></i> Még nem láttott ajánlatkérések</div>
         <div class="card-body" style="padding: 0;">
           <div class="card-item-holder">
             <div class="row row-head">
@@ -23,6 +23,15 @@
               </div>
               <div class="col-md-1 center"></div>
             </div>
+            <?php if (count((array)$this->orders) == 0): ?>
+            <div class="row">
+              <div class="col-md-12 center">
+                <div class="no-items">
+                  Minden ajánlatkérést megtekintett.
+                </div>
+              </div>
+            </div>
+            <?php endif; ?>
             <?php foreach ( (array)$this->orders as $o ):
               $state = 'untouched';
               if ($o['megtekintve'] != '') {
@@ -68,7 +77,7 @@
       <div class="card">
         <div class="card-header"><i class="fa fa-pie-chart"></i> Statisztika</div>
         <div class="card-body">
-          body
+          ...
         </div>
       </div>
     </div>

@@ -63,7 +63,12 @@ input, textarea{
   -o-transition: all 0.30s ease-in-out;
   outline: none;
 }
-
+.alert{
+  text-align: left !important;
+}
+.card{
+  overflow: hidden;
+}
 .card-header{
   font-weight: bold;
   text-transform: uppercase;
@@ -108,6 +113,8 @@ a.btn {
 }
 a.btn-default {
 	color: black;
+  border-color: #dddddd;
+  background: #f9f9f9;
 }
 html{
 	height: 100%;
@@ -148,16 +155,7 @@ div[class*=col-p-5]{
 .dashboard > .row{
   margin-bottom: 35px;
 }
-button, input[type=button], input[type=submit]{
-	color:#ffffff;
-	background: #676767;
-	border:0;
-	padding: 8px 15px;
-  border-radius: 3px;
-}
-button:hover{
-	background:#f05f42;
-}
+
 #top{
 	background-color: #4c4c4c;
 	color:#fff;
@@ -1527,7 +1525,8 @@ table.termekfrissites > tbody > tr.not-in-product > td{
 	width: 100%;
 }
 
-.votes .no-items {
+.votes .no-items,
+.no-items {
 	padding: 50px;
 	text-align: center;
 }
@@ -3174,9 +3173,9 @@ md-toast.mode-success .md-toast-content{
 }
 .card-item-holder .row.row-head{
   background: #f3f3f3;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   font-weight: bold;
-  color: #808080;
+  color: #000000;
 }
 .card-item-holder .row:not(.row-head){
   border-bottom: 0.5px solid #e2e2e2;
@@ -3211,6 +3210,12 @@ md-toast.mode-success .md-toast-content{
 .jel-info > div{
   margin: 4px 0;
 }
+.jel-info .background,
+.jel-info .icon{
+  float:left;
+  margin: 4px;
+  padding: 5px;
+}
 .jel-info .background.untouched{
   background: #ffffe6;
 }
@@ -3222,4 +3227,163 @@ md-toast.mode-success .md-toast-content{
 }
 .jel-info .background.archived{
   background: #ededed;
+}
+
+.sessioneditor .config .clr {
+  clear: both;
+}
+.sessioneditor .config .each {
+  font-size: 0.8vw;
+  margin: 0 0 20px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.sessioneditor .config .each .mot {
+  flex-basis: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 2px 4px 16px -4px black;
+}
+.sessioneditor .config .each .data {
+  padding: 0 0 0 8px;
+  flex-basis: calc(50% - 40px);
+}
+.sessioneditor .config .each .data .minta {
+  font-size: 1.1vw;
+}
+.sessioneditor .config .each .data .wrapper {
+  padding: 8px;
+  border-radius: 3px;
+}
+.sessioneditor .config .each .colors {
+  padding: 0 0 0 8px;
+  flex-basis: calc(50% - 40px);
+}
+.sessioneditor .config .each .colors .h {
+  text-transform: uppercase;
+  color: #838383;
+  font-size: 0.6vw;
+  margin: 0 0 10px 0;
+}
+.sessioneditor .config .each .colors .col {
+  margin: 3px 0;
+}
+.sessioneditor .config .each .colors .col .color-preview {
+  border: 0.5px solid #acacac;
+}
+.sessioneditor .config .each .colors .wrapper {
+  padding: 8px;
+  border-radius: 3px;
+}
+span.label {
+  padding: 4px;
+  line-height: 1;
+  margin: 3px;
+  color: white !important;
+  vertical-align: middle;
+}
+span.label.label-success{
+  background: #3a9c3a;
+}
+span.label.label-danger{
+  background: #ff4d4d;
+}
+.filters .btn {
+  font-weight: normal;
+  font-size: 0.75rem;
+  text-transform: none;
+  width: 100%;
+}
+.motifs-editor .categories .category{
+  margin: 0 0 15px 0;
+}
+.motifs-editor .categories .category .header{
+  background: #4c4c4c;
+  color: white;
+  margin: 0;
+  padding: 10px;
+  text-transform: uppercase;
+}
+.motifs-editor .categories .category .header h3{
+  font-size:1.3rem;
+  line-height: 1;
+  margin: 0;
+  font-weight: bold;
+}
+.motifs-editor .motif-list-holder .motif-list-header,
+.motifs-editor .motif-list-holder .motif{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.motifs-editor .motif-list-holder .motif-list-header{
+  background: #e6e6e6;
+  font-size: 0.7rem;
+  color: #a39f9f;
+  font-weight: 400;
+}
+.motifs-editor .motif-list-holder .motif{
+  margin: 0 0 10px 0;
+  border-bottom: 1px solid #dfdfdf;
+}
+.motifs-editor .motif-list-holder .motif-list-header > div,
+.motifs-editor .motif-list-holder .motif > div {
+  padding: 10px;
+  box-sizing: content-box;
+}
+.motifs-editor .motif-list-holder .motif .mintakod{
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #f05f42;
+}
+.motifs-editor .motif-list-holder .motif-list-header .mintakod,
+.motifs-editor .motif-list-holder .motif .mintakod{
+  flex-basis: 80px;
+}
+.motifs-editor .motif-list-holder .motif-list-header .minta,
+.motifs-editor .motif-list-holder .motif .minta{
+  flex-basis: 80px;
+}
+.motifs-editor .motif-list-holder .motif-list-header .act,
+.motifs-editor .motif-list-holder .motif .act{
+  flex-basis: 20px;
+}
+.motifs-editor .motif-list-holder .motif-list-header .data,
+.motifs-editor .motif-list-holder .motif .data{
+  flex: 1;
+}
+.motifs-editor .motif-list-holder .motif-list-header .sorrend,
+.motifs-editor .motif-list-holder .motif-list-header .lathato,
+.motifs-editor .motif-list-holder .motif .sorrend,
+.motifs-editor .motif-list-holder .motif .lathato{
+  flex-basis: 80px;
+}
+.motifs-editor .motif-list-holder .motif .data .colors span{
+  margin: 0 5px 0 0;
+  padding: 5px;
+  font-size: 0.7rem;
+  border: 0.5px solid #9d9d9d;
+}
+.motifs-editor .no-motifs{
+  padding: 25px;
+  text-align: center;
+  color:#acacac;
+}
+.motiv-configurator > .holder{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+}
+.motiv-configurator > .holder .settings{
+  flex:1;
+  padding: 0 25px 0 0;
+}
+.motiv-configurator > .holder .motif-preview{
+  flex-basis: 364px;
 }

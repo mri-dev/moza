@@ -13,8 +13,51 @@ class ajanlatkeresek extends Controller{
 				$this->AdminUser->logout();
 			}
 
+			$is_archivalt_list = ($this->gets[1] == 'archivalt') ? true : false;
+			$this->out( 'is_archivalt_list', $is_archivalt_list );
+
 			$orders = new Orders(array('db' => $this->db));
-			$order_list = $orders->getAll();
+
+			// State - Welldone
+			if (isset($_POST['welldoneSession']))
+			{
+				try {
+					$orders->setWelldone( $this->gets[2], true );
+					Helper::reload();
+				} catch ( Exception $e ) {
+					$this->view->err = true;
+					$this->view->bmsg = Helper::makeAlertMsg('pError', $e->getMessage());
+				}
+			}
+
+			// State - Archivalt
+			if (isset($_POST['archiveSession']))
+			{
+				try {
+					$orders->setArchived( $this->gets[2], true );
+					Helper::reload();
+				} catch ( Exception $e ) {
+					$this->view->err = true;
+					$this->view->bmsg = Helper::makeAlertMsg('pError', $e->getMessage());
+				}
+			}
+
+			if (isset($_POST['saveSession']))
+			{
+				try {
+					$orders->save( $this->gets[2], $_POST );
+				} catch ( Exception $e ) {
+					$this->view->err = true;
+					$this->view->bmsg = Helper::makeAlertMsg('pError', $e->getMessage());
+				}
+			}
+
+			$list_param = array();
+			if ($is_archivalt_list) {
+				$list_param['show_archive'] = true;
+			}
+			$list_param['filters'] = $_GET;
+			$order_list = $orders->getAll($list_param);
 			$this->out( 'orders', $order_list );
 
 			// SEO Információk
@@ -31,6 +74,15 @@ class ajanlatkeresek extends Controller{
 			$SEO .= $this->view->addOG('site_name',TITLE);
 
 			$this->view->SEOSERVICE = $SEO;
+		}
+
+		function edit()
+		{
+			$orders = new Orders(array('db' => $this->db));
+			$order = $orders->getAll(array(
+				'ID' => $this->gets[2]
+			));
+			$this->out( 'order', $order[0] );
 		}
 
 		function __destruct(){

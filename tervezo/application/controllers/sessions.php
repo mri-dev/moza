@@ -15,6 +15,10 @@ class sessions extends Controller{
 			));
 			$this->out( 'order', $order[0] );
 
+			if (isset($_GET['av']) && $_GET['av'] == 1) {
+				$orders->logAdminVisit($this->view->order['ID']);
+			}
+
 			$emailorders = $orders->getEmailOrders($this->view->order['orderer_email']);
 			$this->out( 'allorders', $emailorders );
 
