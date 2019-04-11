@@ -21,9 +21,17 @@ class Motivumok
 	public function add( $id = 0, $data = array() )
 	{
 		$kod = ($data['mintakod']) ? $data['mintakod'] : false;
+		$kategoria = ($data['kategoria']) ? $data['kategoria'] : false;
+		$svg = (!empty($data['svgpath'])) ? $data['svgpath'] : false;
 
-		if ( !$kod ) {
+		if ( empty($kod) ) {
 			throw new \Exception( "Kérjük, hogy adja meg a motívum mintakódját!" );
+		}
+		if ( empty($kategoria) ) {
+			throw new \Exception( "Kérjük, hogy adja meg a motívum kategóriáját!" );
+		}
+		if ( empty($svg) ) {
+			throw new \Exception( "Kérjük, hogy adja meg a motívum SVG script kódját!" );
 		}
 
 		$svgpath = $this->prepareShapeSVGScript( $data['svgpath'] );
@@ -32,19 +40,22 @@ class Motivumok
 			$this->db->insert(
 				"motivumok",
 				array(
-					'lathato' => ($data['lathato'] == 'false') ? 0 : 1,
+					'lathato' => ($data['lathato'] == 'false' || !$data['lathato'] || empty($data['lathato']) || $data['lathato'] == '0') ? 0 : 1,
 					'mintakod' => $data['mintakod'],
 					'sorrend' => (int)$data['sorrend'],
-					'svgpath' => $svgpath['cleared']
+					'kategoria' => (int)$kategoria,
+					'svgpath' => $svgpath['cleared'],
 				)
 			);
+			$newid = $this->db->lastInsertId();
 		} else {
 			$this->db->update(
 				"motivumok",
 				array(
-					'lathato' => ($data['lathato'] == 'false') ? 0 : 1,
+					'lathato' => ($data['lathato'] == 'false' || !$data['lathato'] || empty($data['lathato']) || $data['lathato'] == '0') ? 0 : 1,
 					'mintakod' => $data['mintakod'],
 					'sorrend' => (int)$data['sorrend'],
+					'kategoria' => (int)$kategoria,
 					'svgpath' => $svgpath['cleared']
 				),
 				sprintf("ID = %d", $id)
@@ -53,6 +64,16 @@ class Motivumok
 
 		// has shapes
 		$sh = $this->db->squery("SELECT ID FROM motivum_layers WHERE motivumID = :mid", array('mid' => $kod ));
+
+		// colors greys
+		$colr = $this->db->squery("SELECT szin_rgb FROM szinek WHERE kod IN ('F2', 'SZ1', 'SZ2', 'SZ3', 'SZ4', 'SZ5', 'SZ6', 'SZ7', 'SZ8', 'SZ9','SZ10') ORDER BY rand()");
+		$colors = array();
+		if ($colr->rowCount() != 0) {
+			$colr = $colr->fetchAll(\PDO::FETCH_ASSOC);
+			foreach ((array)$colr as $co) {
+				$colors[] = $co['szin_rgb'];
+			}
+		}
 
 		if ( $sh->rowCount() == 0 ) {
 			if ($svgpath['shapes'] && count($svgpath['shapes']) != 0) {
@@ -64,13 +85,22 @@ class Motivumok
 						$shape_js .= $s.';';
 					}
 					if ($shape_js != '') {
+						$fill = 'FFFFFF';
+						if($si > 1) {
+							$fill = $colors[$si-2];
+
+							if ($fill == '') {
+								$randi = mt_rand(0, count($colors)-1);
+								$fill = $colors[$randi];
+							}
+						}
 						$this->db->insert(
 							'motivum_layers',
 							array(
 								'motivumID' => $kod,
 								'canvas_js' => $shape_js,
 								'sortindex' => $si,
-								'fill_color' => '#333333'
+								'fill_color' => '#'.$fill
 							)
 						);
 					}
@@ -88,6 +118,8 @@ class Motivumok
 				);
 			}
 		}
+
+		return ($newid) ? (int)$newid : true;
 	}
 
 	public function edit( Color $color, $new_data = array() )
@@ -167,9 +199,6 @@ class Motivumok
 		foreach ( $data as $d ) {
       $d['ID'] = (int)$d['ID'];
       $d['kategoria'] = (int)$d['kategoria'];
-			if ($arg['admin'] === true) {
-				$d['shapetrim'] = $this->prepareShapeSVGScript( $d['svgpath'] );
-			}
       $d['shapes'] = $this->getMotivumShapes( $d['mintakod'] );
 			$tree[] = $d;
 		}
@@ -242,10 +271,29 @@ class Motivumok
 		if (strpos($line,'ctx.fillStyle') !== false) {
 			return true;
 		}
+		if (strpos($line,'ctx.strokeStyle=') !== false) {
+			return true;
+		}
 		if (strpos($line,'ctx.fill()') !== false) {
 			return true;
 		}
 		if (strpos($line,'ctx.stroke()') !== false) {
+			return true;
+		}
+		// html5 converter removes
+		if (strpos($line,'ctx.font=') !== false) {
+			return true;
+		}
+		if (strpos($line,'ctx.scale(') !== false) {
+			return true;
+		}
+		if (strpos($line,'ctx.save()') !== false) {
+			return true;
+		}
+		if (strpos($line,'ctx.restore()') !== false) {
+			return true;
+		}
+		if (strpos($line,'ctx.miterLimit=') !== false) {
 			return true;
 		}
 	}

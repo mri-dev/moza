@@ -1,4 +1,8 @@
+<div style="float:right;">
+  <a href="/motivumjaim/config/0" class="btn btn-primary"> <i class="fa fa-plus"></i> Új motívum hozzáadása</a>
+</div>
 <h1>Motívumok</h1>
+<div class="clr"></div>
 <div class="motifs-editor" ng-controller="MotifsEditor" ng-init="init()">
   <div class="categories">
     <div class="category" ng-repeat="cat in kategoria_lista">
@@ -18,7 +22,8 @@
             <div class="act center"></div>
           </div>
           <div class="no-motifs" ng-show="!motifs[cat.hashkey].length">
-            Nincsenek motívumok ebben a kategóriában.
+            Nincsenek motívumok ebben a kategóriában.<br>
+            <a class="btn btn-sm btn-default" href="/motivumjaim/config/0"><i class="fa fa-plus-circle"></i> hozzáadás</a>
           </div>
           <div class="motif" ng-repeat="m in motifs[cat.hashkey]">
             <div class="mintakod center">
@@ -43,7 +48,7 @@
               <i class="fa fa-check" style="color:#71c571;" ng-show="m.lathato==1"></i>
             </div>
             <div class="act center">
-              <a href="/motivumjaim/config/{{m.ID}}"><i class="fa fa-gear"></i></a> 
+              <a href="/motivumjaim/config/{{m.ID}}"><i class="fa fa-gear"></i></a>
             </div>
           </div>
         </div>

@@ -56,7 +56,7 @@ class ajax extends Controller
 								$ret['success'] = 1;
 								$ret['msg'] = __('Sikeresen mentette a(z) "'.$form['name'].'" projektjét ide: '.$form['email']);
 							} catch (\Exception $e) {
-								$err = $this->escape($e->getMessage());
+								$err = $this->escape($e->getMessage(), $ret);
 								$ret[errorCode] = $e->getCode();
 							}
 
@@ -65,19 +65,23 @@ class ajax extends Controller
 								$ret['success'] = 1;
 								$ret['msg'] = __('Sikeresen mentette a(z) "'.$form['name'].'" projektjét ide: '.$form['email']);
 							} catch (\Exception $e) {
-								$err = $this->escape($e->getMessage());
+								$err = $this->escape($e->getMessage(), $ret);
 								$ret[errorCode] = $e->getCode();
 							}
 						break;
 						case 'addMotivum':
 							$m = new Motivumok(array('db' => $this->db));
+							if ($motivum == 'false') {
+								$motivum = false;
+							}
 							/**/
 							try {
-								$m->add((int)$id, $motivum);
+								$newid = $m->add((int)$id, $motivum);
 								$ret['success'] = 1;
+								$ret['newid'] = $newid;
 								$ret['msg'] = 'Motívum adatai sikeresen rögzítve lettek.';
 							} catch (\Exception $e) {
-								$err = $this->escape($e->getMessage());
+								$err = $this->escape($e->getMessage(), $ret);
 								$ret[errorCode] = $e->getCode();
 							}
 							/**/
@@ -88,10 +92,12 @@ class ajax extends Controller
 							if ($admin == 1) {
 								$arg['admin'] = true;
 							}
-							if (isset($getid)) {
+							if (isset($getid) && $getid != 0) {
 								$arg['id_set'] = (array)$getid;
+								$list = $m->getAll($arg);
+							} else if(!isset($getid)){
+								$list = $m->getAll($arg);
 							}
-							$list = $m->getAll($arg);
 							$ret['data'] = $list;
 						break;
 						case 'getSettings':
@@ -106,6 +112,7 @@ class ajax extends Controller
 							while( $cats->walk() )
 							{
 								$cat = $cats->the_cat();
+								$cat['ID'] = (int)$cat['ID'];
 								$kategoriak[] = $cat;
 							}
 							$settings['kategoria_lista'] = $kategoriak;
@@ -127,6 +134,17 @@ class ajax extends Controller
 					return;
 				break;
 			}
+		}
+
+		private function setSuccess($msg, &$ret){
+			$ret[msg] 		= $msg;
+			$ret[success] 	= 1;
+			return true;
+		}
+		private function escape($msg, &$ret){
+			$ret[msg] 		= $msg;
+			$ret[success] 	= 0;
+			return true;
 		}
 
 		function get(){

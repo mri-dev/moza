@@ -32,8 +32,14 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
 	}
 
 	$scope.createMotivum = function() {
-		$scope.saveMotivum(function(){
-			$scope.init( $scope.loadid );
+		$scope.saveMotivum(function(data, success, newid){
+			if (success == 1) {
+				if (newid && newid !== true) {
+					window.location.href = '/motivumjaim/config/'+newid;
+				} else {
+					$scope.init( $scope.loadid );
+				}
+			}
 		});
 	}
 
@@ -53,10 +59,10 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
 			if (r.success == 1) {
 				$scope.toast(r.msg, 'success', 5000);
 			} else {
-				$scope.toast(r.msg, 'success', 5000);
+				$scope.toast(r.msg, 'alert', 10000);
 			}
 			if (typeof callback !== 'undefined') {
-				callback(r.data);
+				callback(r.data, r.success, r.newid);
 			}
 		});
 	}
@@ -73,9 +79,15 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
 				admin: 1
       })
     }).success(function(r){
-			$scope.motifs = r.data;
+			if (r && r.data) {
+				$scope.motifs = r.data;
+			}
       if (typeof callback !== 'undefined') {
-        callback(r.data[0]);
+				if (r && r.data && r.data[0]) {
+					callback(r.data[0]);
+				} else {
+					callback(false);
+				}
       }
     });
   }
@@ -102,6 +114,30 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
         callback();
       }
     });
+  }
+
+	$scope.changingFillColor = function( color, rgb ) {
+    if (typeof color === 'string') {
+      $scope.findColorObjectByRGB( rgb.replace("#",""),  function( color ){
+        $scope.currentFillColor = rgb;
+        $scope.changeColorObj = color;
+      } );
+    } else {
+      $scope.currentFillColor = '#'+rgb;
+      $scope.changeColorObj = color;
+    }
+  }
+
+  $scope.findColorObjectByRGB = function( rgb, callback ){
+    if ($scope.colors && $scope.colors.length != 0) {
+      angular.forEach( $scope.colors, function(c,i){
+        if( c.szin_rgb == rgb ) {
+          callback(c);
+        }
+      });
+    }
+
+    return rgb;
   }
 
 	$scope.toast = function( text, mode, delay ){
@@ -216,6 +252,8 @@ a.controller("DocumentList", ['$scope', '$http', '$sce', '$mdToast', function($s
 	$scope.termid = 0;
 	$scope.error = false;
 	$scope.docs_in_sync = false;
+	$scope.currentFillColor = '#f6f6f6';
+  $scope.changeColorObj = {};
 
 	$scope.init = function( id ){
 		$scope.termid = id;
@@ -392,7 +430,9 @@ a.directive('motivum', function($rootScope){
       konva.layer = new Konva.Layer();
 
       if ($scope.m.shapes && $scope.m.shapes.length) {
+				var six = 0;
         angular.forEach( $scope.m.shapes, function(si, se){
+					six++;
           // TODO: konva draw shape
           var shape =  new Konva.Shape({
             sceneFunc: function(ctx)
@@ -406,6 +446,16 @@ a.directive('motivum', function($rootScope){
               y: $scope.calcScaleFactor($scope.motiv_size)
             }
           });
+
+					if (a.editor && a.editor == '1') {
+						shape.on('click', function(s){
+							if ($scope.motivum.shapes) {
+								$scope.motivum.shapes[s.target.index].fill_color = $scope.currentFillColor;
+							}
+							this.fill( $scope.currentFillColor );
+			        konva.layer.draw();
+						});
+					}
 
           konva.layer.add( shape );
           konva.stage.add( konva.layer );
