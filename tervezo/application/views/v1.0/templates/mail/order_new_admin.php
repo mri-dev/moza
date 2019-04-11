@@ -24,8 +24,8 @@
 		<?php
 		$previews = array();
 		foreach ((array)$motifs as $m):
-			$me_db = (int)$qtyconfig[$m['hashid']]['db'];
-			$me_nm = (int)$qtyconfig[$m['hashid']]['nm'];
+			$me_db = (float)$qtyconfig[$m['hashid']]['db'];
+			$me_nm = (float)$qtyconfig[$m['hashid']]['nm'];
 
 			if (!array_key_exists($m['hashid'],$previews)) {
 				$previews[$m['hashid']] = array(
@@ -65,9 +65,15 @@
 		<tr>
 			<?php for($y = 0; $y < (int)$gridsizes['y']; $y++){
 					$key = $gridconfig[$x.'x'.$y]['hashid'];
+					$rotate = (int)$gridconfig[$x.'x'.$y]['rotation'];
+					$col_size = 100/((int)$gridsizes['y']);
 			?>
-			<td>
-				<img src="<?=$previews[$key]['img']?>" alt="Minta: <?=$previews[$key]['minta']?>">
+			<td style="width:<?=$col_size?>%;">
+				<?php if ($previews[$key]['img']): ?>
+					<img src="<?=$previews[$key]['img']?>" alt="Minta: <?=$previews[$key]['minta']?>" style="transform:rotate(<?=$rotate?>deg);">
+				<?php else: ?>
+					<img src="https://via.placeholder.com/102/ffffff/eaeaea/?text=MOZA" alt="empty">
+				<?php endif; ?>
 			</td>
 			<? } ?>
 		</tr>
@@ -77,6 +83,6 @@
 
 <br>
 <strong>A megrendelés adatlapja megtekinthető a következő linken:</strong><br />
-<a href="<?=$settings['domain']?>/sessions/<?=$hashkey?>?av=1"><?=$settings['domain']?>/sessions/<?=$hashkey?></a>
+<a href="<?=$settings['url']?>/sessions/<?=$hashkey?>?av=1"><?=$settings['url']?>/sessions/<?=$hashkey?></a>
 </div>
 <? require "footer.php"; ?>

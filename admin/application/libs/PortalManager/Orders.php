@@ -48,8 +48,8 @@ class Orders
         $this->db->update(
           self::DB_ORDER_ITEMS,
           array(
-            'me_db' => (float)trim($v['me_db']),
-            'me_nm' => (float)trim($v['me_nm'])
+            'me_db' => (float)$v['me_db'],
+            'me_nm' => (float)$v['me_nm']
           ),
           sprintf("ID = %d", $id)
         );
@@ -105,8 +105,8 @@ class Orders
 
     if ($motifs) {
       foreach ( (array)$motifs as $m ) {
-        $me_db = (int)$qtyconfig[$m['hashid']]['db'];
-        $me_nm = (int)$qtyconfig[$m['hashid']]['nm'];
+        $me_db = (float)$qtyconfig[$m['hashid']]['db'];
+        $me_nm = (float)$qtyconfig[$m['hashid']]['nm'];
         $this->db->insert(
     			self::DB_ORDER_ITEMS,
     			array(
@@ -122,14 +122,13 @@ class Orders
       }
     }
 
+    // Admin értesítés
     $mail = new Mailer(
       $this->db->settings['page_title'],
       SMTP_USER,
       $this->db->settings['mail_sender_mode']
     );
-
-    $mail->add( 'molnar.istvan@web-pro.hu' );
-
+    $mail->add( $this->db->settings['alert_email'] );
     $arg = array(
       'settings' => $this->db->settings,
       'hashkey' => $hashkey,
@@ -141,12 +140,33 @@ class Orders
       'qtyconfig' => $qtyconfig,
       'motifs' => $motifs
     );
+    $mail->setSubject( 'Értesítés: új ajánlatkérés érkezett - '.trim($orderer['name']) );
+    $mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'order_new_admin', $arg ) );
+    $re = $mail->sendMail();
 
-    $mail->setSubject( 'Visszaigazolás: megrendelés igényét fogadtuk.' );
+    // Ajánlatkérő értesítés
+    $mail = new Mailer(
+      $this->db->settings['page_title'],
+      SMTP_USER,
+      $this->db->settings['mail_sender_mode']
+    );
+    $mail->add( trim($orderer['email']) );
+    $arg = array(
+      'settings' => $this->db->settings,
+      'hashkey' => $hashkey,
+      'order_name' => trim($orderer['name']),
+      'order_email' => trim($orderer['email']),
+      'order_phone' => trim($orderer['phone']),
+      'gridsizes' => $gridsizes,
+      'gridconfig' => $gridconfig,
+      'qtyconfig' => $qtyconfig,
+      'motifs' => $motifs
+    );
+    $mail->setSubject( __('Visszaigazolás: megrendelés igényét fogadtuk.') );
     $mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'order_new_user', $arg ) );
     $re = $mail->sendMail();
 
-    return __('Sikeresen megrendelte a konfigurációt. Hamarosan felvesszük Önnel a kapcsolatot!');
+    return __('Sikeresen elküldte az ajánlatkérő konfigurációt. Hamarosan felvesszük Önnel a kapcsolatot!');
 	}
 
   public function logAdminVisit( $id )

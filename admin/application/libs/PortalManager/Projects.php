@@ -87,7 +87,7 @@ class Projects
 
 		$qry = $this->db->squery( $qry, $qryp );
 
-		if( $qry->rowCount() == 0 ) return $this;
+		if( $qry->rowCount() == 0 ) throw new \Exception(sprintf(__('A(z) %s e-mail címre nem lettek mentve projektek.'), $arg['email']));
 
 		$data = $qry->fetchAll(\PDO::FETCH_ASSOC);
 

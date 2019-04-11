@@ -57,15 +57,6 @@ class ajax extends Controller{
 								$err = $this->escape($e->getMessage());
 								$ret[errorCode] = $e->getCode();
 							}
-
-							try {
-								$projects->add( $form, $used_motifs, $used_colors, $grid );
-								$ret['success'] = 1;
-								$ret['msg'] = __('Sikeresen mentette a(z) "'.$form['name'].'" projektjét ide: '.$form['email']);
-							} catch (\Exception $e) {
-								$err = $this->escape($e->getMessage());
-								$ret[errorCode] = $e->getCode();
-							}
 						break;
 						case 'getMotivumok':
 							$m = new Motivumok(array('db' => $this->db));

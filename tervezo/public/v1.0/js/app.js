@@ -126,17 +126,34 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.rotateWorkMotiv = function( r ) {
     if ( $scope.workstage ) {
-      if ( r >= 0 ) {
-        $scope.workrotate += r;
-      } else if( r <= 0 ){
-        $scope.workrotate -= r;
-      }
+      var node = $scope.workstage;
+
+      $scope.workrotate -= r;
+
       if ($scope.workrotate >= 360 || $scope.workrotate <= -360) {
         $scope.workrotate = 0;
       }
-      $scope.workstage.rotation( $scope.workrotate );
-      $scope.workstage.draw();
+
+      $scope.rotateStage( node, $scope.workrotate );
     }
+  }
+
+  $scope.rotateStage = function( node, rot )
+  {
+    const degToRad = Math.PI / 180;
+    const rotatePoint = ({x, y}, deg) => {
+        const rcos = Math.cos(deg * degToRad), rsin = Math.sin(deg * degToRad)
+        return {x: x*rcos - y*rsin, y: y*rcos + x*rsin}
+    };
+    const topLeft = {x:-node.width()/2, y:-node.height()/2};
+    const current = rotatePoint(topLeft, node.rotation());
+    const rotated = rotatePoint(topLeft, rot);
+    const dx = rotated.x - current.x, dy = rotated.y - current.y;
+
+    node.rotation( rot );
+    node.x(node.x() + dx);
+    node.y(node.y() + dy);
+    node.draw();
   }
 
   $scope.pickNewMotiv = function( m )
@@ -208,6 +225,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       var gridx = res.data('grid-x');
       var gridy = res.data('grid-y');
       var hashid = copystage.getAttr('minta');
+      var rotate = copystage.getAttr('rotation');
       var layers = copystage.getLayers();
       var width = $scope.tile_size-2;
       var height = $scope.tile_size-2;
@@ -216,6 +234,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         width: width,
         height: height
       });
+
+      // Rotate
+      $scope.rotateStage( stage, rotate );
 
       layers.each(function(layer, n) {
         var lay = layer.clone();
@@ -239,6 +260,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
       $scope.gridStages[gridx+'x'+gridy] = {
         hashid: stage.getAttr('hashid'),
+        rotation: stage.getAttr('rotation')
         //stage: stage.toObject()
       };
       $scope.refreshHistoryLists( copystage, colors, hashid, use_delay);
@@ -331,6 +353,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           }, 100);
         }
       }
+      console.log(  $scope.used_motifs);
     } );
   }
 
@@ -439,7 +462,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.order = function(ev) {
     $scope.collectDataToOrder(function( data ) {
-      console.log(data);
       $mdDialog.show({
         controller: OrderDialogController,
         templateUrl: '/ajax/template/order',
@@ -616,13 +638,12 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.collectDataToSave = function( callback ) {
     var set = {};
-
     var um = {};
     angular.forEach($scope.used_motifs, function(m,i){
       um[i] = {
         colors: m.colors,
         hashid: m.hashid,
-        minta: m.stage.getAttr('minta')
+        minta: m.minta
       };
     });
     set.used_motifs = um;
@@ -689,7 +710,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   }
 
   $scope.savingProject = function( name, email, data ){
-    console.log(data);
     $http({
       method: 'POST',
       url: '/ajax/post',
@@ -706,6 +726,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         grid: data.grid
       })
     }).success(function(r){
+      console.log(r);
       if (r.success == 1) {
         $scope.toast( r.msg, 'success', 5000);
       } else {
@@ -735,6 +756,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           if (r.data.length != 0) {
             $scope.loaded_projects = r.data;
           }
+        } else {
+          $scope.loaded_projects = [];
+          $scope.toast(r.msg, 'warning', 10000);
         }
         $scope.project_loading = false;
       });
@@ -807,7 +831,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
     // Grid feltöltése
     var _g = p.grid;
-    console.log(p.used_motifs);
     if ( _g && _g.stages ) {
       // Grid tábla fixálás
       if (_g.size.x && _g.size.y) {
@@ -824,12 +847,16 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           var width = $scope.color_size-2;
           var height = $scope.color_size-2;
           var mot = p.used_motifs[h.hashid];
+          var rotation = parseInt(h.rotation);
 
           var fillholder = $('#grid-h'+gridpos);
           var current_stage = $scope.used_motifs[h.hashid].stage;
 
           if (current_stage) {
+            current_stage.setAttr('rotation', rotation);
             $scope.passMotivToResource( fillholder, current_stage, false );
+            // reset rotation
+            current_stage.setAttr('rotation', 0);
           }
         });
 

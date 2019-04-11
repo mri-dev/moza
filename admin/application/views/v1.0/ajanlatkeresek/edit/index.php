@@ -84,8 +84,8 @@
             $motifs = $this->order['motifs'];
             $previews = array();
             foreach ((array)$motifs as $m):
-              $me_db = (int)$m['me_db'];
-              $me_nm = (int)$m['me_nm'];
+              $me_db = (float)$m['me_db'];
+              $me_nm = (float)$m['me_nm'];
 
               if (!array_key_exists($m['hashid'],$previews)) {
                 $previews[$m['hashid']] = array(

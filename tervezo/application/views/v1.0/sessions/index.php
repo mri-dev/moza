@@ -39,8 +39,8 @@
           $motifs = $this->order['motifs'];
           $previews = array();
           foreach ((array)$motifs as $m):
-            $me_db = (int)$m['me_db'];
-            $me_nm = (int)$m['me_nm'];
+            $me_db = (float)$m['me_db'];
+            $me_nm = (float)$m['me_nm'];
 
             if (!array_key_exists($m['hashid'],$previews)) {
               $previews[$m['hashid']] = array(
@@ -90,10 +90,11 @@
         		<tr>
         			<?php for($y = 0; $y < (int)$this->order['grid_y']; $y++){
         					$key = $this->order['gridconfig'][$x.'x'.$y]['hashid'];
+                  $rotate = (int)$this->order['gridconfig'][$x.'x'.$y]['rotation'];
         			?>
         			<td style="width: calc(100% / <?=(int)$this->order['grid_y']?>);">
                 <?php if ($previews[$key]['img']): ?>
-                  <img src="<?=$previews[$key]['img']?>" alt="Minta: <?=$previews[$key]['minta']?>">
+                  <img src="<?=$previews[$key]['img']?>" alt="Minta: <?=$previews[$key]['minta']?>" style="transform:rotate(<?=$rotate?>deg);">
                 <?php else: ?>
                   <img src="//via.placeholder.com/102/ffffff/eaeaea/?text=MOZA" alt="empty">
                 <?php endif; ?>

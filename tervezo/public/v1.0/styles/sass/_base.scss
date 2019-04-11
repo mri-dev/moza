@@ -399,7 +399,7 @@ header{
         text-align: center;
 
         button {
-          font-size: 0.94rem;
+          font-size: 0.7vw;
         }
 
         i{
@@ -424,7 +424,7 @@ header{
         text-align: center;
 
         button {
-          font-size: 0.8rem;
+          font-size: 0.6vw;
         }
       }
 
@@ -602,7 +602,22 @@ header{
     }
   }
 }
-
+md-toast{
+  width: 100% !important;
+  max-width: initial !important;
+  top: 0 !important;
+  padding: 0 !important;
+  position: fixed;
+  left: 50%;
+  z-index: 999;
+  -moz-transform:translateX(-50%);
+  transform:translateX(-50%);
+  box-shadow: 0 10px 20px -5px #323232;
+  .md-toast-content{
+    border-radius: 0 !important;
+    font-size: 1.6rem !important;
+  }
+}
 md-toast.alert-toast{
   &.mode-error{
     .md-toast-content{
@@ -612,6 +627,11 @@ md-toast.alert-toast{
   &.mode-success{
     .md-toast-content{
       background: $color-green !important;
+    }
+  }
+  &.mode-warning{
+    .md-toast-content{
+      background: $color-orange !important;
     }
   }
 }
