@@ -142,7 +142,7 @@
               <div class="divider"></div>
               <div class="project-selector">
                 <div class="list">
-                  <label for="project_selector">{{loaded_projects.length}} db <?php echo __('mentett projekt'); ?>:</label>
+                  <label for="project_selector">{{loaded_projects.length}} <?php echo __('db'); ?> <?php echo __('mentett projekt'); ?>:</label>
                   <select id="project_selector" ng-change="loadProject()" ng-model="selected_project" ng-options="project as project.title for project in loaded_projects"></select>
                 </div>
                 <div class="pselected" ng-show="selected_project">

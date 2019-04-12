@@ -1,4 +1,53 @@
 /* 1024 - 1050 px - MEDIUM */
+@media all and (min-width: 1600px)
+{
+  .inside-content > .wrapper > .side-left{
+    flex-basis: 650px;
+  }
+  .inside-content > .wrapper > .side-right{
+    flex: 1;
+  }
+  .sample-editor .sample-details .rotates > div button{
+    font-size: 1.2rem;
+  }
+  .sample-editor .sample-details .action-buttons > div button{
+    font-size: 1.1rem;
+  }
+}
+@media all and (max-width: 1400px)
+{
+  header > .logo{
+    flex-basis: 210px;
+  }
+  .sidebar{
+    width: 210px;
+  }
+  .inside-content{
+    margin-left: 210px;
+  }
+  .inside-content > .wrapper > .side-left{
+    flex-basis: 47%;
+  }
+  .inside-content > .wrapper > .side-right{
+    flex-basis: 53%;
+  }
+  .sample-editor .sample-details table{
+    font-size: 1.2rem;
+  }
+}
+
+@media all and (max-width: 1200px)
+{
+  .sample-editor .sample-details .action-buttons,
+  .sample-editor .sample-details .rotates{
+    flex-wrap: wrap;
+  }
+  .sample-editor .sample-details .rotates > div,
+  .sample-editor .sample-details .action-buttons > div{
+    flex-basis: 100%;
+  }
+}
+/* 1024 - 1050 px - MEDIUM */
 @media all and (max-width: 1050px)
 {
 

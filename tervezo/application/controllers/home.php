@@ -4,6 +4,11 @@ class home extends Controller{
 			parent::__construct();
 			parent::$pageTitle = '';
 
+			if ($_GET['setlang']) {
+				Lang::setLang($_GET['setlang']);
+				Helper::reload('/');
+			}
+
 			// SEO Információk
 			$SEO = null;
 			// Site info

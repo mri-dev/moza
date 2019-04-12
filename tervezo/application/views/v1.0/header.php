@@ -49,7 +49,8 @@
   </div>
   <div class="langs">
     <div class="in">
-      langs
+      <div class=""><a class="<?=(Lang::getLang()=='hu')?'active':''?>" href="/?setlang=hu">Magyar</a></div>
+      <div class=""><a class="<?=(Lang::getLang()=='en')?'active':''?>" href="/?setlang=en">English</a></div>      
     </div>
   </div>
 </header>
@@ -80,6 +81,18 @@
         <div class="motifs" ng-show="(aktiv_kat==cat.ID && kategoriak[cat.hashkey].length != 0)">
           <div class="motiv" ng-repeat="m in kategoriak[cat.hashkey]">
             <div class="wrapper" title="{{m.mintakod}}" ng-click="pickNewMotiv(m)">
+              <motivum kod="m.mintakod" shapes="m.shapes"></motivum>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cat" ng-class="(aktiv_kat==cat.ID)?'active':''">
+        <div class="title" ng-click="changeKat(cat.ID)">
+          <?php echo __('Előszínezett lapok'); ?> <i class="fa fa-adjust"></i>
+        </div>
+        <div class="motifs" ng-show="(aktiv_kat==cat.ID && kategoriak['OWN'].length != 0)">
+          <div class="motiv" ng-repeat="m in kategoriak['OWN']">
+            <div class="wrapper" title="[{{m.mintakod}}] {{m.nev}}" ng-click="pickNewMotiv(m)">
               <motivum kod="m.mintakod" shapes="m.shapes"></motivum>
             </div>
           </div>

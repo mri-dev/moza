@@ -11,7 +11,7 @@
     </md-toolbar>
     <md-dialog-content>
       <div class="md-dialog-content">
-        <?php echo __('Projektjét el tudja menteni, hogy később megtekintse. A projek terveket betöltheti, ha megadja e-mail címét.'); ?>
+        <?php echo __('Projektjét el tudja menteni, hogy később megtekintse. A projekt terveket betöltheti, ha megadja e-mail címét.'); ?>
         <md-input-container md-no-float class="md-block">
           <label><?php echo __('Projekt elnevezése'); ?></label>
           <input ng-model="save.name" required >

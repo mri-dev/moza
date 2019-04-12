@@ -86,6 +86,16 @@
         <motivum kod="m.mintakod" shapes="m.shapes" editor="1"></motivum>
       </div>
       <br>
+      <h4>Saját minta - Színkonfiguráció mentése</h4>
+      <div class="save-motif-recommend">
+        <div class="input-group">
+          <input type="text" class="form-control" ng-model="ownmotifname" placeholder="Elnevezés">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" ng-click="saveOwnStyle()">Hozzáadás</button>
+          </div>
+        </div>
+      </div>
+      <br>
       <h4>Színpaletta</h4>
       <div class="colors">
         <div class="color" ng-repeat="c in colors" ng-class="(changeColorObj==c)?'current':''">

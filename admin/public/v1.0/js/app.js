@@ -31,6 +31,29 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
 		});
 	}
 
+	$scope.saveOwnStyle = function() {
+		$http({
+			method: 'POST',
+			url: '/ajax/post',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			data: $.param({
+				type: "Moza",
+				mode: 'saveStyleConfig',
+				id: $scope.loadid,
+				motivum: $scope.motivum,
+				name: $scope.ownmotifname
+			})
+		}).success(function(r){
+			console.log(r);
+			if (r.success == 1) {
+				$scope.toast(r.msg, 'success', 5000);
+				$scope.ownmotifname = '';
+			} else {
+				$scope.toast(r.msg, 'alert', 10000);
+			}
+		});
+	}
+
 	$scope.createMotivum = function() {
 		$scope.saveMotivum(function(data, success, newid){
 			if (success == 1) {

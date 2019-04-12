@@ -33,7 +33,7 @@
 
 	$start = new Start();
 
-	function __( $text, $root = ''){
-		return $text;
+	function __( $text){
+		return Lang::content($text);
 	}
 ?>

@@ -59,15 +59,20 @@ class ajax extends Controller
 								$err = $this->escape($e->getMessage(), $ret);
 								$ret[errorCode] = $e->getCode();
 							}
-
+						break;
+						case 'saveStyleConfig':
+							$m = new Motivumok(array('db' => $this->db));
+							/**/
 							try {
-								$projects->add( $form, $used_motifs, $used_colors, $grid );
+								$newid = $m->addStyleConfig((int)$id, $name, $motivum);
 								$ret['success'] = 1;
-								$ret['msg'] = __('Sikeresen mentette a(z) "'.$form['name'].'" projektjét ide: '.$form['email']);
+								$ret['newid'] = $newid;
+								$ret['msg'] = 'Új saját minta mentésre került.';
 							} catch (\Exception $e) {
 								$err = $this->escape($e->getMessage(), $ret);
 								$ret[errorCode] = $e->getCode();
 							}
+							/**/
 						break;
 						case 'addMotivum':
 							$m = new Motivumok(array('db' => $this->db));

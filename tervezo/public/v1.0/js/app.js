@@ -46,12 +46,14 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.init = function()
   {
+    $scope.load_language();
     $scope.loader_title = $scope.translate('default_loader_title');
     $scope.loadSettings(function()
     {
       $scope.loadMotivums(function( motivums )
       {
         if (motivums) {
+          console.log(motivums);
           angular.forEach(motivums, function(i,e){
             if (typeof $scope.motivumok[i.mintakod] === 'undefined') {
               $scope.motivumok[i.mintakod] = i;
@@ -63,6 +65,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
               $scope.kategoriak[i.kat_hashkey].push(i);
             }
           });
+          console.log($scope.kategoriak);
         }
       });
 
@@ -85,6 +88,15 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       }, 600);
 
     });
+  }
+
+  $scope.load_language = function() {
+    var lang = $cookies.get('lang');
+    if (lang =='') {
+      $scope.current_lang = 'hu';
+    } else {
+      $scope.current_lang = lang;
+    }
   }
 
   $scope.toggleBorderOnSample = function()
@@ -918,6 +930,12 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         'loader_title_loadproject': 'Saját projekt betöltése',
         'no_motiv_selected': 'Nincs kiválasztva aktív minta motívum. Válasszon a kategóriák közül.',
         'missing_project_loading_email': 'A projektek betöltéséhez adja meg az e-mail címét!',
+      },
+      'en':{
+        'default_loader_title': 'MOZA TILE CONFIGURATOR',
+        'loader_title_loadproject': 'Load own projects',
+        'no_motiv_selected': 'No motif selected. Please choose one from any categories!',
+        'missing_project_loading_email': 'Please give your e-mail address to load your saved projects!',
       }
     }
 
@@ -951,7 +969,7 @@ app.directive('motivum', function($rootScope){
     return function($scope, e, a)
     {
       var konva = {};
-      var id = 'katmot'+$scope.m.mintakod;
+      var id = 'katmot'+$scope.m.mintakod+$scope.m.ID;
       e.attr("id", id);
       konva.stage = new Konva.Stage({
         container: id,
@@ -991,9 +1009,7 @@ app.directive('motivum', function($rootScope){
   return motivum;
 });
 
-
 app.filter('unsafe', function($sce){ return $sce.trustAsHtml; });
-
 
 $(function(){
   recalcPositions();

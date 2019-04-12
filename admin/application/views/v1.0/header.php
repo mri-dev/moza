@@ -158,7 +158,7 @@
 				</div>
                 <br>
                 <div class="left links"><a href="<?=HOMEDOMAIN?>"><i class="fa fa-angle-left"></i> www.<?=str_replace(array('https://','www.'), '', $this->settings['page_url'])?></a></div>
-                <div align="right"><button name="login">Bejelentkezés <i class="fa fa-arrow-circle-right"></i></button></div>
+                <div align="right"><button name="login" class="btn btn-warning">Bejelentkezés <i class="fa fa-arrow-circle-right"></i></button></div>
             </form>
 
 	    </div>
@@ -176,7 +176,9 @@
         	<ul>
             	<li class="<?=($this->gets[0] == 'home')?'on':''?>"><a href="/" title="Dashboard"><span class="ni">1</span><i class="fa fa-life-saver"></i> Dashboard</a></li>
               <li class="<?=($this->gets[0] == 'ajanlatkeresek')?'on':''?>"><a href="/ajanlatkeresek" title="Ajánlatkérések"><span class="ni">2</span><i class="fa fa-edit"></i> Ajánlatkérések</a></li>
-              <li class="<?=($this->gets[0] == 'emails')?'on':''?>"><a href="/emails" title="Email sablonok"><span class="ni">8</span><i class="fa fa-envelope"></i> Email sablonok</a></li>
+              <?php if (false): ?>
+                <li class="<?=($this->gets[0] == 'emails')?'on':''?>"><a href="/emails" title="Email sablonok"><span class="ni">8</span><i class="fa fa-envelope"></i> Email sablonok</a></li>
+              <?php endif; ?>
               <li class="<?=($this->gets[0] == 'beallitasok')?'on':''?>"><a href="/beallitasok" title="Beállítások"><span class="ni">8</span><i class="fa fa-gear"></i> Beállítások</a></li>
               <li class="div"></li>
               <!-- MODULS-->
@@ -190,7 +192,7 @@
               <li class="<?=($this->gets[0] == 'kategoriak')?'on':''?>"><a href="/kategoriak" title="Kategóriák"><span class="ni">6</span><i class="fa fa-bars"></i> Kategóriák</a></li>
               <li class="<?=($this->gets[0] == 'szinek')?'on':''?>"><a href="/szinek" title="Színek"><span class="ni">8</span><i class="fa fa-th"></i> Színek</a></li>
               <li class="<?=($this->gets[0] == 'motivumjaim')?'on':''?>"><a href="/motivumjaim" title="Motívumok"><span class="ni">8</span><i class="fa fa-stop"></i> Motívumok</a></li>
-
+              <li class="<?=($this->gets[0] == "motivumconfig")?'on':''?>"><a href="/motivumconfig" title="Saját motívum beállítások"><span class="ni">8</span><i class="fa fa-stop"></i> Saját minták</a></li>
         	</ul>
         </div>
     </div>

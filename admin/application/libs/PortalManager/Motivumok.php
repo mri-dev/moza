@@ -122,6 +122,43 @@ class Motivumok
 		return ($newid) ? (int)$newid : true;
 	}
 
+	public function addStyleConfig( $id = 0, $name = false, $motivum = false)
+	{
+		if ( !$name || empty($name)) {
+			throw new \Exception( "Kötelező megadni egy elnevezést a saját minta mentéséhez." );
+		}
+
+		if ( !$motivum ) {
+			throw new \Exception( "A motívum adatai nem lettek betöltve. Frissítse az oldal és próbálja újra!" );
+		}
+
+		$this->db->insert(
+			'motivum_styles',
+			array(
+				'nev' => addslashes(trim($name)),
+				'motivumID' => trim($motivum['mintakod'])
+			)
+		);
+
+		$style_id = $this->db->lastInsertId();
+
+		if ($motivum['shapes']) {
+			foreach ( (array)$motivum['shapes'] as $s ) {
+				$this->db->insert(
+					'motivum_style_layers',
+					array(
+						'styleID' => $style_id,
+						'motivumID' => trim($motivum['mintakod']),
+						'layerID' => (int)$s['ID'],
+						'fill_color' => trim($s['fill_color'])
+					)
+				);
+			}
+		}
+
+		return (int)$style_id;
+	}
+
 	public function edit( Color $color, $new_data = array() )
 	{
 		$name = ($new_data['name']) ?: false;
@@ -203,9 +240,93 @@ class Motivumok
 			$tree[] = $d;
 		}
 
+		// Saját minták
+		$load_own_styles = $this->getStyleConfigs($tree);
+		if ($load_own_styles) {
+			foreach ( (array)$load_own_styles as $os ) {
+				$tree[] = $os;
+			}
+		}
+
     $this->tree = $tree;
 
 		return $tree;
+	}
+
+	public function getStyleConfigs( $motifs, $arg = array())
+	{
+		$set = array();
+
+		$mots = array();
+		// contain
+		foreach ((array)$motifs as $m) {
+			$mots[$m['mintakod']] = $m;
+		}
+		unset($motifs);
+
+		$q = "SELECT
+		s.ID,
+		s.nev,
+		s.motivumID
+		FROM motivum_styles as s WHERE 1=1 ";
+
+		if ($arg['admin'] === true) {
+
+		} else {
+			$q .= " and s.lathato = 1";
+		}
+
+		$q .= " ORDER BY s.sorrend ASC, s.ID DESC";
+
+
+		$qry = $this->db->squery($q);
+
+		if ($qry->rowCount() != 0) {
+			$data = $qry->fetchAll(\PDO::FETCH_ASSOC);
+			foreach ( (array)$data as $d ) {
+				if ( !array_key_exists($d['motivumID'], $mots) ) continue;
+
+				$ID = $d['ID'];
+				$nev = $d['nev'];
+				$d = $mots[$d['motivumID']];
+				$d['ID'] = $ID;
+				$d['nev'] = $nev;
+				$d['kat_hashkey'] = 'OWN';
+				$d['kat_name'] = __('Kiemelt minták');
+
+				// Shape configs
+				$sq = $this->db->squery("SELECT fill_color, layerID FROM motivum_style_layers WHERE styleID = :sid", array('sid' => $ID));
+				$style_colors = array();
+				if ($sq->rowCount() != 0) {
+					$sq = $sq->fetchAll(\PDO::FETCH_ASSOC);
+					foreach ((array)$sq as $sl) {
+						$style_colors[$sl['layerID']] = $sl;
+					}
+				}
+				unset($sq);
+
+				// Shapes
+				$nshapes = array();
+				if ($d['shapes']) {
+					foreach ( (array)$d['shapes'] as $s ) {
+						$color = $style_colors[$s['ID']]['fill_color'];
+						if ($color != '') {
+							$s['fill_color'] = $color;
+						}
+						$nshapes[] = $s;
+					}
+				}
+				$d['shapes'] = $nshapes;
+				unset($nshapes);
+				unset($style_colors);
+
+				$set[] = $d;
+			}
+		} else {
+			return array();
+		}
+
+		return $set;
 	}
 
 	public function prepareShapeSVGScript( $svg )
