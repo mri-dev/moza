@@ -241,10 +241,12 @@ class Motivumok
 		}
 
 		// Saját minták
-		$load_own_styles = $this->getStyleConfigs($tree);
-		if ($load_own_styles) {
-			foreach ( (array)$load_own_styles as $os ) {
-				$tree[] = $os;
+		if ( !$arg['hideown'] ) {
+			$load_own_styles = $this->getStyleConfigs($tree);
+			if ($load_own_styles) {
+				foreach ( (array)$load_own_styles as $os ) {
+					$tree[] = $os;
+				}
 			}
 		}
 

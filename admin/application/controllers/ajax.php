@@ -74,6 +74,20 @@ class ajax extends Controller
 							}
 							/**/
 						break;
+						case 'getStyleConfigs':
+							$m = new Motivumok(array('db' => $this->db));
+							$mintak = $m->getAll(array(
+								'admin' => true
+							));
+							$data = array();
+							foreach ( (array)$mintak as $minta ) {
+								if ($minta['kat_hashkey'] == "OWN") {
+									$data[] = $minta;
+								}
+							}
+
+							$ret['data'] = $data;
+						break;
 						case 'addMotivum':
 							$m = new Motivumok(array('db' => $this->db));
 							if ($motivum == 'false') {
@@ -96,6 +110,9 @@ class ajax extends Controller
 							$arg = array();
 							if ($admin == 1) {
 								$arg['admin'] = true;
+							}
+							if ($hideown == 1) {
+								$arg['hideown'] = true;
 							}
 							if (isset($getid) && $getid != 0) {
 								$arg['id_set'] = (array)$getid;

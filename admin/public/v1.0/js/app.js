@@ -1,6 +1,3 @@
-/**
-* Dokumentumok
-**/
 var a = angular.module('Moza', ['ngMaterial', 'ngSanitize']);
 
 a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scope, $http, $mdToast)
@@ -26,7 +23,6 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
 				motivum.sorrend = parseInt(motivum.sorrend);
 				$scope.motivumkod = motivum.mintakod;
 				$scope.motivum = motivum;
-				console.log(motivum);
 			});
 		});
 	}
@@ -98,6 +94,7 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
       data: $.param({
         type: "Moza",
         mode: 'getMotivumok',
+				hideown: 1,
 				getid: $scope.loadid,
 				admin: 1
       })
@@ -179,6 +176,55 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
 	}
 }]);
 
+a.controller("MotifsStyler", ['$scope', '$http', '$mdToast', function($scope, $http, $mdToast)
+{
+	$scope.motifs = {};
+	$scope.motiv_size = 80;
+
+	$scope.calcScaleFactor = function( size ){
+    return parseFloat( size / 200);
+  }
+
+	$scope.init = function( id ){
+		$scope.loadMotivums(function( motivums )
+		{
+			$scope.motifs = motivums;
+		});
+	}
+
+	$scope.loadMotivums = function( callback ){
+    $http({
+      method: 'POST',
+      url: '/ajax/post',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data: $.param({
+        type: "Moza",
+        mode: 'getStyleConfigs',
+				admin: 1
+      })
+    }).success(function(r){
+			console.log(r);
+      if (typeof callback !== 'undefined') {
+        callback(r.data);
+      }
+    });
+  }
+
+	$scope.toast = function( text, mode, delay ){
+		mode = (typeof mode === 'undefined') ? 'simple' : mode;
+		delay = (typeof delay === 'undefined') ? 5000 : delay;
+
+		if (typeof text !== 'undefined') {
+			$mdToast.show(
+				$mdToast.simple()
+				.textContent(text)
+				.position('top')
+				.toastClass('alert-toast mode-'+mode)
+				.hideDelay(delay)
+			);
+		}
+	}
+}]);
 
 a.controller("MotifsEditor", ['$scope', '$http', '$mdToast', function($scope, $http, $mdToast)
 {
@@ -442,7 +488,7 @@ a.directive('motivum', function($rootScope){
     return function($scope, e, a)
     {
       var konva = {};
-      var id = 'katmot'+$scope.m.mintakod;
+      var id = 'katmot'+$scope.m.mintakod+$scope.m.ID;
       e.attr("id", id);
       konva.stage = new Konva.Stage({
         container: id,

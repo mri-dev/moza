@@ -3382,11 +3382,20 @@ span.label.label-danger{
   box-shadow: 0 16px 25px -5px #757575;
   position: relative;
 }
-
 .motifs-editor .no-motifs{
   padding: 25px;
   text-align: center;
   color:#acacac;
+}
+.motifs-styler .motif{
+  border-bottom: none !important;
+}
+.motifs-styler .motif .header{
+  flex-basis: 100%;
+  background: #4c4c4c;
+  color: white;
+  border-radius: 20px;
+  margin: 10px 0 0 0;
 }
 .motiv-configurator > .holder{
   display: -webkit-box;
