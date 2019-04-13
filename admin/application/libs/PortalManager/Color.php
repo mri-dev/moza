@@ -49,9 +49,11 @@ class Color
 	/*===============================
 	=            GETTERS            =
 	===============================*/
-	public function getName()
+	public function getName( $lang = '' )
 	{
-		return $this->cat_data['neve'];
+		$lang = ($lang == '') ?'':'_'.$lang;
+
+		return $this->cat_data['neve'.$lang];
 	}
   public function getAzonosito()
 	{

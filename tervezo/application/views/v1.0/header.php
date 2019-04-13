@@ -26,7 +26,7 @@
 <header>
   <div class="logo">
     <div class="in">
-      <img src="<?=IMG?>moza_logo_hu.svg" alt="">
+      <img src="<?=IMG?>moza_logo_hu.svg" alt="MOZA">
     </div>
   </div>
   <div class="backurl">
@@ -49,8 +49,8 @@
   </div>
   <div class="langs">
     <div class="in">
-      <div class=""><a class="<?=(Lang::getLang()=='hu')?'active':''?>" href="/?setlang=hu">Magyar</a></div>
-      <div class=""><a class="<?=(Lang::getLang()=='en')?'active':''?>" href="/?setlang=en">English</a></div>      
+      <div class=""><a class="<?=(Lang::getLang()=='hu')?'active':''?>" href="/?setlang=hu"><img src="<?=IMG?>icons/flag_hu.png" alt="Magyar"> Magyar</a></div>
+      <div class=""><a class="<?=(Lang::getLang()=='en')?'active':''?>" href="/?setlang=en"><img src="<?=IMG?>icons/flag_en.png" alt="English"> English</a></div>
     </div>
   </div>
 </header>
@@ -87,7 +87,7 @@
         </div>
       </div>
       <div class="cat" ng-class="(aktiv_kat==cat.ID)?'active':''">
-        <div class="title" ng-click="changeKat(cat.ID)">
+        <div class="title unique" ng-click="changeKat(cat.ID)">
           <?php echo __('Előszínezett lapok'); ?> <i class="fa fa-adjust"></i>
         </div>
         <div class="motifs" ng-show="(aktiv_kat==cat.ID && kategoriak['OWN'].length != 0)">

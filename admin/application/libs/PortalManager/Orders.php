@@ -162,7 +162,7 @@ class Orders
       'qtyconfig' => $qtyconfig,
       'motifs' => $motifs
     );
-    $mail->setSubject( __('Visszaigazolás: megrendelés igényét fogadtuk.') );
+    $mail->setSubject( __('Visszaigazolás: ajánlatkérését igényét fogadtuk.') );
     $mail->setMsg( (new Template( VIEW . 'templates/mail/' ))->get( 'order_new_user', $arg ) );
     $re = $mail->sendMail();
 

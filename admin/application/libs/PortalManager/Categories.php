@@ -32,6 +32,7 @@ class Categories
 	{
 		$deep = 0;
 		$name = ($data['name']) ?: false;
+		$name_en = ($data['name_en']) ?: NULL;
 		$sort = ($data['sortnumber']) ?: 0;
 		$parent = ($data['parent_category']) ?: NULL;
 		$hashkey = ($data['hashkey']) ?: NULL;
@@ -51,6 +52,7 @@ class Categories
 			"kategoriak",
 			array(
 				'neve' 		=> $name,
+				'neve_en' 		=> $name_en,
 				'szulo_id' 	=> $parent,
 				'sorrend' 	=> $sort,
 				'deep' 		=> $deep,
@@ -70,6 +72,7 @@ class Categories
 	{
 		$deep = 0;
 		$name = ($new_data['name']) ?: false;
+		$name_en = ($new_data['name_en']) ?: NULL;
 		$sort = ($new_data['sortnumber']) ?: 0;
 		$parent = ($new_data['parent_category']) ?: NULL;
 		$hashkey = ($new_data['hashkey']) ?: NULL;
@@ -88,6 +91,7 @@ class Categories
 
 		$category->edit(array(
 			'neve' 		=> $name,
+			'neve_en' 		=> $name_en,
 			'szulo_id' 	=> $parent,
 			'sorrend' 	=> $sort,
 			'deep' 		=> $deep,
@@ -145,6 +149,11 @@ class Categories
 			$this->tree_items++;
 
 			$top_cat['link'] = DOMAIN.'termekek/'.\PortalManager\Formater::makeSafeUrl($top_cat['neve'],'_-'.$top_cat['ID']);
+
+			if( !$arg['admin'] ){
+				$lang = \Lang::getLang();
+				$top_cat['neve'] = ($lang != DLANG) ? ( ($top_cat['neve_'.$lang]) == '' && $top_cat['neve'] != '' ) ? $top_cat['neve'] : $top_cat['neve_'.$lang] : $top_cat['neve'];
+			}
 
 			$this->tree_steped_item[] = $top_cat;
 

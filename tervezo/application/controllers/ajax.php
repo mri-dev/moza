@@ -52,7 +52,7 @@ class ajax extends Controller{
 							try {
 								$projects->add( $form, $used_motifs, $used_colors, $grid );
 								$ret['success'] = 1;
-								$ret['msg'] = __('Sikeresen mentette a(z) "'.$form['name'].'" projektjét ide: '.$form['email']);
+								$ret['msg'] = sprintf(__('Sikeresen mentette a(z) "%s" projektjét ide: %s'), $form['name'], $form['email']);
 							} catch (\Exception $e) {
 								$err = $this->escape($e->getMessage());
 								$ret[errorCode] = $e->getCode();

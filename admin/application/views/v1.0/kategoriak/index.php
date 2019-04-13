@@ -31,21 +31,25 @@
         <?php else: ?>
           <form action="" method="post">
 					<div class="row np">
-						<div class="col-md-9" style="padding-right:8px;">
-							<label for="name">Elnevezés*</label>
+						<div class="col-md-6" style="padding-right:8px;">
+							<label for="name">Elnevezés (HU)*</label>
 							<input type="text" id="name" name="name" value="<?= ( $this->err ? $_POST['name'] : ($this->category ? $this->category->getName():'') ) ?>" class="form-control">
 						</div>
-						<div class="col-md-3">
-							<label for="sortnum">Sorrend</label>
-							<input type="number" id="sortnumber" name="sortnumber" value="<?=($this->err ? $_POST['sortnumber']:($this->category ? $this->category->getSortNumber() : '0'))?>" class="form-control">
+            <div class="col-md-6" style="padding-right:8px;">
+							<label for="name_en">Elnevezés (EN)</label>
+							<input type="text" id="name_en" name="name_en" value="<?= ( $this->err ? $_POST['name_en'] : ($this->category ? $this->category->getName('en'):'') ) ?>" class="form-control">
 						</div>
 					</div>
 					<? if( true ): ?>
 					<br>
 					<div class="row np">
-						<div class="col-md-12">
+						<div class="col-md-9" style="padding-right:8px;">
 							<label for="hashkey">Egyedi azonosító kulcs</label>
 							<input type="text" id="hashkey" name="hashkey" value="<?= ( $this->err ? $_POST['hashkey'] : ($this->category ? $this->category->getHashkey():'') ) ?>" class="form-control">
+						</div>
+            <div class="col-md-3">
+							<label for="sortnum">Sorrend</label>
+							<input type="number" id="sortnumber" name="sortnumber" value="<?=($this->err ? $_POST['sortnumber']:($this->category ? $this->category->getSortNumber() : '0'))?>" class="form-control">
 						</div>
 					</div>
 					<? endif; ?>
@@ -152,7 +156,7 @@
 				?>
 				<div class="row np deep<?=$cat['deep']?> <?=($this->category && $this->category->getId() == $cat['ID'] ? 'on-edit' : ( $this->category_d && $this->category_d->getId() == $cat['ID'] ? 'on-del':'') )?>">
 					<div class="col-md-9">
-						<a href="/kategoriak/szerkeszt/<?=$cat['ID']?>" title="Szerkesztés"><strong><?=$cat['neve']?></strong></a>
+						<a href="/kategoriak/szerkeszt/<?=$cat['ID']?>" title="Szerkesztés"><strong><?=$cat['neve']?></strong><?php if ($cat['neve_en'] != ''): ?> / <?=$cat['neve_en']?><?php endif; ?></a>
 						 <? if( $cat['oldal_hashkeys'] ): ?> | <span style="color: black;">Csatolt oldalak: <?=count(explode(",",$cat[oldal_hashkeys]))?> db</span><? endif; ?>
 						<div><? if($cat['hashkey']): ?> <span class="hashkey">#<?=$cat['hashkey']?></span> <? endif; ?></div>
 

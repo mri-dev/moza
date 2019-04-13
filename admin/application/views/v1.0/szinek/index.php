@@ -31,17 +31,27 @@
         <?php else: ?>
           <form action="" method="post" class="p-0">
 					<div class="row" style="margin: 0 -15px;">
-            <div class="col-md-3">
+            <div class="col-md-9">
 							<label for="kod">Azonosító*</label>
 							<input type="text" id="kod" name="kod" value="<?= ( $this->err ? $_POST['kod'] : ($this->color ? $this->color->getAzonosito():'') ) ?>" class="form-control">
-						</div>
-						<div class="col-md-6">
-							<label for="name">Elnevezés*</label>
-							<input type="text" id="name" name="name" value="<?= ( $this->err ? $_POST['name'] : ($this->color ? $this->color->getName():'') ) ?>" class="form-control">
 						</div>
 						<div class="col-md-3">
 							<label for="sortnum">Sorrend</label>
 							<input type="number" id="sortnumber" name="sortnumber" value="<?=($this->err ? $_POST['sortnumber']:($this->color ? $this->color->getSortNumber() : '0'))?>" class="form-control">
+						</div>
+					</div>
+          <br>
+          <div class="row" style="margin: 0 -15px;">
+						<div class="col-md-12">
+							<label for="name">Elnevezés (HU)*</label>
+							<input type="text" id="name" name="name" value="<?= ( $this->err ? $_POST['name'] : ($this->color ? $this->color->getName():'') ) ?>" class="form-control">
+						</div>
+					</div>
+          <br>
+          <div class="row" style="margin: 0 -15px;">
+						<div class="col-md-12">
+							<label for="name_en">Elnevezés (EN)</label>
+							<input type="text" id="name_en" name="name_en" value="<?= ( $this->err ? $_POST['name_en'] : ($this->color ? $this->color->getName('en'):'') ) ?>" class="form-control">
 						</div>
 					</div>
 					<? if( true ): ?>
@@ -124,7 +134,7 @@
               </div>
             </div>
             <div class="col-md-3">
-  						<a href="/szinek/szerkeszt/<?=$cat['ID']?>" title="Szerkesztés"><strong><?=$cat['neve']?></strong></a>
+  						<a href="/szinek/szerkeszt/<?=$cat['ID']?>" title="Szerkesztés"><strong><?=$cat['neve']?></strong><?php if ($cat['neve_en'] != ''): ?> / <?=$cat['neve_en']?><?php endif; ?></a>
   					</div>
             <div class="col-md-2 center">
               #<?=$cat['szin_rgb']?>

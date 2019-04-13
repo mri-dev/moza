@@ -56,7 +56,7 @@
             <div class="data">
               <div class="wrapper">
                 <div class="minta">
-                  <?=__('Minta:')?> <strong><?=$m['minta']?></strong>
+                  <?=__('Minta')?>: <strong><?=$m['minta']?></strong>
                 </div>
                 <div class="qty">
                   <div class="me"><?=__('Darab')?>: <strong><?=$me_db?></strong></div>

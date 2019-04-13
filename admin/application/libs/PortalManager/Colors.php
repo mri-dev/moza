@@ -31,6 +31,7 @@ class Colors
 	public function add( $data = array() )
 	{
 		$name = ($data['name']) ?: false;
+		$name_en = ($data['name_en']) ? $new_data['name_en'] : NULL;
 		$sort = ($data['sortnumber']) ?: 0;
 		$kod = ($data['kod']) ?: NULL;
 		$szin_rgb = ($data['szin_rgb']) ?: NULL;
@@ -50,6 +51,7 @@ class Colors
 			"szinek",
 			array(
 				'neve' => $name,
+				'neve_en'	=> $name_en,
 				'sorrend' => $sort,
         'kod' => $kod,
         'szin_rgb' => $szin_rgb,
@@ -61,6 +63,7 @@ class Colors
 	public function edit( Color $color, $new_data = array() )
 	{
 		$name = ($new_data['name']) ?: false;
+		$name_en = ($new_data['name_en']) ? $new_data['name_en'] : NULL;
 		$sort = ($new_data['sortnumber']) ?: 0;
 
 		if ( !$name ) {
@@ -68,8 +71,9 @@ class Colors
 		}
 
 		$color->edit(array(
-			'neve' 		=> $name,
-			'sorrend' 	=> $sort,
+			'neve' => $name,
+			'neve_en'	=> $name_en,
+			'sorrend' => $sort,
 		));
 	}
 
@@ -113,6 +117,10 @@ class Colors
 
 		foreach ( $top_cat_data as $top_cat ) {
 			$this->tree_items++;
+			if( !$arg['admin'] ){
+				$lang = \Lang::getLang();
+				$top_cat['neve'] = ($lang != DLANG) ? ( ($top_cat['neve_'.$lang]) == '' && $top_cat['neve'] != '' ) ? $top_cat['neve'] : $top_cat['neve_'.$lang] : $top_cat['neve'];
+			}
 			$this->tree_steped_item[] = $top_cat;
 			$tree[] = $top_cat;
 		}
