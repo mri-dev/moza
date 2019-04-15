@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
       <div class="card bg-warning border-warning">
         <div class="card-header text-white"><i class="fa fa-eye-slash"></i> Még nem láttott ajánlatkérések</div>
         <div class="card-body" style="padding: 0;">
@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" style="display:none;">
       <div class="card">
         <div class="card-header"><i class="fa fa-pie-chart"></i> Statisztika</div>
         <div class="card-body">

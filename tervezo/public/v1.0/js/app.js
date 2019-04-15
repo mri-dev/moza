@@ -840,6 +840,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           var sh = stage.height();
           var mousePos = stage.getPointerPosition();
           if (mousePos) {
+            var base_x = 0;
+            var base_y = 0
             var toh = 5;
             var tow = 5;
             var tw = mousePos.x + tow;
@@ -850,12 +852,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
             ttext += "RGB: "+shape.attrs.fill+"\n";
             ttext += "NCS: "+$scope.colorsbyrgb[shape.attrs.fill.replace("#","")].szin_ncs;
             var rotfix = 0;
-            if ($scope.workrotate == 90 || $scope.workrotate == -90) {
-              rotfix = $scope.workrotate*3;
-            }
-            if ($scope.workrotate == -180) {
-              rotfix = 180;
-            }
 
             options.tooltip.rotation(rotfix);
             options.tooltipbg.rotation(rotfix);
@@ -863,12 +859,18 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
             options.tooltipbg.height(options.tooltip.height());
             options.tooltipbg.width(options.tooltip.width());
 
-            if ( mousePos.y >= (sh-options.tooltip.height()-toh) ) {
-              th = mousePos.y - options.tooltip.height() - toh;
-            }
+            if ($scope.workrotate == 0) {
+              if ( mousePos.y >= (sh-options.tooltip.height()-toh) ) {
+                th = ( mousePos.y - options.tooltip.height() - toh);
+              }
 
-            if ( mousePos.x >= (sw-options.tooltip.width()-tow) ) {
-              tw = mousePos.x - options.tooltip.width() - tow;
+              if ( mousePos.x >= (sw-options.tooltip.width()-tow) ) {
+                tw = (mousePos.x - options.tooltip.width() - tow);
+              }
+            } else {
+              if ($scope.workrotate == -90) {
+                tw = sw - mousePos.x;
+              }
             }
 
             options.tooltip.position({
@@ -879,6 +881,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
               x: tw,
               y: th
             });
+            console.log('x: '+tw+', y: '+th);
 
             options.tooltip.show();
             options.tooltipbg.show();
