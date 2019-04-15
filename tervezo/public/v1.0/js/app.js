@@ -481,7 +481,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
               var th = mousePos.y + toh;
               var ttext = "";
 
-              ttext += "Szín: "+$scope.colorsbyrgb[shapes.attrs.fill.replace("#","")].kod+"\n";
+              ttext += $scope.translate('color')+" "+$scope.colorsbyrgb[shapes.attrs.fill.replace("#","")].kod+"\n";
               ttext += "RGB: "+shapes.attrs.fill+"\n";
               ttext += "NCS: "+$scope.colorsbyrgb[shapes.attrs.fill.replace("#","")].szin_ncs;
 
@@ -835,6 +835,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       // hover tooltip
       shape.on('mousemove', function(){
         if (options.tooltiplayer && options.tooltip) {
+          console.log($scope.workrotate);
           var sw = stage.width();
           var sh = stage.height();
           var mousePos = stage.getPointerPosition();
@@ -845,10 +846,19 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
             var th = mousePos.y + toh;
             var ttext = "";
 
-            ttext += "Szín: "+$scope.colorsbyrgb[shape.attrs.fill.replace("#","")].kod+"\n";
+            ttext += $scope.translate('color')+" "+$scope.colorsbyrgb[shape.attrs.fill.replace("#","")].kod+"\n";
             ttext += "RGB: "+shape.attrs.fill+"\n";
             ttext += "NCS: "+$scope.colorsbyrgb[shape.attrs.fill.replace("#","")].szin_ncs;
+            var rotfix = 0;
+            if ($scope.workrotate == 90 || $scope.workrotate == -90) {
+              rotfix = $scope.workrotate*3;
+            }
+            if ($scope.workrotate == -180) {
+              rotfix = 180;
+            }
 
+            options.tooltip.rotation(rotfix);
+            options.tooltipbg.rotation(rotfix);
             options.tooltip.text(ttext);
             options.tooltipbg.height(options.tooltip.height());
             options.tooltipbg.width(options.tooltip.width());
@@ -1102,12 +1112,14 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         'loader_title_loadproject': 'Saját projekt betöltése',
         'no_motiv_selected': 'Nincs kiválasztva aktív minta motívum. Válasszon a kategóriák közül.',
         'missing_project_loading_email': 'A projektek betöltéséhez adja meg az e-mail címét!',
+        'color':'Szín:',
       },
       'en':{
         'default_loader_title': 'MOZA TILE CONFIGURATOR',
         'loader_title_loadproject': 'Load own projects',
         'no_motiv_selected': 'No motif selected. Please choose one from any categories!',
         'missing_project_loading_email': 'Please give your e-mail address to load your saved projects!',
+        'color':'Color:',
       }
     }
 
