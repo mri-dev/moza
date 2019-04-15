@@ -32,7 +32,7 @@
   <div class="backurl">
     <div class="in">
       <?php if ($this->sessionpage): ?>
-        <a href="/"> <i class="fa fa-angle-left"></i> <?php echo __('vissza a moza cementlap tervezőbe'); ?></a>
+        <a href="/"> <i class="fa fa-angle-left"></i>  <?php echo __('vissza a moza cementlap tervezőbe'); ?></a>
       <?php else: ?>
         <a href="http://www.moza.hu"> <i class="fa fa-angle-left"></i> <?php echo __('vissza a moza cementlap manufaktúra weboldalára'); ?></a>
       <?php endif; ?>

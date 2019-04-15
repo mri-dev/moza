@@ -3413,6 +3413,7 @@ span.label.label-danger{
 .motiv-configurator > .holder .motif-preview .konvajs-content{
   border: 4px solid #dbdbdb;
   overflow: hidden;
+  box-sizing: content-box;
   border-radius: 5px;
   box-shadow: 0 16px 25px -5px #757575;
   position: relative;

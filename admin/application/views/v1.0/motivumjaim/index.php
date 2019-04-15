@@ -37,7 +37,7 @@
                 Rétegek: <strong>{{m.shapes.length}}</strong>
               </div>
               <div class="colors">
-                Színek: <span ng-repeat="s in m.shapes" style="border-left: 10px solid {{s.fill_color}}; ">{{s.fill_color}}</span>
+                Színek: <span ng-repeat="s in m.shapes" title="{{s.fill_color}}" style="background:{{s.fill_color}}; ">&nbsp;&nbsp;&nbsp;&nbsp;</span>
               </div>
             </div>
             <div class="sorrend center">

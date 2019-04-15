@@ -7,9 +7,11 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.current_lang = 'hu';
   $scope.originColors = ["#000000", "#666666", "#888888"];
   $scope.motivumok = {};
+  $scope.motivumnum = 0;
   $scope.kategoriak = {};
   $scope.kategoria_lista = [];
   $scope.colors = [];
+  $scope.colorsbyrgb = {};
   $scope.loaded_projects = [];
   $scope.aktiv_kat = 0;
   $scope.deletemode = false;
@@ -24,7 +26,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.usingHistoryHash = false;
   $scope.changeColorObj = {};
   $scope.lastbuildmotifs = false;
-  $scope.project_load_email = 'demo@demo.hu';
+  $scope.project_load_email = '';
   $scope.project_loading = false;
   $scope.selected_project = false;
   $scope.used_motifs = {};
@@ -36,7 +38,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     x: 16,
     y: 16
   };
-  $scope.motiv_size = ($('.sidebar').width() - 8 - 12 - 6) / 3;
+  $scope.motiv_size = ($('.sidebar').width() - (3*(10))) / 3;
   $scope.workmotiv_size = 202;
   $scope.csempenmdb = 25;
 
@@ -53,10 +55,11 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       $scope.loadMotivums(function( motivums )
       {
         if (motivums) {
-          console.log(motivums);
+          $scope.motivumnum = 0;
           angular.forEach(motivums, function(i,e){
             if (typeof $scope.motivumok[i.mintakod] === 'undefined') {
               $scope.motivumok[i.mintakod] = i;
+              $scope.motivumnum++;
             }
             if (typeof $scope.kategoriak[i.kat_hashkey] === 'undefined') {
               $scope.kategoriak[i.kat_hashkey] = [];
@@ -65,7 +68,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
               $scope.kategoriak[i.kat_hashkey].push(i);
             }
           });
-          console.log($scope.kategoriak);
         }
       });
 
@@ -84,7 +86,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         $('#motivum').css({
           height: $scope.workmotiv_size
         });
-        $scope.apploading = false;
       }, 600);
 
     });
@@ -181,27 +182,64 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
       // LAYER
       $scope.worklayer = new Konva.Layer();
+      // Tooltip
+      var tooltipLayer = new Konva.Layer();
+      var tooltip = new Konva.Text({
+        text: '',
+        fontFamily: 'Calibri',
+        fontSize: 12,
+        padding: 5,
+        fill: 'rgba(255, 255, 255, 0.8)',
+        alpha: 0.75,
+        visible: false
+      });
+      var tooltipbg = new Konva.Rect({
+        x: 0,
+        y: 0,
+        stroke: '#00000',
+        fill: '#F05F42',
+        shadowColor: 'black',
+        shadowBlur: 5,
+        strokeWidth: 1,
+        shadowOffset: [10, 10],
+        shadowOpacity: 0.4,
+        cornerRadius: 3,
+        visible: false
+      });
+      tooltipLayer.add( tooltipbg );
 
       $scope.workstage.clear();
       $scope.workrotate = 0;
 
       if ( m.shapes && m.shapes.length ) {
         angular.forEach( m.shapes, function(si, se){
-          var settings = {
-            fill: si.fill_color,
-            shapesize: $scope.workmotiv_size
-          };
-          if ($scope.showStrokes) {
-            settings.stroke = 'black';
-            settings.strokeWidth = $scope.strokeWidth;
-          }
-          $scope.addShape(
-            $scope.workstage,
-            $scope.worklayer,
-            si.canvas_js,
-            settings
-          );
+          $scope.findColorObjectByRGB( si.fill_color.replace("#",""),  function( color ){
+            var settings = {
+              fill: si.fill_color,
+              shapesize: $scope.workmotiv_size,
+              tooltiplayer: tooltipLayer,
+              tooltip: tooltip,
+              tooltipbg: tooltipbg,
+              colorinfo: color
+            };
+           if ($scope.showStrokes) {
+             settings.stroke = 'black';
+             settings.strokeWidth = $scope.strokeWidth;
+           }
+           $scope.addShape(
+             $scope.workstage,
+             $scope.worklayer,
+             si.canvas_js,
+             settings
+           );
+          } );
         });
+
+        // Tooltip adds
+        tooltipLayer.add(tooltip);
+        $scope.workstage.add(tooltipLayer);
+
+      tooltipLayer.add(tooltip);
         $scope.currentMotivum = m;
         $scope.usingHistoryHash = false;
       }
@@ -365,7 +403,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           }, 100);
         }
       }
-      console.log(  $scope.used_motifs);
     } );
   }
 
@@ -381,8 +418,34 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       loadfromhistory: true,
       minta: motiv.minta
     });
+    var options = {};
 
     var layers = motiv.stage.getLayers();
+    // Tooltip
+    options.tooltiplayer = new Konva.Layer();
+    options.tooltipbg = new Konva.Rect({
+      x: 0,
+      y: 0,
+      stroke: '#00000',
+      fill: '#F05F42',
+      shadowColor: 'black',
+      shadowBlur: 5,
+      strokeWidth: 1,
+      shadowOffset: [10, 10],
+      shadowOpacity: 0.4,
+      cornerRadius: 3,
+      visible: false
+    });
+    options.tooltip = new Konva.Text({
+      text: '',
+      fontFamily: 'Calibri',
+      fontSize: 12,
+      padding: 5,
+      fill: 'rgba(255, 255, 255, 0.8)',
+      alpha: 0.75,
+      visible: false
+    });
+    options.tooltiplayer.add( options.tooltipbg );
 
     layers.each(function(layer, n) {
       var lay = layer.clone();
@@ -404,11 +467,69 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           lay.draw();
         });
         shapes.fill( motiv.colors[si] );
+
+        // hover tooltip
+        shapes.on('mousemove', function(){
+          if (options.tooltiplayer && options.tooltip) {
+            var sw = $scope.workstage.width();
+            var sh = $scope.workstage.height();
+            var mousePos = $scope.workstage.getPointerPosition();
+            if (mousePos) {
+              var toh = 5;
+              var tow = 5;
+              var tw = mousePos.x + tow;
+              var th = mousePos.y + toh;
+              var ttext = "";
+
+              ttext += "Szín: "+$scope.colorsbyrgb[shapes.attrs.fill.replace("#","")].kod+"\n";
+              ttext += "RGB: "+shapes.attrs.fill+"\n";
+              ttext += "NCS: "+$scope.colorsbyrgb[shapes.attrs.fill.replace("#","")].szin_ncs;
+
+              options.tooltip.text(ttext);
+              options.tooltipbg.height(options.tooltip.height());
+              options.tooltipbg.width(options.tooltip.width());
+
+              if ( mousePos.y >= (sh-options.tooltip.height()-toh) ) {
+                th = mousePos.y - options.tooltip.height() - toh;
+              }
+
+              if ( mousePos.x >= (sw-options.tooltip.width()-tow) ) {
+                tw = mousePos.x - options.tooltip.width() - tow;
+              }
+
+              options.tooltip.position({
+                x: tw,
+                y: th
+              });
+              options.tooltipbg.position({
+                x: tw,
+                y: th
+              });
+
+              options.tooltip.show();
+              options.tooltipbg.show();
+              options.tooltiplayer.batchDraw();
+            }
+          }
+        });
+
+        shapes.on('mouseout', function(){
+          if (options.tooltiplayer && options.tooltip) {
+            options.tooltip.hide();
+            options.tooltipbg.hide();
+            options.tooltiplayer.draw();
+          }
+        });
+
         si++;
       });
       $scope.workstage.add( lay );
       lay.draw();
     });
+
+    // Tooltip adds
+    options.tooltiplayer.add(options.tooltip);
+    $scope.workstage.add(options.tooltiplayer);
 
     $scope.currentMotivum = $scope.motivumok[motiv.minta];
   }
@@ -491,7 +612,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       })
       .then(function(form) {
         if (form) {
-          console.log(form);
         }
       }, function() {
 
@@ -529,7 +649,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
       // Delete stage
       var motifs = angular.copy( $scope.motifs );
-      console.log(motifs);
 
       angular.forEach(motifs, function(m,i){
         delete m.stage;
@@ -550,7 +669,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           project: $scope.project.ID
         })
       }).success(function(r){
-        console.log(r);
         $scope.savingorder = false;
         if (r.success == 1) {
           $scope.toast(r.msg, 'success', 5000);
@@ -714,6 +832,58 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         this.fill( $scope.currentFillColor );
         layer.draw();
       });
+      // hover tooltip
+      shape.on('mousemove', function(){
+        if (options.tooltiplayer && options.tooltip) {
+          var sw = stage.width();
+          var sh = stage.height();
+          var mousePos = stage.getPointerPosition();
+          if (mousePos) {
+            var toh = 5;
+            var tow = 5;
+            var tw = mousePos.x + tow;
+            var th = mousePos.y + toh;
+            var ttext = "";
+
+            ttext += "Szín: "+$scope.colorsbyrgb[shape.attrs.fill.replace("#","")].kod+"\n";
+            ttext += "RGB: "+shape.attrs.fill+"\n";
+            ttext += "NCS: "+$scope.colorsbyrgb[shape.attrs.fill.replace("#","")].szin_ncs;
+
+            options.tooltip.text(ttext);
+            options.tooltipbg.height(options.tooltip.height());
+            options.tooltipbg.width(options.tooltip.width());
+
+            if ( mousePos.y >= (sh-options.tooltip.height()-toh) ) {
+              th = mousePos.y - options.tooltip.height() - toh;
+            }
+
+            if ( mousePos.x >= (sw-options.tooltip.width()-tow) ) {
+              tw = mousePos.x - options.tooltip.width() - tow;
+            }
+
+            options.tooltip.position({
+              x: tw,
+              y: th
+            });
+            options.tooltipbg.position({
+              x: tw,
+              y: th
+            });
+
+            options.tooltip.show();
+            options.tooltipbg.show();
+            options.tooltiplayer.batchDraw();
+          }
+        }
+      });
+
+      shape.on('mouseout', function(){
+        if (options.tooltiplayer && options.tooltip) {
+          options.tooltip.hide();
+          options.tooltipbg.hide();
+          options.tooltiplayer.draw();
+        }
+      });
     }
 
     layer.add( shape );
@@ -738,7 +908,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         grid: data.grid
       })
     }).success(function(r){
-      console.log(r);
       if (r.success == 1) {
         $scope.toast( r.msg, 'success', 5000);
       } else {
@@ -910,6 +1079,9 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         }
         if (r.data.colors !== 'undefined') {
           $scope.colors = r.data.colors;
+          angular.forEach($scope.colors, function(c,i){
+            $scope.colorsbyrgb[c.szin_rgb] = c;
+          });
         }
       }
       if (typeof callback !== 'undefined') {
@@ -961,10 +1133,12 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
 app.directive('motivum', function($rootScope){
   var motivum = {};
+  var motivcnt = 0;
+  var loaded_all = false;
   motivum.restrict = 'E';
-  motivum.scope = true;
+  //motivum.scope = true;
   motivum.transclude = true;
-  motivum.replace = true;
+  //motivum.replace = true;
   motivum.compile  = function(e, a){
     return function($scope, e, a)
     {
@@ -1002,6 +1176,12 @@ app.directive('motivum', function($rootScope){
       }
 
       $scope.konva = konva;
+      motivcnt++;
+      var parent_motiv_num = $scope.$parent.$parent.motivumnum;
+      if( !loaded_all && motivcnt >= parent_motiv_num) {
+        loaded_all = true;
+        $scope.$parent.$parent.apploading = false;
+      }
       $rootScope.$broadcast('KONVA:READY', konva.stage);
     }
   }
