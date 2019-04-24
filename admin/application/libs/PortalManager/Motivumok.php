@@ -179,7 +179,7 @@ class Motivumok
 		$color->delete();
 	}
 
-  public function getMotivumShapes( $motivum )
+  public function getMotivumShapes( $motivum, $config_id = false )
   {
     $shapes = array();
 
@@ -192,7 +192,27 @@ class Motivumok
 
     $data = $qry->fetchAll(\PDO::FETCH_ASSOC);
 
+		// Színkonfiguráció egyedi színezés layer-ek betöltése
+		if ($config_id) {
+			$layer_colors = array();
+			$cqry = "SELECT layerID, fill_color FROM motivum_style_layers WHERE 1=1 and styleID = :sid";
+	    $cqry = $this->db->squery( $cqry, array( 'sid' => $config_id ) );
+			if ( $cqry->rowCount() != 0 ) {
+				$cqry = $cqry->fetchAll(\PDO::FETCH_ASSOC);
+				foreach ((array)$cqry as $cs) {
+					$layer_colors[$cs['layerID']] = $cs['fill_color'];
+				}
+			}
+		}
+
     foreach ((array)$data as $d ) {
+			if ($config_id) {
+				$d['config_id'] = $config_id;
+				$d['original_fill'] = $d['fill_color'];
+				if ( $layer_colors && !empty($layer_colors[$d['ID']])) {
+					$d['fill_color'] = $layer_colors[$d['ID']];
+				}
+			}
       $shapes[] = $d;
     }
     unset($data);
@@ -200,10 +220,44 @@ class Motivumok
     return $shapes;
   }
 
+	public function saveConfigMotivum( $configid, $motivum )
+	{
+		if (empty($motivum['config_datas']['nev'])) {
+			throw new \Exception("Az egyedileg színezett minta elnevezése kötelező!");
+		}
+
+		$this->db->update(
+			'motivum_styles',
+			array(
+				'nev' => trim($motivum['config_datas']['nev']),
+				'lathato' => ($motivum['config_datas']['lathato'] == 'true') ? 1 : 0,
+				'sorrend' => (int)$motivum['config_datas']['sorrend']
+			),
+			sprintf("ID = %d", (int)$configid)
+		);
+
+		// Layers
+		if ($motivum && $motivum['shapes']) {
+			foreach ((array)$motivum['shapes'] as $layer ) {
+				$layerid = (int)$layer['ID'];
+				$fill = $layer['fill_color'];
+
+				$this->db->update(
+					'motivum_style_layers',
+					array(
+						'fill_color' => trim($fill)
+					),
+					sprintf("layerID = %d and styleID = %d", $layerid, (int)$configid)
+				);
+			}
+		}
+	}
+
 	public function getAll( $arg = array() )
 	{
 		$tree = array();
     $this->tree = $tree;
+		$is_config_load = (isset($arg['configid'])) ? (int)$arg['configid'] : false;
 
 		$qry = "SELECT
       m.*,
@@ -236,7 +290,10 @@ class Motivumok
 		foreach ( $data as $d ) {
       $d['ID'] = (int)$d['ID'];
       $d['kategoria'] = (int)$d['kategoria'];
-      $d['shapes'] = $this->getMotivumShapes( $d['mintakod'] );
+			if ($is_config_load) {
+				$d['config_datas'] = $this->getStyleConfigData( $is_config_load );
+			}
+      $d['shapes'] = $this->getMotivumShapes( $d['mintakod'], $is_config_load );
 			$tree[] = $d;
 		}
 
@@ -255,6 +312,18 @@ class Motivumok
 		return $tree;
 	}
 
+	public function getStyleConfigData( $id )
+	{
+		$qry = $this->db->squery("SELECT * FROM motivum_styles WHERE ID = :id", array('id' => $id));
+		if ($qry->rowCount() == 0) {
+			return array();
+		}
+
+		$data = $qry->fetch(\PDO::FETCH_ASSOC);
+
+		return $data;
+	}
+
 	public function getStyleConfigs( $motifs, $arg = array())
 	{
 		$set = array();
@@ -269,7 +338,8 @@ class Motivumok
 		$q = "SELECT
 		s.ID,
 		s.nev,
-		s.motivumID
+		s.motivumID,
+		s.sorrend
 		FROM motivum_styles as s WHERE 1=1 ";
 
 		if ($arg['admin'] === true) {
@@ -290,10 +360,12 @@ class Motivumok
 
 				$ID = $d['ID'];
 				$nev = $d['nev'];
+				$sorrend = $d['sorrend'];
 				$d = $mots[$d['motivumID']];
 				$d['ID'] = $ID;
 				$d['nev'] = $nev;
 				$d['kat_hashkey'] = 'OWN';
+				$d['sorrend'] = $sorrend;
 				$d['kat_name'] = __('Kiemelt minták');
 
 				// Shape configs

@@ -12,6 +12,19 @@ class motivumconfig extends Controller{
 				$this->AdminUser->logout();
 			}
 
+			$motif = $this->db->squery("SELECT
+				m.ID
+			FROM motivum_styles as ms
+			LEFT OUTER JOIN motivumok as m ON m.mintakod = ms.motivumID
+			WHERE 1=1 and
+			 	ms.ID = :id
+			", array('id' => $this->gets[2]));
+
+			if ($motif->rowCount() != 0) {
+				$motivum = $motif->fetch(\PDO::FETCH_ASSOC);
+				$this->out( 'motivum_id', $motivum['ID'] );
+			}
+
 			// SEO Információk
 			$SEO = null;
 			// Site info

@@ -830,7 +830,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     }
     if ($('#motivumtooltip_ncs').text() != ncs) {
       $('#motivumtooltip_ncs').text(ncs);
-    }   
+    }
 
     $('#motivumtooltip').css({
       top: y,

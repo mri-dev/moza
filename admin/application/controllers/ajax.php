@@ -88,6 +88,22 @@ class ajax extends Controller
 
 							$ret['data'] = $data;
 						break;
+						case 'saveMotivumConfig':
+							$m = new Motivumok(array('db' => $this->db));
+							if ($motivum == 'false') {
+								$motivum = false;
+							}
+							/**/
+							try {
+								$newid = $m->saveConfigMotivum((int)$configid, $motivum);
+								$ret['success'] = 1;
+								$ret['msg'] = 'Egyedi színezett motívum adatai sikeresen mentve lettek.';
+							} catch (\Exception $e) {
+								$err = $this->escape($e->getMessage(), $ret);
+								$ret[errorCode] = $e->getCode();
+							}
+							/**/
+						break;
 						case 'addMotivum':
 							$m = new Motivumok(array('db' => $this->db));
 							if ($motivum == 'false') {
@@ -110,6 +126,9 @@ class ajax extends Controller
 							$arg = array();
 							if ($admin == 1) {
 								$arg['admin'] = true;
+							}
+							if ($configid != 0) {
+								$arg['configid'] = $configid;
 							}
 							if ($hideown == 1) {
 								$arg['hideown'] = true;

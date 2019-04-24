@@ -9,17 +9,25 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
 	$scope.motivum = {};
 	$scope.motifs = [];
 	$scope.loadid = 0;
+	$scope.configid = 0;
 	$scope.calcScaleFactor = function( size ){
     return parseFloat( size / 200);
   }
 
-	$scope.init = function( id )
+	$scope.init = function( id, config )
 	{
-		$scope.loadid = id ;
+		$scope.loadid = id;
+		config = (typeof config === 'undefined') ? 0 : config;
+		$scope.configid = config;
+
 		$scope.loadSettings(function()
     {
 			$scope.loadMotivum(function( motivum ){
 				motivum.lathato = (motivum.lathato == '1') ? true : false;
+				if (motivum.config_datas) {
+					motivum.config_datas.lathato = (motivum.config_datas.lathato == '1') ? true : false;
+					motivum.config_datas.sorrend =  parseInt(motivum.config_datas.sorrend);
+				}
 				motivum.sorrend = parseInt(motivum.sorrend);
 				$scope.motivumkod = motivum.mintakod;
 				$scope.motivum = motivum;
@@ -40,7 +48,6 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
 				name: $scope.ownmotifname
 			})
 		}).success(function(r){
-			console.log(r);
 			if (r.success == 1) {
 				$scope.toast(r.msg, 'success', 5000);
 				$scope.ownmotifname = '';
@@ -58,6 +65,27 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
 				} else {
 					$scope.init( $scope.loadid );
 				}
+			}
+		});
+	}
+
+	$scope.editOwnMotivum = function() {
+		$http({
+			method: 'POST',
+			url: '/ajax/post',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			data: $.param({
+				type: "Moza",
+				mode: 'saveMotivumConfig',
+				id: $scope.loadid,
+				configid: $scope.configid,
+				motivum: $scope.motivum
+			})
+		}).success(function(r){
+			if (r.success == 1) {
+				$scope.toast(r.msg, 'success', 5000);
+			} else {
+				$scope.toast(r.msg, 'alert', 10000);
 			}
 		});
 	}
@@ -96,9 +124,11 @@ a.controller("MotifConfigurator", ['$scope', '$http', '$mdToast', function($scop
         mode: 'getMotivumok',
 				hideown: 1,
 				getid: $scope.loadid,
+				configid: $scope.configid,
 				admin: 1
       })
     }).success(function(r){
+			console.log(r);
 			if (r && r.data) {
 				$scope.motifs = r.data;
 			}
