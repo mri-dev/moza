@@ -258,6 +258,7 @@ class Motivumok
 		$tree = array();
     $this->tree = $tree;
 		$is_config_load = (isset($arg['configid'])) ? (int)$arg['configid'] : false;
+		$is_admin = ($arg['admin'] === true) ? true : false;
 
 		$qry = "SELECT
       m.*,
@@ -291,7 +292,7 @@ class Motivumok
       $d['ID'] = (int)$d['ID'];
       $d['kategoria'] = (int)$d['kategoria'];
 			if ($is_config_load) {
-				$d['config_datas'] = $this->getStyleConfigData( $is_config_load );
+				$d['config_datas'] = $this->getStyleConfigData( $is_config_load, $arg );
 			}
       $d['shapes'] = $this->getMotivumShapes( $d['mintakod'], $is_config_load );
 			$tree[] = $d;
@@ -299,7 +300,7 @@ class Motivumok
 
 		// Saját minták
 		if ( !$arg['hideown'] ) {
-			$load_own_styles = $this->getStyleConfigs($tree);
+			$load_own_styles = $this->getStyleConfigs($tree, $arg);
 			if ($load_own_styles) {
 				foreach ( (array)$load_own_styles as $os ) {
 					$tree[] = $os;
@@ -339,7 +340,8 @@ class Motivumok
 		s.ID,
 		s.nev,
 		s.motivumID,
-		s.sorrend
+		s.sorrend,
+		s.lathato
 		FROM motivum_styles as s WHERE 1=1 ";
 
 		if ($arg['admin'] === true) {
@@ -361,11 +363,13 @@ class Motivumok
 				$ID = $d['ID'];
 				$nev = $d['nev'];
 				$sorrend = $d['sorrend'];
+				$lathato = $d['lathato'];
 				$d = $mots[$d['motivumID']];
 				$d['ID'] = $ID;
 				$d['nev'] = $nev;
 				$d['kat_hashkey'] = 'OWN';
 				$d['sorrend'] = $sorrend;
+				$d['lathato'] = $lathato;
 				$d['kat_name'] = __('Kiemelt minták');
 
 				// Shape configs
