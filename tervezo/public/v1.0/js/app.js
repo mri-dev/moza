@@ -93,7 +93,7 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
   $scope.load_language = function() {
     var lang = $cookies.get('lang');
-    if (lang =='') {
+    if (lang =='' || typeof lang === 'undefined') {
       $scope.current_lang = 'hu';
     } else {
       $scope.current_lang = lang;
@@ -182,32 +182,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
 
       // LAYER
       $scope.worklayer = new Konva.Layer();
-      // Tooltip
-      var tooltipLayer = new Konva.Layer();
-      var tooltip = new Konva.Text({
-        text: '',
-        fontFamily: 'Calibri',
-        fontSize: 12,
-        padding: 5,
-        fill: 'rgba(255, 255, 255, 0.8)',
-        alpha: 0.75,
-        visible: false
-      });
-      var tooltipbg = new Konva.Rect({
-        x: 0,
-        y: 0,
-        stroke: '#00000',
-        fill: '#F05F42',
-        shadowColor: 'black',
-        shadowBlur: 5,
-        strokeWidth: 1,
-        shadowOffset: [10, 10],
-        shadowOpacity: 0.4,
-        cornerRadius: 3,
-        visible: false
-      });
-      tooltipLayer.add( tooltipbg );
-
       $scope.workstage.clear();
       $scope.workrotate = 0;
 
@@ -217,9 +191,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
             var settings = {
               fill: si.fill_color,
               shapesize: $scope.workmotiv_size,
-              tooltiplayer: tooltipLayer,
-              tooltip: tooltip,
-              tooltipbg: tooltipbg,
               colorinfo: color
             };
            if ($scope.showStrokes) {
@@ -235,11 +206,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
           } );
         });
 
-        // Tooltip adds
-        tooltipLayer.add(tooltip);
-        $scope.workstage.add(tooltipLayer);
-
-      tooltipLayer.add(tooltip);
         $scope.currentMotivum = m;
         $scope.usingHistoryHash = false;
       }
@@ -421,32 +387,6 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
     var options = {};
 
     var layers = motiv.stage.getLayers();
-    // Tooltip
-    options.tooltiplayer = new Konva.Layer();
-    options.tooltipbg = new Konva.Rect({
-      x: 0,
-      y: 0,
-      stroke: '#00000',
-      fill: '#F05F42',
-      shadowColor: 'black',
-      shadowBlur: 5,
-      strokeWidth: 1,
-      shadowOffset: [10, 10],
-      shadowOpacity: 0.4,
-      cornerRadius: 3,
-      visible: false
-    });
-    options.tooltip = new Konva.Text({
-      text: '',
-      fontFamily: 'Calibri',
-      fontSize: 12,
-      padding: 5,
-      fill: 'rgba(255, 255, 255, 0.8)',
-      alpha: 0.75,
-      visible: false
-    });
-    options.tooltiplayer.add( options.tooltipbg );
-
     layers.each(function(layer, n) {
       var lay = layer.clone();
       var si = 0;
@@ -469,6 +409,26 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
         shapes.fill( motiv.colors[si] );
 
         // hover tooltip
+        shapes.on('mousemove', function(){
+          if ( true ) {
+            var mousePos = $scope.workstage.getPointerPosition();
+            if (mousePos) {
+              var toh = 5;
+              var tow = 5;
+              var tw = mousePos.x + tow;
+              var th = mousePos.y + toh;
+
+              var szinkod = $scope.colorsbyrgb[shapes.attrs.fill.replace("#","")].kod;
+              $scope.updateTooltip(tw, th, szinkod, shapes.attrs.fill, $scope.colorsbyrgb[shapes.attrs.fill.replace("#","")].szin_ncs);
+            }
+          }
+        });
+
+        shapes.on('mouseout', function(){
+          $scope.hideTooltip();
+        });
+
+        /*
         shapes.on('mousemove', function(){
           if (options.tooltiplayer && options.tooltip) {
             var sw = $scope.workstage.width();
@@ -520,16 +480,13 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
             options.tooltiplayer.draw();
           }
         });
+        */
 
         si++;
       });
       $scope.workstage.add( lay );
       lay.draw();
     });
-
-    // Tooltip adds
-    options.tooltiplayer.add(options.tooltip);
-    $scope.workstage.add(options.tooltiplayer);
 
     $scope.currentMotivum = $scope.motivumok[motiv.minta];
   }
@@ -834,74 +791,51 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
       });
       // hover tooltip
       shape.on('mousemove', function(){
-        if (options.tooltiplayer && options.tooltip) {
-          console.log($scope.workrotate);
-          var sw = stage.width();
-          var sh = stage.height();
+        if ( true ) {
           var mousePos = stage.getPointerPosition();
           if (mousePos) {
-            var base_x = 0;
-            var base_y = 0
             var toh = 5;
             var tow = 5;
             var tw = mousePos.x + tow;
             var th = mousePos.y + toh;
-            var ttext = "";
 
-            ttext += $scope.translate('color')+" "+$scope.colorsbyrgb[shape.attrs.fill.replace("#","")].kod+"\n";
-            ttext += "RGB: "+shape.attrs.fill+"\n";
-            ttext += "NCS: "+$scope.colorsbyrgb[shape.attrs.fill.replace("#","")].szin_ncs;
-            var rotfix = 0;
-
-            options.tooltip.rotation(rotfix);
-            options.tooltipbg.rotation(rotfix);
-            options.tooltip.text(ttext);
-            options.tooltipbg.height(options.tooltip.height());
-            options.tooltipbg.width(options.tooltip.width());
-
-            if ($scope.workrotate == 0) {
-              if ( mousePos.y >= (sh-options.tooltip.height()-toh) ) {
-                th = ( mousePos.y - options.tooltip.height() - toh);
-              }
-
-              if ( mousePos.x >= (sw-options.tooltip.width()-tow) ) {
-                tw = (mousePos.x - options.tooltip.width() - tow);
-              }
-            } else {
-              if ($scope.workrotate == -90) {
-                tw = sw - mousePos.x;
-              }
-            }
-
-            options.tooltip.position({
-              x: tw,
-              y: th
-            });
-            options.tooltipbg.position({
-              x: tw,
-              y: th
-            });
-            console.log('x: '+tw+', y: '+th);
-
-            options.tooltip.show();
-            options.tooltipbg.show();
-            options.tooltiplayer.batchDraw();
+            var szinkod = $scope.colorsbyrgb[shape.attrs.fill.replace("#","")].kod;
+            $scope.updateTooltip(tw, th, szinkod, shape.attrs.fill, $scope.colorsbyrgb[shape.attrs.fill.replace("#","")].szin_ncs);
           }
         }
       });
 
       shape.on('mouseout', function(){
-        if (options.tooltiplayer && options.tooltip) {
-          options.tooltip.hide();
-          options.tooltipbg.hide();
-          options.tooltiplayer.draw();
-        }
+        $scope.hideTooltip();
       });
     }
 
     layer.add( shape );
     stage.add( layer );
     layer.draw();
+  }
+
+  $scope.hideTooltip = function()
+  {
+    $('#motivumtooltip').hide();
+  }
+
+  $scope.updateTooltip = function(x, y, kod, rgb, ncs)
+  {
+    if ($('#motivumtooltip_kod').text() != kod) {
+      $('#motivumtooltip_kod').text(kod);
+    }
+    if ($('#motivumtooltip_rgb').text() != rgb) {
+      $('#motivumtooltip_rgb').text(rgb);
+    }
+    if ($('#motivumtooltip_ncs').text() != ncs) {
+      $('#motivumtooltip_ncs').text(ncs);
+    }   
+
+    $('#motivumtooltip').css({
+      top: y,
+      left: x
+    }).show();
   }
 
   $scope.savingProject = function( name, email, data ){

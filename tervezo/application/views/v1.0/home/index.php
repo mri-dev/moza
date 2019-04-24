@@ -38,6 +38,11 @@
         <div class="cwrapper">
           <div class="sample-editor">
             <div class="sample">
+              <div id="motivumtooltip" class="motivum-tooltip-holder">
+                <div class=""><?php echo __('Szín'); ?>: <strong><span id="motivumtooltip_kod"></span></strong></div>
+                <div class=""><?php echo __('RGB'); ?>: <strong><span id="motivumtooltip_rgb"></span></strong></div>
+                <div class=""><?php echo __('NCS'); ?>: <strong><span id="motivumtooltip_ncs"></span></strong></div>
+              </div>
               <div id="motivum">
                 <div class="alert-msg" ng-show="!currentMotivum">
                   <i class="fa fa-bell-o"></i> <br>

@@ -353,6 +353,7 @@ header{
 
   .sample{
     flex-basis: 200px;
+    position: relative;
     #motivum{
       position: relative;
       border: 2px solid #dfdfdf;
@@ -941,6 +942,22 @@ md-toast.alert-toast{
       }
     }
   }
+}
+
+.motivum-tooltip-holder{
+  display: none;
+  background: rgba(240, 95, 66, 0.91);
+  color: white;
+  padding: 5px 8px 8px 8px;
+  border-radius: 0 10px 10px 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  box-shadow: 3px 5px 20px -4px black;
+  border: 0.5px solid rgba(255, 255, 255, 0.28);
 }
 
 md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar){
