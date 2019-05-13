@@ -35,8 +35,8 @@ app.controller('App', ['$scope', '$sce', '$http', '$mdToast', '$mdDialog', '$loc
   $scope.color_size = 0;
   $scope.tile_size = 0;
   $scope.grid = {
-    x: 16,
-    y: 16
+    x: 10,
+    y: 10
   };
   $scope.motiv_size = ($('.sidebar').width() - (3*(10))) / 3;
   $scope.workmotiv_size = 202;
@@ -1171,7 +1171,7 @@ $(function(){
   function recalcGridSizes()
   {
     var tiles_width = $('.tiles').width();
-    var height = tiles_width / 16;
+    var height = tiles_width / 10;
     $('.tiles tr td').css({
       height: height,
       width: height
